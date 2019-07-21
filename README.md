@@ -1,4 +1,5 @@
 # sort_jav Documentation
+**>> Forked to create a separate matching cover file for each part of a video <<**
 
 ## Table of Contents:
 * Introduction
