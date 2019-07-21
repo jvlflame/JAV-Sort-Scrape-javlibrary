@@ -1,5 +1,6 @@
 # sort_jav Documentation
 **>> Forked to create a separate matching cover file for each part of a video <<**
+**>> Allows for Emby/Jellyfin to have a functional cover for each video without creating and renaming manually <<**
 
 ## Table of Contents:
 * Introduction
