@@ -465,6 +465,7 @@ def sort_jav(s):
             print("Not sorting {} as it is does not look like a JAV ID".format(vid_id))
             continue
         html = get_javlibrary_url(vid_id)
+        
 
         if not html:
             try:
@@ -475,6 +476,20 @@ def sort_jav(s):
 
         # rename the file according to our convention
         new_fname = rename_file(path, html, s, vid_id)
+
+        # write html to txt file and move to folder
+        split_fname = str(os.path.splitext(new_fname)[0])
+        base_fname = os.path.basename(new_fname)
+        split_base_fname = str(os.path.splitext(base_fname)[0])
+        base = strip_partial_path_from_file(split_fname)
+        text_file = open(split_fname + '.txt', "w", encoding="utf-8")
+        text_file.write(html)
+        text_file.close()
+        try:
+            os.rename(split_fname + '.txt', base + "\\" + split_base_fname + "\\" + split_base_fname + '.txt')
+        except FileExistsError as e:
+            print('File already exists, could not move html txt.')
+            
 
         # move the file into a folder (if we say to)
         if s['move-video-to-new-folder']:
