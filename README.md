@@ -1,7 +1,6 @@
 # sort_jav Documentation
-**>> Forked to create a separate matching cover file for each part of a video <<**
-
-**>> Allows for Emby/Jellyfin to have a functional cover for each video without creating and renaming manually <<**
+## Demo
+![GitHub Logo](demo.gif)
 
 ## Table of Contents:
 * Introduction
@@ -15,16 +14,16 @@
 
 ## Introduction
 The sort_jav Python script sorts a folder of unsorted jav videos. The script was written by
-[/u/Ohura](https://reddit.com/user/Ohura). The goal is help users sort all their jav content nice and easily.
+[/u/Ohura](https://reddit.com/user/Ohura). The goal is help users sort all their jav content nice and easily. The Set-JAVNfo script will work in conjunction with sort_jav to create a functional nfo metadata file for easy import into Emby, Jellyfin, and/or Kodi.
 
 What it does is it takes a folder full of unsorted jav videos tagged with the video ID and sorts
-them, changing the name, puts them in their own folder, and grabbing the cover image. There
-are a few settings you can configure, for example, you can opt out of putting them in folders or
-getting covers.
+them, changing the name, puts them in their own folder, and grabbing the cover image, and writing nfo metadata. There are a few settings you can configure, for example, you can opt out of putting them in folders or getting covers.
+
+The repository has been updated to function as a (temporary) alternative to the popular [JAVMovieScraper](https://github.com/DoctorD1501/JAVMovieScraper) which to my knowledge is currently unable to scrape JAVLibrary data.
 
 ## Change Notes
 ### v1.3
-- Added option in settings "include-html-txt" to create a html text file to parse and create Emby/Jellyfin/Kodi metadata with Set-JAVNfo.ps1 script
+- Added option in settings "include-html-txt" to create a html text file to parse and create Emby/Jellyfin/Kodi metadata
 - Added Set-JAVNfo.ps1 script to create .nfo metadata from html text file
 - Added option in settings "include-cover-all" to create a cover .jpg for each video file
 - Changed renaming of cover to match video renaming for multiple part videos
@@ -50,6 +49,8 @@ on Python 2.x, and has not been tested on it.
 Due to javlibrary adding Cloudflare, you are now required to have cfscrape installed. You can
 view how to install it here: https://github.com/Anorov/cloudflare-scrape#installation . You will
 need node.js installed to run it. Please refer to their respective documentation on installation.
+
+You will need PowerShell v5.0 or higher installed to run Set-JAVNfo.ps1 (installed on Windows 10 by default). If you get a Remote-ExecutionPolicy error, open an **administrator** PowerShell prompt, and run `Set-ExecutionPolicy Unrestricted`.
 
 ## Folder Setup
 You need to set it up so all the videos you want to sort are all in a single folder, and that folder is
@@ -80,6 +81,8 @@ another message when it finishes, and hitting enter will close the program at th
 Alternatively you can invoke it from the command line. A note that this requires .py files to be
 associated with the Python executable file (Python.exe for most of us), if they are not and you
 do not know how to fix this, please contact me.
+
+To run Set-JAVNfo.ps1, right click and select "Run with PowerShell". By default, the script will run on the path set in your configuration file. If you want to run the Set-JAVNfo.ps1 script on a different directory, add the `FilePath` parameter to Set-JAVNfo.ps1 on line 65. If you want to keep the HTML metadata file, add the `KeepMetadataTxt` parameter.
 
 ## Settings
 
@@ -116,3 +119,8 @@ This script is provided “as is” and the creator is not liable for anything t
 of the use of it.
 
 This being said, if you experience any issues with it, feel free to ask for help.
+
+## To do
+
+- [ ] Add option to input tags/genres in metadata file
+- [ ] Combine sort_jav and Set-JAVNfo into a one-click solution
