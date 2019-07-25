@@ -7,7 +7,7 @@ function Set-JAVNfo {
         [Switch]$KeepMetadataTxt
     )
     # Write txt metadata file paths to $HTMLMetadata
-    $HTMLMetadata = Get-ChildItem -Path $FilePath -Recurse | Where-Object { $_.Name -match '[a-zA-Z]{2,7}-[0-9]{2,7}(.*.txt)' } | Select Name, BaseName, FullName, Directory, Length
+    $HTMLMetadata = Get-ChildItem -Path $FilePath -Recurse | Where-Object { $_.Name -match '[a-zA-Z]{2,7}-[0-9]{2,7}(.*.txt)' } | Select-Object Name, BaseName, FullName, Directory, Length
     # Write each nfo file
     foreach ($MetadataFile in $HTMLMetadata) {
         $Count = 1
