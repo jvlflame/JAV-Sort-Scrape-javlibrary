@@ -377,7 +377,7 @@ def get_cover_for_video(path, vid_id, s, html):
     # TODO:
     # create the path name based on the settings file
     base = strip_partial_path_from_file(path)
-    fname = strip_definition_from_video(vid_id);
+    fname = strip_definition_from_video(vid_id)
     if (s['include-actress-name-in-cover']):
         if (s['include-cover-all']):
             if(s['include-actress-in-video-name']):
@@ -391,7 +391,8 @@ def get_cover_for_video(path, vid_id, s, html):
                     fname += actress_string
     else:
         if(s['include-cover-all']):
-            fname += s['delimiter-between-multiple-videos'] + s['video-number']
+            if s['video-number']:
+                fname += s['delimiter-between-multiple-videos'] + s['video-number']
 
     fullpath = os.path.join(base, fname)
     save_image_from_url_to_path(fullpath, img_link)
