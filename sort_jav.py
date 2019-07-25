@@ -208,6 +208,20 @@ def get_actress_string(html, s):
     actress_string = actress_string[0:-1]
     return actress_string
 
+def get_actress_string_txt(html, s):
+    """Return the string of the actress names as per the naming convention specified
+    Takes in the html contents to filter out the actress names"""
+    a_list = get_actress_from_html_txt(html, s)
+    actress_string = ''
+    # if javlibrary returns no actresses then we'll just say whatever we specified
+    if len(a_list) == 0:
+        return s['name-for-actress-if-blank']
+    for actress in a_list:
+        actress_string += actress + '|'
+    # strip the last delimiter, we don't want it
+    actress_string = actress_string[0:-1]
+    return actress_string
+
 
 def fix_actress_name(name):
     """Returns the updated name for any actress based on our replacement scheme"""
@@ -248,6 +262,36 @@ def get_actress_from_html(html, s):
                 fixed_names.append(new_name)
             elif s['name-order'].lower() == 'last':
                 new_name = last + s['delimiter-between-actress-names'] + first
+                fixed_names.append(new_name)
+        else:
+            fixed_names.append(fname)
+
+    return fixed_names
+
+def get_actress_from_html_txt(html, s):
+    """Return a list of actresses from the html
+    actresses are strings that are formatted the way we can put them straight in the name"""
+
+    a_list = []
+    split_str = '<span class="star">'
+    # 1 to end because first will have nothing
+    for section in html.split(split_str)[1:]:
+        # fname is the full name
+        fname = section.split('rel="tag">')[1].split('<')[0]
+        fname = fix_actress_name(fname)
+        a_list.append(fname)
+
+    fixed_names = []
+    for fname in a_list:
+        # format this correctly
+        if fname.count(' ') == 1:
+            last = fname.split(' ')[0]
+            first = fname.split(' ')[1]
+            if s['name-order'].lower() == 'first':
+                new_name = first + ' ' + last
+                fixed_names.append(new_name)
+            elif s['name-order'].lower() == 'last':
+                new_name = last + ' ' + first
                 fixed_names.append(new_name)
         else:
             fixed_names.append(fname)
@@ -477,27 +521,31 @@ def sort_jav(s):
         # rename the file according to our convention
         new_fname = rename_file(path, html, s, vid_id)
 
-        # write html to txt file and move to folder
-        split_fname = str(os.path.splitext(new_fname)[0])
-        base_fname = os.path.basename(new_fname)
-        split_base_fname = str(os.path.splitext(base_fname)[0])
-        base = strip_partial_path_from_file(split_fname)
-        text_file = open(split_fname + '.txt', "w", encoding="utf-8")
-        text_file.write(html)
-        text_file.close()
-        try:
-            os.rename(split_fname + '.txt', base + "\\" + split_base_fname + "\\" + split_base_fname + '.txt')
-        except FileExistsError as e:
-            print('File already exists, could not move html txt.')
-            
+        if s['include-html-txt']:
+            # write html to txt file and move to folder
+            split_fname = str(os.path.splitext(new_fname)[0])
+            base_fname = os.path.basename(new_fname)
+            split_base_fname = str(os.path.splitext(base_fname)[0])
+            base = strip_partial_path_from_file(split_fname)
+            text_file = open(split_fname + '.txt', "w", encoding="utf-8")
+            text_file.write(html)
+
+            # write actresses to html metadata file
+            actress_string = get_actress_string_txt(html, s)
+            text_file.write("\n<ActressSorted>")
+            text_file.write(actress_string)
+            text_file.write("</ActressSorted>")
+            text_file.close()
 
         # move the file into a folder (if we say to)
         if s['move-video-to-new-folder']:
             path = create_and_move_video_into_folder(new_fname, s, vid_id, html)
+            if s['include-html-txt']:
+                os.rename(split_fname + '.txt', base + "\\" + split_base_fname + "\\" + split_base_fname + '.txt')
+
         # get the cover (if we say to)
         if s['include-cover']:
             get_cover_for_video(path, vid_id, s, html)
-
 
 if __name__ == '__main__':
 
