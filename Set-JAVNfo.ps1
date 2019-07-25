@@ -15,8 +15,8 @@ function Set-JAVNfo {
     else {
         Write-Host 'Writing metadata .nfo files...'
         # Write each nfo file
+        $Count = 1
         foreach ($MetadataFile in $HTMLMetadata) {
-            $Count = 1
             $HTMLContent = Get-Content $MetadataFile.FullName
             $FileName = $MetadataFile.BaseName
             $NfoName = $MetadataFile.BaseName + '.nfo'
