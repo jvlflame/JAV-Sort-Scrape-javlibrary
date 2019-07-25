@@ -194,6 +194,7 @@ def rename_file(path, html, s, vid_id):
         return path
 
 
+
 def get_actress_string(html, s):
     """Return the string of the actress names as per the naming convention specified
     Takes in the html contents to filter out the actress names"""
@@ -377,15 +378,22 @@ def get_cover_for_video(path, vid_id, s, html):
     # create the path name based on the settings file
     base = strip_partial_path_from_file(path)
     fname = strip_definition_from_video(vid_id);
-    if(s['include-actress-in-video-name']):
-        if s['video-number']:
-            fname += s['delimiter-between-multiple-videos'] + s['video-number'] + s['delimiter-between-video-name-actress'] 
-            actress_string = get_actress_string(html, s)
-            fname += actress_string
+    if (s['include-actress-name-in-cover']):
+        if (s['include-cover-all']):
+            if(s['include-actress-in-video-name']):
+                if s['video-number']:
+                    fname += s['delimiter-between-multiple-videos'] + s['video-number'] + s['delimiter-between-video-name-actress'] 
+                    actress_string = get_actress_string(html, s)
+                    fname += actress_string
+                else:
+                    fname += s['delimiter-between-video-name-actress'] 
+                    actress_string = get_actress_string(html, s)
+                    fname += actress_string
         else:
-            fname += s['delimiter-between-video-name-actress'] 
+            fname += s['delimiter-between-video-name-actress']
             actress_string = get_actress_string(html, s)
             fname += actress_string
+
     fullpath = os.path.join(base, fname)
     save_image_from_url_to_path(fullpath, img_link)
 
@@ -521,6 +529,7 @@ def sort_jav(s):
         # rename the file according to our convention
         new_fname = rename_file(path, html, s, vid_id)
 
+        # write a txt file containing html metadata for parsing with Set-JAVNfo.ps1 script
         if s['include-html-txt']:
             # write html to txt file and move to folder
             split_fname = str(os.path.splitext(new_fname)[0])
@@ -541,7 +550,7 @@ def sort_jav(s):
         if s['move-video-to-new-folder']:
             path = create_and_move_video_into_folder(new_fname, s, vid_id, html)
             if s['include-html-txt']:
-                os.rename(split_fname + '.txt', base + "\\" + split_base_fname + "\\" + split_base_fname + '.txt')
+                os.rename(split_fname + '.txt', (os.path.splitext(path))[0] + '.txt')
 
         # get the cover (if we say to)
         if s['include-cover']:

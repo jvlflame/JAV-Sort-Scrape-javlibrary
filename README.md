@@ -23,6 +23,10 @@ are a few settings you can configure, for example, you can opt out of putting th
 getting covers.
 
 ## Change Notes
+### v1.3
+- Added option in settings "include-html-txt" to create a html text file to parse and create Emby/Jellyfin/Kodi metadata with Set-JAVNfo.ps1 script
+- Added Set-JAVNfo.ps1 script to create .nfo meta from html text file
+- Set
 ### v1.2
 - Fixed an issue where the program wouldn’t stop early during a problematic file
 - Fixed an issue due to Cloudflare being added to javlibrary. This requires significantly
