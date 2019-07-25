@@ -2,6 +2,7 @@
 ## Demo
 ![GitHub Logo](demo.gif)
 
+[Full-size demo gfy](https://gfycat.com/vibrantambitiouscoyote)
 ## Table of Contents:
 * Introduction
 * Change Notes
