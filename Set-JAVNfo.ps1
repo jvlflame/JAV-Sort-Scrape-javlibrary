@@ -26,7 +26,6 @@ function Set-JAVNfo {
         Add-Content -Path $NfoPath -Value '<movie>'
         Add-Content -Path $NfoPath -Value "    <title>$TitleFixed</title>"
         Add-Content -Path $NfoPath -Value "    <year>$ReleaseYear</year>"
-        Add-Content -Path $NfoPath -Value "    <plot></plot>"
         Add-Content -Path $NfoPath -Value "    <releasedate>$ReleaseDate</releasedate>"
         Add-Content -Path $NfoPath -Value "    <studio>$Studio</studio>"
 
