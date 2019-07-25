@@ -23,7 +23,7 @@ function Set-JAVNfo {
             $NfoPath = Join-Path -Path $MetadataFile.Directory -ChildPath $NfoName
 
             $Title = $HTMLContent -match '<title>(.*) - JAVLibrary<\/title>'
-            $TitleFixed = (($Title -replace '<title>', '') -replace  '- JAVLibrary</title>', '').Trim()
+            $TitleFixed = (((($Title -replace '<title>', '') -replace  '- JAVLibrary</title>', '').Replace('&#39;', "'")).Replace('&#x26;', '&')).Trim()
             $ReleaseDate = ($HTMLContent -match '<td class="text">\d{4}-\d{2}-\d{2}<\/td>').Split(('<td class="text">','</td>'), 'None')[1]
             $ReleaseYear = ($ReleaseDate.Split('-'))[0]
             $Studio = (($HTMLContent -match '<a href="vl_maker\.php\?m=[\w\d]{1,10}" rel="tag">(.*)<\/a>')).Split(('rel="tag">', '</a> &nbsp'), 'None')[1]
