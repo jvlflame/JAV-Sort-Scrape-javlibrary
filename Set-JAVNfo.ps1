@@ -2,16 +2,18 @@
 function Set-JAVNfo {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory=$false, Position=0)]
-        [System.IO.FileInfo]$FilePath,
+        [Parameter(Position=0)]
+        [System.IO.FileInfo]$FilePath = ((Get-Content $PSScriptRoot\settings_sort_jav.ini) -match '^path').Split('=')[1],
         [Switch]$KeepMetadataTxt
     )
     # Write txt metadata file paths to $HTMLMetadata
-    $HTMLMetadata = Get-ChildItem -Path $FilePath -Recurse | Where-Object { $_.Name -match '[a-zA-Z]{2,7}-[0-9]{2,7}(.*.txt)' } | Select-Object Name, BaseName, FullName, Directory, Length
+    Write-Host -ForegroundColor Green 'Writing metadata .nfo files...'
+    $HTMLMetadata = Get-ChildItem -Path $FilePath -Recurse | Where-Object { $_.Name -match '[a-zA-Z]{2,7}-[0-9]{2,7}(.*.txt)' } | Select-Object Name, BaseName, FullName, Directory
     # Write each nfo file
     foreach ($MetadataFile in $HTMLMetadata) {
         $Count = 1
         $HTMLContent = Get-Content $MetadataFile.FullName
+        $FileName = $MetadataFile.BaseName
         $NfoName = $MetadataFile.BaseName + '.nfo'
         $NfoPath = Join-Path -Path $MetadataFile.Directory -ChildPath $NfoName
 
@@ -41,7 +43,7 @@ function Set-JAVNfo {
         }
         # End file
         Add-Content -Path $NfoPath -Value '</movie>'
-        Write-Host "[$Count] Wrote .nfo metadata for file $TitleFixed"
+        Write-Host "($Count) $FileName .nfo processed..."
 
         # Remove html txt file
         if (!($KeepMetadataTxt)) {
@@ -49,7 +51,9 @@ function Set-JAVNfo {
         }
         $Count++
     }
-
     # Clean up
     Get-Variable | Remove-Variable -ErrorAction Ignore
+    pause
 }
+
+Set-JAVNfo
