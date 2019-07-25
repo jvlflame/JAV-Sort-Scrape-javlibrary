@@ -1,17 +1,4 @@
 # sort_jav Documentation
-## Demo
-![GitHub Logo](demo.gif)
-
-[Full-size demo gfy](https://gfycat.com/vibrantambitiouscoyote)
-## Table of Contents:
-* Introduction
-* Change Notes
-* Prerequisites
-* Folder Setup
-* How To Run
-* Settings
-* Additional Notes
-* Disclaimer
 
 ## Introduction
 The sort_jav Python script sorts a folder of unsorted jav videos. The script was written by
@@ -21,6 +8,21 @@ What it does is it takes a folder full of unsorted jav videos tagged with the vi
 them, changing the name, puts them in their own folder, and grabbing the cover image, and writing nfo metadata. There are a few settings you can configure, for example, you can opt out of putting them in folders or getting covers.
 
 The repository has been updated to function as a (temporary) alternative to the popular [JAVMovieScraper](https://github.com/DoctorD1501/JAVMovieScraper) which to my knowledge is currently unable to scrape JAVLibrary data.
+
+## Demo
+![GitHub Logo](demo.gif)
+
+[Full-size demo gfy](https://gfycat.com/vibrantambitiouscoyote)
+## Table of Contents:
+* [Change Notes](#Change-Notes)
+* [Prerequisites](#Prerequisites)
+* [Folder Setup](#Folder-Setup)
+* [How To Run](#How-To-Run)
+* [Settings](#Settings)
+* [Additional Notes](#Additional-Notes)
+* [Disclaimer](#Disclaimer)
+
+
 
 ## Change Notes
 ### v1.3
@@ -71,7 +73,6 @@ example, if multiple videos are denoted by a ! symbol and the video is MIRD-150!
 MIRD-150!B, the sorter will understand.
 
 ## How To Run
-
 Please first edit the settings to match your desired preferences. This should be very quick and
 only take a minute. It will not work if you do not do this, particularly with the folder you need to
 specify.
@@ -86,7 +87,6 @@ do not know how to fix this, please contact me.
 To run Set-JAVNfo.ps1, right click and select "Run with PowerShell". By default, the script will run on the path set in your configuration file. If you want to run the Set-JAVNfo.ps1 script on a different directory, add the `FilePath` parameter to Set-JAVNfo.ps1 on line 65. If you want to keep the HTML metadata file, add the `KeepMetadataTxt` parameter.
 
 ## Settings
-
 The settings.ini file provided with it lists a few of the options the user has available to them as
 well as descriptions on those options.
 
@@ -98,7 +98,6 @@ disallowed by the OS. If you include them, they will be forcibly removed from yo
 windows, that would be: / \ : * ? < > |
 
 ## Additional Notes
-
 Any video files that can’t be found on javlibrary will be ignored. The program will notify you of
 any problems it has trying to sort them.
 
@@ -115,7 +114,6 @@ lengths are around 255, so for videos with several actresses in them, it’s bes
 actress name in both the file and folder.
 
 ## Disclaimer
-
 This script is provided “as is” and the creator is not liable for anything that happens as a result
 of the use of it.
 
