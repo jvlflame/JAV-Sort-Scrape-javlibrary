@@ -24,6 +24,10 @@ The repository has been updated to function as a (temporary) alternative to the 
 * [Disclaimer](#Disclaimer)
 
 ## Change Notes
+### v1.4
+- Added option to include video genres in metadata nfo file
+- Moved additional metadata options to bottom of settings.ini
+
 ### v1.3
 - Added option in settings "include-html-txt" to create a html text file to parse and create Emby/Jellyfin/Kodi metadata
 - Added Set-JAVNfo.ps1 script to create .nfo metadata from html text file
@@ -120,6 +124,6 @@ This being said, if you experience any issues with it, feel free to ask for help
 
 ## To do
 
-- [ ] Add option to input tags/genres in metadata file
+- [x] Add option to input tags/genres in metadata file
 - [ ] Combine sort_jav and Set-JAVNfo into a one-click solution
 - [ ] Add video title option to renamed file
