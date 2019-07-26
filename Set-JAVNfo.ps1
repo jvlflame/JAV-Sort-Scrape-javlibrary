@@ -3,9 +3,14 @@ function Set-JAVNfo {
     [CmdletBinding()]
     param(
         [Parameter(Position=0)]
-        [System.IO.FileInfo]$FilePath = ((Get-Content $PSScriptRoot\settings_sort_jav.ini) -match '^path').Split('=')[1],
-        [Switch]$KeepMetadataTxt
+        [System.IO.FileInfo]$FilePath = ((Get-Content $PSScriptRoot\settings_sort_jav.ini) -match '^path').Split('=')[1]
     )
+
+    # Options from settings_sort_jav.ini
+    $KeepMetadataTxt = ((Get-Content $PSScriptRoot\settings_sort_jav.ini) -match '^keep-metadata-txt').Split('=')[1]
+    $AddGenres = ((Get-Content $PSScriptRoot\settings_sort_jav.ini) -match '^include-genre-metadata').Split('=')[1]
+    $AddTitle = ((Get-Content $PSScriptRoot\settings_sort_jav.ini) -match '^include-video-title').Split('=')[1]
+
     # Write txt metadata file paths to $HTMLMetadata
     $HTMLMetadata = Get-ChildItem -Path $FilePath -Recurse | Where-Object { $_.Name -match '[a-zA-Z]{2,7}-[0-9]{2,7}(.*.txt)' } | Select-Object Name, BaseName, FullName, Directory
     if ($null -eq $HTMLMetadata) {
@@ -17,25 +22,35 @@ function Set-JAVNfo {
         # Write each nfo file
         $Count = 1
         foreach ($MetadataFile in $HTMLMetadata) {
+            # Read html txt
             $HTMLContent = Get-Content $MetadataFile.FullName
             $FileName = $MetadataFile.BaseName
             $NfoName = $MetadataFile.BaseName + '.nfo'
             $NfoPath = Join-Path -Path $MetadataFile.Directory -ChildPath $NfoName
 
+            # Get metadata information from txt file
             $Title = $HTMLContent -match '<title>(.*) - JAVLibrary<\/title>'
             $TitleFixed = (((($Title -replace '<title>', '') -replace  '- JAVLibrary</title>', '').Replace('&#39;', "'")).Replace('&#x26;', '&')).Trim()
             $ReleaseDate = ($HTMLContent -match '<td class="text">\d{4}-\d{2}-\d{2}<\/td>').Split(('<td class="text">','</td>'), 'None')[1]
             $ReleaseYear = ($ReleaseDate.Split('-'))[0]
             $Studio = (($HTMLContent -match '<a href="vl_maker\.php\?m=[\w\d]{1,10}" rel="tag">(.*)<\/a>')).Split(('rel="tag">', '</a> &nbsp'), 'None')[1]
-
-            # Add various metadata
-            Set-Content -Path $NfoPath -Value '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+            $Genres = (($HTMLContent -match 'rel="category tag">(.*)<\/a><\/span><\/td>') -Split 'rel="category tag">')
+            
+            # Write metadata to file
+            Set-Content -Path $NfoPath -Value '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' -Force
             Add-Content -Path $NfoPath -Value '<movie>'
-            Add-Content -Path $NfoPath -Value "    <title>$TitleFixed</title>"
+            if ($AddTitle -like 'true') {
+                Add-Content -Path $NfoPath -Value "    <title>$TitleFixed</title>"
+            }
             Add-Content -Path $NfoPath -Value "    <year>$ReleaseYear</year>"
             Add-Content -Path $NfoPath -Value "    <releasedate>$ReleaseDate</releasedate>"
             Add-Content -Path $NfoPath -Value "    <studio>$Studio</studio>"
-
+            if ($AddGenres -like 'true') {
+                foreach ($Genre in $Genres[1..($Genres.Length-1)]) {
+                    $GenreString = (($Genre.Split('<'))[0]).Trim()
+                    Add-Content -Path $NfoPath -Value "    <genre>$GenreString</genre>"
+                }
+            }
             # Add actress metadata
             $Actors = ((($HTMLContent -match '<ActressSorted>(.*)<\/ActressSorted>') -replace '<ActressSorted>', '') -replace '</ActressSorted>', '').Split('|') | Sort-Object
             foreach ($Actor in $Actors) {
@@ -49,9 +64,8 @@ function Set-JAVNfo {
             # End file
             Add-Content -Path $NfoPath -Value '</movie>'
             Write-Host "($Count) $FileName .nfo processed..."
-
             # Remove html txt file
-            if (!($KeepMetadataTxt)) {
+            if ($KeepMetadataTxt -eq 'false') {
                 Remove-Item -LiteralPath $MetadataFile.FullName
             }
             $Count++
