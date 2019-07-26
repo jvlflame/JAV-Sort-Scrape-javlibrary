@@ -2,7 +2,7 @@
 [![GitHub release](https://img.shields.io/github/release/jvlflame/JAV-Sorter-javlibrary?style=flat-square)](https://github.com/jvlflame/JAV-Sorter-javlibrary/releases)
 [![Last commit](https://img.shields.io/github/last-commit/jvlflame/JAV-Sorter-javlibrary?style=flat-square)](https://github.com/jvlflame/Rename-JAV-files-javlibrary/commits/master)
 
-The sort_jav Python script sorts a folder of unsorted jav videos. The script was written by
+The sort_jav Python script sorts and renames folder of unsorted jav videos. The script was written by
 [/u/Ohura](https://reddit.com/user/Ohura). The goal is help users sort all their jav content nice and easily. The Set-JAVNfo script will work in conjunction with sort_jav to create a functional nfo metadata file for easy import into Emby, Jellyfin, and/or Kodi.
 
 What it does is it takes a folder full of unsorted jav videos tagged with the video ID and sorts
@@ -122,3 +122,4 @@ This being said, if you experience any issues with it, feel free to ask for help
 
 - [ ] Add option to input tags/genres in metadata file
 - [ ] Combine sort_jav and Set-JAVNfo into a one-click solution
+- [ ] Add video title option to renamed file
