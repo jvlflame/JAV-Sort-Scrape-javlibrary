@@ -1,7 +1,6 @@
 import os
 import urllib.request
 import re
-import sys  # just so we can test exiting
 import cfscrape
 
 # if we make this global or at least pass it in to the function
@@ -9,14 +8,11 @@ import cfscrape
 # which will make cloudflare think it's the same connection
 scraper = cfscrape.create_scraper()
 
-
 class AppUrlopener(urllib.request.FancyURLopener):
     version = "Mozilla/5.0"
 
-
 def read_file(path):
     """Return a dictionary containing a map of name of setting -> value"""
-
     d = {}
     # so we can strip invalid characters for filenames
     translator = str.maketrans({key: None for key in '<>/\\|*:?'})
@@ -34,7 +30,6 @@ def read_file(path):
                     d[split[0]] = False
     return d
 
-
 def strip_id_from_video(path, s):
     """get the id of the video from a video's path"""
 
@@ -46,7 +41,6 @@ def strip_id_from_video(path, s):
     partial_split = strip_definition_from_video(partial_split)
     return partial_split
 
-
 def strip_definition_from_video(vid_id):
     """Strip any sort of HD tag from the video"""
 
@@ -54,7 +48,6 @@ def strip_definition_from_video(vid_id):
     for item in hd:
         vid_id = vid_id.replace(item, '')
     return vid_id
-
 
 def check_vid_id_has_dash(vid_id):
     """Check if the video id has a dash and return one with it if it doesn't"""
@@ -65,12 +58,10 @@ def check_vid_id_has_dash(vid_id):
                 break
     return vid_id
 
-
 def getNumExtension(vid_id):
     """Given a video return the number extension"""
     # assume the video id is already fixed to cheat checking and return the fixed set
     return str(vid_id.split('-')[1])
-
 
 def strip_video_number_from_video(path, vid_id, s):
     """Return the portion that specifies the video number, or none if none exists"""
@@ -95,11 +86,9 @@ def strip_video_number_from_video(path, vid_id, s):
         else:
             return ret
 
-
 def get_javlibrary_url(vid_id):
     """get the URL of the video on javlibrary
     returns None if a URL could not be found"""
-
     vid_id = check_vid_id_has_dash(vid_id.upper())
     try:
         search_url = "http://www.javlibrary.com/en/vl_searchbyid.php?keyword=" + vid_id
@@ -111,7 +100,6 @@ def get_javlibrary_url(vid_id):
         return html
     except:
         return None
-
 
 def get_url_response(url, vid_id):
     """get the response from a given URL
@@ -127,14 +115,12 @@ def get_url_response(url, vid_id):
         # this may return None if the correct URL does not exist
         return get_url_response(get_correct_url(contents, vid_id), vid_id)
 
-
 def check_valid_response(html, vid_id):
     """check if the html was the page we wanted"""
     s = "<title>" + vid_id
     if s in html:
         return True
     return False
-
 
 def get_correct_url(html, vid_id):
     """get the url that's the exact video we want from a link with multiple results"""
@@ -143,7 +129,6 @@ def get_correct_url(html, vid_id):
         return "http://www.javlibrary.com/en" + url_portion
     except:
         return None
-
 
 def rename_file(path, html, s, vid_id):
     """Rename the file per our settings
@@ -193,8 +178,6 @@ def rename_file(path, html, s, vid_id):
         # because when we move it (potentially) we don't care if it has been renamed
         return path
 
-
-
 def get_actress_string(html, s):
     """Return the string of the actress names as per the naming convention specified
     Takes in the html contents to filter out the actress names"""
@@ -223,26 +206,21 @@ def get_actress_string_txt(html, s):
     actress_string = actress_string[0:-1]
     return actress_string
 
-
 def fix_actress_name(name):
     """Returns the updated name for any actress based on our replacement scheme"""
-
     """ if you want to ad any additional ways to fix names, simply add another elif line below
     elif name == 'name returned from javlibrary'
         return 'different name'
     """
-
     if name == 'Kitagawa Eria':
         return 'Kitagawa Erika'
     elif name == 'Oshikawa Yuuri':
         return 'Oshikawa Yuri'
     return name
 
-
 def get_actress_from_html(html, s):
     """Return a list of actresses from the html
     actresses are strings that are formatted the way we can put them straight in the name"""
-
     a_list = []
     split_str = '<span class="star">'
     # 1 to end because first will have nothing
@@ -272,7 +250,6 @@ def get_actress_from_html(html, s):
 def get_actress_from_html_txt(html, s):
     """Return a list of actresses from the html
     actresses are strings that are formatted the way we can put them straight in the name"""
-
     a_list = []
     split_str = '<span class="star">'
     # 1 to end because first will have nothing
@@ -305,7 +282,6 @@ def create_and_move_video_into_folder(path, s, vid_id, html):
     Path is the fullpath of the video
     Returns the new path of the video
     Returns the old path if there's an unknown error"""
-
     folder_name = strip_definition_from_video(vid_id)
     if s['include-actress-name-in-folder']:
         folder_name += s['delimiter-between-video-name-actress'] + get_actress_string(html, s)
@@ -354,7 +330,6 @@ def strip_partial_path_from_file(path):
     """given a file, strip the path from the file name
     This is the essentially the path to the file's directory
     Returns the stripped path or none if it does not exist"""
-
     partial_path = _strip_partial_path_helper(path, os.sep)
     if (os.path.exists(partial_path)):
         return partial_path
@@ -401,7 +376,6 @@ def get_cover_for_video(path, vid_id, s, html):
 def save_image_from_url_to_path(path, url):
     """save an image denoted by the url to the path denoted by path
     with the given name"""
-
     urllib.request.urlretrieve(url, path + ".jpg")
     # if we move the file it should fix itself
     try:
@@ -417,7 +391,6 @@ def get_image_url_from_html(html):
     """get the url of the image from the supplied html for the page"""
     return "http:" + html.split('<img id="video_jacket_img" src="')[1].split('" width')[0]
 
-
 def rename_start_quotation(path):
     """Rename files that start with quotations right away just because it'll work easier this way"""
     fname = path.split(os.sep)[-1]
@@ -428,7 +401,6 @@ def rename_start_quotation(path):
     except:
         pass
 
-
 def find_id(s):
     """Given a string s, try to find an id within it and return it"""
     regex = "[a-zA-Z]{2,8}[-]?[0-9]{2,5}"
@@ -438,11 +410,9 @@ def find_id(s):
     else:
         return None
 
-
 def correct_vid_id(vid_id):
     """Check if the video id has a dash and return it with one if it doesn't have it
     also fixes anything that has a digit first"""
-
     if vid_id[0] in '0123456789':
         findex = None
         for i in range(len(vid_id)):
@@ -489,7 +459,6 @@ def strip_bad_data(path):
 
 def sort_jav(s):
     """Sort all our unsorted jav as per the specified settings"""
-
     # store all the files to rename in a list so we don't mess with looping over the files
     temp = []
 
@@ -517,7 +486,6 @@ def sort_jav(s):
             print("Not sorting {} as it is does not look like a JAV ID".format(vid_id))
             continue
         html = get_javlibrary_url(vid_id)
-        
 
         if not html:
             try:
@@ -557,7 +525,6 @@ def sort_jav(s):
             get_cover_for_video(path, vid_id, s, html)
 
 if __name__ == '__main__':
-
     try:
         print("Sorting your JAV, please wait...")
         settings = read_file('settings_sort_jav.ini')
