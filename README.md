@@ -1,4 +1,4 @@
-# sort_jav Documentation
+# JAV-Sort-Scrape-javlibrary Documentation
 [![GitHub release](https://img.shields.io/github/release/jvlflame/JAV-Sort-Scrape-javlibrary?style=flat-square)](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/releases)
 [![Last commit](https://img.shields.io/github/last-commit/jvlflame/JAV-Sort-Scrape-javlibrary?style=flat-square)](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/commits/master)
 
@@ -20,6 +20,7 @@ The repository has been updated to function as a (temporary) alternative to the 
 * [Folder Setup](#Folder-Setup)
 * [How To Run](#How-To-Run)
 * [Settings](#Settings)
+* [Alternative Projects](#Alternative-Projects)
 * [Additional Notes](#Additional-Notes)
 * [Disclaimer](#Disclaimer)
 
@@ -59,10 +60,11 @@ Due to javlibrary adding Cloudflare, you are now required to have cfscrape insta
 view how to install it here: https://github.com/Anorov/cloudflare-scrape#installation . You will
 need node.js installed to run it. Please refer to their respective documentation on installation.
 
-You will need PowerShell v5.0 or higher installed to run Set-JAVNfo.ps1 (installed on Windows 10 by default). If you get a Remote-ExecutionPolicy error, open an **administrator** PowerShell prompt, and run `Set-ExecutionPolicy Unrestricted`.
+You will need PowerShell v5.0 or higher installed to run Set-JAVNfo.ps1 (installed on Windows 10 by default). If you get a Remote-ExecutionPolicy error when running, open an **administrator** PowerShell prompt, and run `Set-ExecutionPolicy Unrestricted`.
 
 ## Folder Setup
-You need to set it up so all the videos you want to sort are all in a single folder, and that folder is
+### sort_jav.py
+To run sort_jav.py, you need to set it up so all the videos you want to sort are all in a single folder, and that folder is
 the path you specify in the settings. Any files in folders within that folder will be ignored, so you
 can move them out of folders they may already be in.
 
@@ -78,23 +80,22 @@ accordingly.
 example, if multiple videos are denoted by a ! symbol and the video is MIRD-150!A and
 MIRD-150!B, the sorter will understand.
 
+### Set-JAVNfo.ps1
+To run Set-JAVNfo.ps1, the files need to be in the path specified in the settings. The script will search the folder recursively, finding all .txt files containing the html metadata.
+
 ## How To Run
-Please first edit the settings to match your desired preferences. This should be very quick and
-only take a minute. It will not work if you do not do this, particularly with the folder you need to
-specify.
+Please first edit the settings to match your desired preferences. It will not work if you do not do this, particularly with the folder you need to specify.
 
 Once the settings are good, you can double click sort_jav.py to run it. A box should pop up and
 stay open while running the script, giving you details about what’s happening. It will give you
 another message when it finishes, and hitting enter will close the program at that point.
 Alternatively you can invoke it from the command line. A note that this requires .py files to be
-associated with the Python executable file (Python.exe for most of us), if they are not and you
-do not know how to fix this, please contact me.
+associated with the Python executable file (Python.exe for most of us).
 
-To run Set-JAVNfo.ps1, right click and select "Run with PowerShell". By default, the script will run on the path set in your configuration file. If you want to run the Set-JAVNfo.ps1 script on a different directory, add the `FilePath` parameter to Set-JAVNfo.ps1 on line 65.
+To run Set-JAVNfo.ps1, right click and select "Run with PowerShell" (double clicking will **NOT** work). By default, the script will run on the path in your settings file. If you want to run the Set-JAVNfo.ps1 script on a different directory, add the `FilePath` parameter to Set-JAVNfo.ps1 on line 65.
 
 ## Settings
-The settings.ini file provided with it lists a few of the options the user has available to them as
-well as descriptions on those options.
+The `settings_sort_jav.ini` file provided lists the options the user has available to them as well as descriptions on those options.
 
 For settings that say true/false, please use the values true or false to indicate. For other values,
 it will use whatever appears directly after the = sign on the same line.
@@ -119,6 +120,11 @@ result in a folder being created but files not being placed in there. For refere
 lengths are around 255, so for videos with several actresses in them, it’s best not to include the
 actress name in both the file and folder.
 
+## Alternative Projects
+[JAVMovieScraper](https://github.com/DoctorD1501/JAVMovieScraper) - Scrape multiple JAV databases (or western) and rename/categorize and write metadata
+
+[Rename-JAV-files-javlibrary](https://github.com/jvlflame/Rename-JAV-files-javlibrary) - Use regex checks to rename JAV files to their ID format. No web scraping involved.
+
 ## Disclaimer
 This script is provided “as is” and the creator is not liable for anything that happens as a result
 of the use of it.
@@ -128,5 +134,6 @@ This being said, if you experience any issues with it, feel free to ask for help
 ## To do
 
 - [x] Add option to input tags/genres in metadata file
-- [ ] Combine sort_jav and Set-JAVNfo into a one-click solution
+- [ ] Create easier setup of pre-requisites
 - [ ] Add video title option to renamed file
+- [ ] Scrape video plot/description
