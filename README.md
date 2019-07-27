@@ -24,6 +24,9 @@ The repository has been updated to function as a (temporary) alternative to the 
 * [Disclaimer](#Disclaimer)
 
 ## Change Notes
+### v1.4.1
+- Bugfix paths containing square brackets error read/write through Set-JAVNfo.ps1
+
 ### v1.4
 - Added option to include video genres in metadata nfo file
 - Moved additional metadata options to bottom of settings.ini
