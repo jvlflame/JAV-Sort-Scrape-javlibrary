@@ -87,7 +87,7 @@ Alternatively you can invoke it from the command line. A note that this requires
 associated with the Python executable file (Python.exe for most of us), if they are not and you
 do not know how to fix this, please contact me.
 
-To run Set-JAVNfo.ps1, right click and select "Run with PowerShell". By default, the script will run on the path set in your configuration file. If you want to run the Set-JAVNfo.ps1 script on a different directory, add the `FilePath` parameter to Set-JAVNfo.ps1 on line 65. If you want to keep the HTML metadata file, add the `KeepMetadataTxt` parameter.
+To run Set-JAVNfo.ps1, right click and select "Run with PowerShell". By default, the script will run on the path set in your configuration file. If you want to run the Set-JAVNfo.ps1 script on a different directory, add the `FilePath` parameter to Set-JAVNfo.ps1 on line 65.
 
 ## Settings
 The settings.ini file provided with it lists a few of the options the user has available to them as
