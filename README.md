@@ -25,6 +25,7 @@ The repository has been updated to function as a (temporary) alternative to the 
 * [Disclaimer](#Disclaimer)
 
 ## Change Notes
+**Clone the repository to get the latest changes**
 ### v1.4.3
 - Add option to add video genre as a 'tag' metadata option to allow for multi-genre/tag sorting in Jellyfin
 - Fix video title erroring out and not writing to the proper file for some files
