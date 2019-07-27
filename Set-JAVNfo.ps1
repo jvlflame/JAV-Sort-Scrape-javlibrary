@@ -9,10 +9,11 @@ function Set-JAVNfo {
     # Options from settings_sort_jav.ini
     $KeepMetadataTxt = ((Get-Content $PSScriptRoot\settings_sort_jav.ini) -match '^keep-metadata-txt').Split('=')[1]
     $AddGenres = ((Get-Content $PSScriptRoot\settings_sort_jav.ini) -match '^include-genre-metadata').Split('=')[1]
+    $AddTags = ((Get-Content $PSScriptRoot\settings_sort_jav.ini) -match '^include-tag-metadata').Split('=')[1]
     $AddTitle = ((Get-Content $PSScriptRoot\settings_sort_jav.ini) -match '^include-video-title').Split('=')[1]
 
     # Write txt metadata file paths to $HTMLMetadata
-    $HTMLMetadata = Get-ChildItem -LiteralPath $FilePath -Recurse | Where-Object { $_.Name -match '[a-zA-Z]{2,7}-[0-9]{2,7}(.*.txt)' -or $_.Name -match 't28(.*).txt' } | Select-Object Name, BaseName, FullName, Directory
+    $HTMLMetadata = Get-ChildItem -LiteralPath $FilePath -Recurse | Where-Object { $_.Name -match '[a-zA-Z]{1,8}-[0-9]{1,8}(.*.txt)' -or $_.Name -match 't28(.*).txt' } | Select-Object Name, BaseName, FullName, Directory
     if ($null -eq $HTMLMetadata) {
         Write-Warning 'No metadata files found! Exiting...'
         pause
@@ -32,7 +33,7 @@ function Set-JAVNfo {
 
             # Get metadata information from txt file
             $Title = $HTMLContent -match '<title>(.*) - JAVLibrary<\/title>'
-            $TitleFixed = (((($Title -replace '<title>', '') -replace  '- JAVLibrary</title>', '').Replace('&#39;', "'")).Replace('&#x26;', '&')).Trim()
+            $TitleFixed = (($Title -replace '<title>', '') -replace  '- JAVLibrary</title>', '').Trim()
             $ReleaseDate = ($HTMLContent -match '<td class="text">\d{4}-\d{2}-\d{2}<\/td>').Split(('<td class="text">','</td>'), 'None')[1]
             $ReleaseYear = ($ReleaseDate.Split('-'))[0]
             $Studio = (($HTMLContent -match '<a href="vl_maker\.php\?m=[\w\d]{1,10}" rel="tag">(.*)<\/a>')).Split(('rel="tag">', '</a> &nbsp'), 'None')[1]
@@ -51,6 +52,12 @@ function Set-JAVNfo {
                 foreach ($Genre in $Genres[1..($Genres.Length-1)]) {
                     $GenreString = (($Genre.Split('<'))[0]).Trim()
                     Add-Content -LiteralPath $NfoPath -Value "    <genre>$GenreString</genre>"
+                }
+            }
+            if ($AddTags -like 'true') {
+                foreach ($Genre in $Genres[1..($Genres.Length-1)]) {
+                    $GenreString = (($Genre.Split('<'))[0]).Trim()
+                    Add-Content -LiteralPath $NfoPath -Value "    <tag>$GenreString</tag>"
                 }
             }
             # Add actress metadata
