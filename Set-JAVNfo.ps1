@@ -12,7 +12,7 @@ function Set-JAVNfo {
     $AddTitle = ((Get-Content $PSScriptRoot\settings_sort_jav.ini) -match '^include-video-title').Split('=')[1]
 
     # Write txt metadata file paths to $HTMLMetadata
-    $HTMLMetadata = Get-ChildItem -LiteralPath $FilePath -Recurse | Where-Object { $_.Name -match '[a-zA-Z]{2,7}-[0-9]{2,7}(.*.txt)' } | Select-Object Name, BaseName, FullName, Directory
+    $HTMLMetadata = Get-ChildItem -LiteralPath $FilePath -Recurse | Where-Object { $_.Name -match '[a-zA-Z]{1,8}-[0-9]{1,8}(.*.txt)' } | Select-Object Name, BaseName, FullName, Directory
     if ($null -eq $HTMLMetadata) {
         Write-Warning 'No metadata files found! Exiting...'
         pause
