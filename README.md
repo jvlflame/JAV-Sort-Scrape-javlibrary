@@ -25,8 +25,14 @@ The repository has been updated to function as a (temporary) alternative to the 
 * [Disclaimer](#Disclaimer)
 
 ## Change Notes
+###v1.4.3
+- Fix video title erroring out and not writing to the proper file for some files
+
+### v1.4.2
+- Fix Set-JAVNfo.ps1 not finding metadata files txt metadata files for "t28" and titles with only 1 letter
+
 ### v1.4.1
-- Bugfix paths containing square brackets error read/write through Set-JAVNfo.ps1
+- Fix paths containing square brackets error read/write through Set-JAVNfo.ps1
 
 ### v1.4
 - Added option to include video genres in metadata nfo file
