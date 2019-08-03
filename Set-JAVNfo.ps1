@@ -122,4 +122,4 @@ function Set-JAVNfo {
     }
 }
 
-Set-JAVNfo
+Set-JAVNfo -Prompt
