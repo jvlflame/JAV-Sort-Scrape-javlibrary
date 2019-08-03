@@ -28,8 +28,7 @@ The repository has been updated to function as a (temporary) alternative to the 
 ## Change Notes
 **Clone the repository to get the latest changes**
 ### v1.4.3
-- Add .exe version of Set-JAVNfo if you don't want to deal with PowerShell each time
-- Add optional -Prompt parameter to Set-JAVNfo.ps1 to show changes before confirming (default on .exe version)
+- Add -Prompt parameter to Set-JAVNfo.ps1 to show changes before confirming. To remove, remove the parameter in the Set-JAVNfo.ps1 script on the last line
 - Add option to add video genre as a 'tag' metadata option to allow for multi-genre/tag sorting in Jellyfin
 - Fix video title erroring out and not writing to the proper file for some files
 
