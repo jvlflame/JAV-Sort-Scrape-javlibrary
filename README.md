@@ -70,7 +70,17 @@ Due to javlibrary adding Cloudflare, you are now required to have cfscrape insta
 view how to install it here: https://github.com/Anorov/cloudflare-scrape#installation . You will
 need node.js installed to run it. Please refer to their respective documentation on installation.
 
-You will need PowerShell v5.0 or higher installed to run Set-JAVNfo.ps1 (installed on Windows 10 by default). If you get a Remote-ExecutionPolicy error when running, open an **administrator** PowerShell prompt, and run `Set-ExecutionPolicy Unrestricted`.
+```
+# Required to crop cover images
+$ pip install Pillow
+# Required to scrape JavLibrary
+$ pip pip install cfscrape
+```
+
+You will need PowerShell v5.0 or higher installed to run Set-JAVNfo.ps1 (installed on Windows 10 by default). If you get a Remote-ExecutionPolicy error when running, open an **administrator** PowerShell prompt, and run the following to unrestrict the script:
+```
+Set-ExecutionPolicy Unrestricted
+```
 
 ## Folder Setup
 ### sort_jav.py
@@ -102,7 +112,7 @@ another message when it finishes, and hitting enter will close the program at th
 Alternatively you can invoke it from the command line. A note that this requires .py files to be
 associated with the Python executable file (Python.exe for most of us).
 
-To run Set-JAVNfo.ps1, right click and select "Run with PowerShell" (double clicking will **NOT** work). By default, the script will run on the path in your settings file. If you want to run the Set-JAVNfo.ps1 script on a different directory, add the `FilePath` parameter to Set-JAVNfo.ps1 on line 65.
+To run Set-JAVNfo.ps1, right click and select "Run with PowerShell" (double clicking will **NOT** work). By default, the script will run on the path in your settings file. If you want to run the Set-JAVNfo.ps1 script on a different directory, add the `FilePath` parameter to Set-JAVNfo.ps1 on the last line. You can also remove the function call from the file, and instead invoke the function from the PowerShell command line.
 
 ## Settings
 The `settings_sort_jav.ini` file provided lists the options the user has available to them as well as descriptions on those options.
@@ -130,6 +140,9 @@ result in a folder being created but files not being placed in there. For refere
 lengths are around 255, so for videos with several actresses in them, it’s best not to include the
 actress name in both the file and folder.
 
+When fixing movies that have been scraped improperly, you can manually download the proper JAVLibrary page as an html, and then add
+```<ActressSorted>Actress1|Actress2|Actress3</ActressSorted>``` to the last line of the html, and then rename it to the .txt extension. You can then run Set-JAVNfo.ps1 to write the .nfo metadata file.
+
 ## Alternative Projects
 [JAVMovieScraper](https://github.com/DoctorD1501/JAVMovieScraper) - Scrape multiple JAV databases (or western) and rename/categorize and write metadata
 
@@ -144,6 +157,7 @@ This being said, if you experience any issues with it, feel free to ask for help
 ## To do
 
 - [x] Add option to input tags/genres in metadata file
-- [ ] Create easier setup of pre-requisites
+- [x] Add functionality to crop cover to poster size
 - [ ] Add video title option to renamed file
 - [ ] Scrape video plot/description
+- [ ] Scrape actress images
