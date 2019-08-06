@@ -122,8 +122,4 @@ function Set-JAVNfo {
     }
 }
 
-<<<<<<< HEAD
 Set-JAVNfo -Prompt
-=======
-Set-JAVNfo -Prompt
->>>>>>> 923c683713c573a68f55c9c25be3eb12f89172ad
