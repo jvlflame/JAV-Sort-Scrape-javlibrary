@@ -5,7 +5,7 @@
 
 The sort_jav Python script originally written by [/u/Ohura](https://reddit.com/user/Ohura) sorts and renames folder of unsorted JAV videos, downloads covers, and writes the raw JavLibrary page to html. The Set-JAVNfo PowerShell script will work in conjunction with sort_jav to create a functional .nfo metadata file from the html file for easy import into Emby, Jellyfin, Kodi, and/or Plex.
 
-There are a settings you can configure, such as how the file is renamed, putting them in folders, or getting covers. Take a look in the [settings_sort_jav.ini](/settings_sort_jav.ini) file for the full set of options and documentation regarding them.
+There are settings you can configure, such as how the file is renamed, putting them in folders, or downloading covers. Take a look in the [settings_sort_jav.ini](/settings_sort_jav.ini) file for the full set of options.
 
 My goal in updating the sort_jav repository is for it to function as an alternative to the popular [JAVMovieScraper](https://github.com/DoctorD1501/JAVMovieScraper) which to my knowledge is currently unable to scrape JavLibrary data.
 
