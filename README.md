@@ -3,18 +3,16 @@
 [![Commits since lastest release](https://img.shields.io/github/commits-since/jvlflame/JAV-Sort-Scrape-javlibrary/latest/master?style=flat-square)](#)
 [![Last commit](https://img.shields.io/github/last-commit/jvlflame/JAV-Sort-Scrape-javlibrary?style=flat-square)](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/commits/master)
 
-The sort_jav Python script sorts and renames folder of unsorted jav videos. The script was written by
-[/u/Ohura](https://reddit.com/user/Ohura). The goal is help users sort all their jav content nice and easily. The Set-JAVNfo script will work in conjunction with sort_jav to create a functional nfo metadata file for easy import into Emby, Jellyfin, and/or Kodi.
+The sort_jav Python script originally written by [/u/Ohura](https://reddit.com/user/Ohura) sorts and renames folder of unsorted JAV videos, downloads covers, and writes the raw JavLibrary page to html. The Set-JAVNfo PowerShell script will work in conjunction with sort_jav to create a functional .nfo metadata file from the html file for easy import into Emby, Jellyfin, Kodi, and/or Plex.
 
-What it does is it takes a folder full of unsorted jav videos tagged with the video ID and sorts
-them, changing the name, puts them in their own folder, and grabbing the cover image, and writing nfo metadata. There are a few settings you can configure, for example, you can opt out of putting them in folders or getting covers.
+There are a settings you can configure, such as how the file is renamed, putting them in folders, or getting covers. Take a look in the [settings_sort_jav.ini](/settings_sort_jav.ini) file for the full set of options and documentation regarding them.
 
-The repository has been updated to function as a (temporary) alternative to the popular [JAVMovieScraper](https://github.com/DoctorD1501/JAVMovieScraper) which to my knowledge is currently unable to scrape JAVLibrary data.
+My goal in updating the sort_jav repository is for it to function as an alternative to the popular [JAVMovieScraper](https://github.com/DoctorD1501/JAVMovieScraper) which to my knowledge is currently unable to scrape JavLibrary data.
 
 ## Demo
 ![GitHub Logo](demo.gif)
 
-[Full-size demo gfy](https://gfycat.com/vibrantambitiouscoyote)
+[Old demo](https://gfycat.com/vibrantambitiouscoyote)
 ## Table of Contents:
 * [Change Notes](#Change-Notes)
 * [Prerequisites](#Prerequisites)
@@ -27,6 +25,10 @@ The repository has been updated to function as a (temporary) alternative to the 
 
 ## Change Notes
 **Clone the repository to get the latest changes**
+###v1.4.4
+- Add option to crop cover image to poster size (378x533) for better viewing on Emby
+- Fix html txt file not moving into folder if file already exists
+
 ### v1.4.3
 - Add -Prompt parameter to Set-JAVNfo.ps1 to show changes before confirming. To remove, remove the parameter in the Set-JAVNfo.ps1 script on the last line
 - Add option to add video genre as a 'tag' metadata option to allow for multi-genre/tag sorting in Jellyfin
