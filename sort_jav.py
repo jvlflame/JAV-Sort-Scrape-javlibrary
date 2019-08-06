@@ -3,6 +3,7 @@ import urllib.request
 import re
 import cfscrape
 from PIL import Image
+from shutil import move
 
 # if we make this global or at least pass it in to the function
 # it will yield significantly faster results because it can cache the cookie
@@ -530,7 +531,7 @@ def sort_jav(s):
         if s['move-video-to-new-folder']:
             path = create_and_move_video_into_folder(new_fname, s, vid_id, html)
             if s['include-html-txt']:
-                os.rename(split_fname + '.txt', (os.path.splitext(path))[0] + '.txt')
+                move(split_fname + '.txt', (os.path.splitext(path))[0] + '.txt')
 
         # get the cover (if we say to)
         if s['include-cover']:
