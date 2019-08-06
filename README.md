@@ -3,7 +3,7 @@
 [![Commits since lastest release](https://img.shields.io/github/commits-since/jvlflame/JAV-Sort-Scrape-javlibrary/latest/master?style=flat-square)](#)
 [![Last commit](https://img.shields.io/github/last-commit/jvlflame/JAV-Sort-Scrape-javlibrary?style=flat-square)](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/commits/master)
 
-The sort_jav Python script originally written by [/u/Ohura](https://reddit.com/user/Ohura) sorts and renames folder of unsorted JAV videos, downloads covers, and writes the raw JavLibrary page to html. The Set-JAVNfo PowerShell script will work in conjunction with sort_jav to create a functional .nfo metadata file from the html file for easy import into Emby, Jellyfin, Kodi, and/or Plex.
+The sort_jav Python script originally written by [/u/Ohura](https://reddit.com/user/Ohura) sorts and renames a folder of unsorted JAV videos, downloads covers, and writes the raw JavLibrary page to html. The Set-JAVNfo PowerShell script will work in conjunction with sort_jav to create a functional .nfo metadata file from the html file for easy import into Emby, Jellyfin, Kodi, and/or Plex.
 
 There are settings you can configure, such as how the file is renamed, putting them in folders, or downloading covers. Take a look in the [settings_sort_jav.ini](/settings_sort_jav.ini) file for the full set of options.
 
@@ -13,6 +13,7 @@ My goal in updating the sort_jav repository is for it to function as an alternat
 ![GitHub Logo](demo.gif)
 
 [Old demo](https://gfycat.com/vibrantambitiouscoyote)
+
 ## Table of Contents:
 * [Change Notes](#Change-Notes)
 * [Prerequisites](#Prerequisites)
@@ -26,8 +27,15 @@ My goal in updating the sort_jav repository is for it to function as an alternat
 ## Change Notes
 **Clone the repository to get the latest changes**
 
+### v1.4.5
+- Add option to keep original thumbnail (800x533) aspect ratio cover as `$name-thumb.jpg`
+- Add script [edit_covers.py](/edit_covers.py) to crop covers of already-scraped files recursively
+- New settings to manage covers
+    - scraped-covers-path
+    - keep-original-cover
+
 ### v1.4.4
-- Add option to crop cover image to poster size (378x533) for better viewing on Emby
+- Add option to crop cover image to poster (378x533) aspect ratio
 - Fix html txt file not moving into folder if file already exists
 
 ### v1.4.3
@@ -66,7 +74,7 @@ name, so please message me if you find ones that fail.
 
 ## Prerequisites
 You must have Python 3.5 or higher installed in order for this to work. If you do not have it or are
-unsure, you can download it here: https://www.python.org/downloads/ . This will likely no work
+unsure, you can download it here: https://www.python.org/downloads/ . This will likely not work
 on Python 2.x, and has not been tested on it.
 
 Due to javlibrary adding Cloudflare, you are now required to have cfscrape installed. You can
@@ -77,12 +85,12 @@ need node.js installed to run it. Please refer to their respective documentation
 # Required to crop cover images
 $ pip install Pillow
 # Required to scrape JavLibrary
-$ pip pip install cfscrape
+$ pip install cfscrape
 ```
 
 You will need PowerShell v5.0 or higher installed to run Set-JAVNfo.ps1 (installed on Windows 10 by default). If you get a Remote-ExecutionPolicy error when running, open an **administrator** PowerShell prompt, and run the following to unrestrict the script:
 ```
-Set-ExecutionPolicy Unrestricted
+> Set-ExecutionPolicy Unrestricted
 ```
 
 ## Folder Setup
@@ -106,6 +114,13 @@ MIRD-150!B, the sorter will understand.
 ### Set-JAVNfo.ps1
 To run Set-JAVNfo.ps1, the files need to be in the path specified in the settings. The script will search the folder recursively, finding all .txt files containing the html metadata.
 
+### edit_covers.py
+To run edit_covers.py, the files need to be in the scraped-covers-path specified in the settings. The script will search the folder recurisvely, finding all .jpg files matching both critieria:
+- between width 790 and 810
+- between heights 530 and 600.
+
+Make sure no irrelevant .jpg files matching these criteria are within this directory or child directory, as it will be permanently modified by the script.
+
 ## How To Run
 Please first edit the settings to match your desired preferences. It will not work if you do not do this, particularly with the folder you need to specify.
 
@@ -117,7 +132,9 @@ associated with the Python executable file (Python.exe for most of us).
 
 To run Set-JAVNfo.ps1, right click and select "Run with PowerShell" (double clicking will **NOT** work). By default, the script will run on the path in your settings file. If you want to run the Set-JAVNfo.ps1 script on a different directory, add the `FilePath` parameter to Set-JAVNfo.ps1 on the last line.
 
-You can also invoke both scripts from a **non-administrator** PowerShell prompt as demonstrated in the demo.
+To run edit_covers, you can double click to run it. You will be prompted to confirm the path of your already scraped covers that you want to crop.
+
+You can also invoke the scripts from a **non-administrator** PowerShell prompt as demonstrated in the demo.
 
 ## Settings
 The `settings_sort_jav.ini` file provided lists the options the user has available to them as well as descriptions on those options.
