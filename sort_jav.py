@@ -377,6 +377,7 @@ def get_cover_for_video(path, vid_id, s, html):
     # Crop full cover to 378x539 to show only front cover
     if s['crop-cover-to-poster']:
         cover_path = fullpath + ".jpg"
+        cover_thumb_path = fullpath + "-thumb.jpg"
         original_cover = Image.open(cover_path)
         width, height = original_cover.size
         left = 422
@@ -384,7 +385,12 @@ def get_cover_for_video(path, vid_id, s, html):
         right = width
         bottom = height
         cropped_cover = original_cover.crop((left, top, right, bottom))
-        cropped_cover.save(cover_path)
+        # Recreate and rename original cover to cover-thumb.jpg if setting is true
+        if s['keep-original-cover']:
+            original_cover.save(cover_thumb_path)
+            cropped_cover.save(cover_path)
+        else:
+            cropped_cover.save(cover_path)
 
 def save_image_from_url_to_path(path, url):
     """save an image denoted by the url to the path denoted by path
