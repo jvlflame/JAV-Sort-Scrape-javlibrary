@@ -2,6 +2,7 @@ import os
 import urllib.request
 import re
 import cfscrape
+from PIL import Image
 
 # if we make this global or at least pass it in to the function
 # it will yield significantly faster results because it can cache the cookie
@@ -372,6 +373,17 @@ def get_cover_for_video(path, vid_id, s, html):
     fullpath = os.path.join(base, fname)
     save_image_from_url_to_path(fullpath, img_link)
 
+    # Crop full cover to 378x539 to show only front cover
+    if s['crop-cover-to-poster']:
+        cover_path = fullpath + ".jpg"
+        original_cover = Image.open(cover_path)
+        width, height = original_cover.size
+        left = 422
+        top = 0
+        right = width
+        bottom = height
+        cropped_cover = original_cover.crop((left, top, right, bottom))
+        cropped_cover.save(cover_path)
 
 def save_image_from_url_to_path(path, url):
     """save an image denoted by the url to the path denoted by path
