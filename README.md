@@ -25,6 +25,7 @@ My goal in updating the sort_jav repository is for it to function as an alternat
 
 ## Change Notes
 **Clone the repository to get the latest changes**
+
 ###v1.4.4
 - Add option to crop cover image to poster size (378x533) for better viewing on Emby
 - Fix html txt file not moving into folder if file already exists
