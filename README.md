@@ -114,7 +114,9 @@ another message when it finishes, and hitting enter will close the program at th
 Alternatively you can invoke it from the command line. A note that this requires .py files to be
 associated with the Python executable file (Python.exe for most of us).
 
-To run Set-JAVNfo.ps1, right click and select "Run with PowerShell" (double clicking will **NOT** work). By default, the script will run on the path in your settings file. If you want to run the Set-JAVNfo.ps1 script on a different directory, add the `FilePath` parameter to Set-JAVNfo.ps1 on the last line. You can also remove the function call from the file, and instead invoke the function from the PowerShell command line.
+To run Set-JAVNfo.ps1, right click and select "Run with PowerShell" (double clicking will **NOT** work). By default, the script will run on the path in your settings file. If you want to run the Set-JAVNfo.ps1 script on a different directory, add the `FilePath` parameter to Set-JAVNfo.ps1 on the last line.
+
+You can also invoke both scripts from a **non-administrator** PowerShell prompt as demonstrated in the demo.
 
 ## Settings
 The `settings_sort_jav.ini` file provided lists the options the user has available to them as well as descriptions on those options.
