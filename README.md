@@ -18,7 +18,6 @@ My goal in updating the sort_jav repository is for it to function as an alternat
 ## Table of Contents:
 * [Change Notes](#Change-Notes)
 * [Prerequisites](#Prerequisites)
-* [Folder Setup](#Folder-Setup)
 * [How To Run](#How-To-Run)
 * [Settings](#Settings)
 * [Alternative Projects](#Alternative-Projects)
@@ -30,10 +29,10 @@ My goal in updating the sort_jav repository is for it to function as an alternat
 
 ### v1.4.5
 - Add option to keep original thumbnail (800x533) aspect ratio cover as `$name-thumb.jpg`
-- Add script [edit_covers.py](/edit_covers.py) to crop covers of already-scraped files recursively
-- New settings to manage covers
-    - scraped-covers-path
-    - keep-original-cover
+- Add script edit_covers.py to crop covers of already-scraped files recursively. Check documentation under [how to run](#How-To-Run) for more information.
+    - New settings to manage covers
+        - scraped-covers-path
+        - keep-original-cover
 
 ### v1.4.4
 - Add option to crop cover image to poster (378x533) aspect ratio
@@ -94,7 +93,9 @@ You will need PowerShell v5.0 or higher installed to run Set-JAVNfo.ps1 (install
 > Set-ExecutionPolicy Unrestricted
 ```
 
-## Folder Setup
+## How To Run
+Please first edit the settings to match your desired preferences. It will not work if you do not do this, particularly with the folder you need to specify.
+
 ### sort_jav.py
 To run sort_jav.py, you need to set it up so all the videos you want to sort are all in a single folder, and that folder is
 the path you specify in the settings. Any files in folders within that folder will be ignored, so you
@@ -112,33 +113,26 @@ accordingly.
 example, if multiple videos are denoted by a ! symbol and the video is MIRD-150!A and
 MIRD-150!B, the sorter will understand.
 
-### Set-JAVNfo.ps1
-To run Set-JAVNfo.ps1, the files need to be in the path specified in the settings. The script will search the folder recursively, finding all .txt files containing the html metadata.
-
-### edit_covers.py
-To run edit_covers.py, the files need to be in the scraped-covers-path specified in the settings. The script will search the folder recurisvely, finding all .jpg files matching both critieria:
-- between width 790 and 810
-- between heights 530 and 600.
-
-Make sure no irrelevant .jpg files matching these criteria are within this directory or child directory, as it will be permanently modified by the script.
-
-## How To Run
-Please first edit the settings to match your desired preferences. It will not work if you do not do this, particularly with the folder you need to specify.
-
 Once the settings are good, you can double click sort_jav.py to run it. A box should pop up and
 stay open while running the script, giving you details about what’s happening. It will give you
 another message when it finishes, and hitting enter will close the program at that point.
 Alternatively you can invoke it from the command line. A note that this requires .py files to be
 associated with the Python executable file (Python.exe for most of us).
 
-To run Set-JAVNfo.ps1, right click and select "Run with PowerShell" (double clicking will **NOT** work). By default, the script will run on the path in your settings file. If you want to run the Set-JAVNfo.ps1 script on a different directory, add the `FilePath` parameter to Set-JAVNfo.ps1 on the last line.
+### Set-JAVNfo.ps1
+Set-JAVNfo.ps1 will search for all .txt files created by sort_jav.py and write a .nfo metadata file. To run Set-JAVNfo.ps1, the files need to be in the path specified in the settings.  The script will search the folder recursively, finding all .txt files containing the html metadata. To run Set-JAVNfo.ps1, right click and select "Run with PowerShell" (double clicking will **NOT** work). By default, the script will run on the path in your settings file. If you want to run the Set-JAVNfo.ps1 script on a different directory, add the `FilePath` parameter to Set-JAVNfo.ps1 on the last line.
 
-To run edit_covers, you can double click to run it. You will be prompted to confirm the path of your already scraped covers that you want to crop.
+### edit_covers.py
+edit_covers.py will search for all uncropped covers created by sort_jav.py and crop them if specified in your settings. To run edit_covers.py, the files need to be in the scraped-covers-path specified in the settings. The script will search the folder recurisvely, finding all .jpg files matching both critieria:
+- between width 790 and 810
+- between heights 530 and 600.
 
-You can also invoke the scripts from a **non-administrator** PowerShell prompt as demonstrated in the demo.
+Make sure no irrelevant .jpg files matching these criteria are within this directory or child directory, as it will be permanently modified by the script.To run edit_covers.py, you can double click to run it. You will be prompted to confirm the path of your already scraped covers that you want to crop.
+
+You can also invoke any of the scripts from a **non-administrator** PowerShell prompt as demonstrated in the demo.
 
 ## Settings
-The `settings_sort_jav.ini` file provided lists the options the user has available to them as well as descriptions on those options.
+The `settings_sort_jav.ini` file provided lists the options the user has available to them as well as descriptions on those options. The default settings are my recommendations specifically if you are using Emby. Play around with the settings on a test directory to find your preference.
 
 For settings that say true/false, please use the values true or false to indicate. For other values,
 it will use whatever appears directly after the = sign on the same line.
@@ -154,6 +148,9 @@ any problems it has trying to sort them.
 Occasionally the results will be incorrect, this is because javlibrary incorrectly states the id of the
 video on their website. You should double check all the results appear to be correct.
 
+When fixing movies that have been scraped improperly, you can manually download the proper JAVLibrary page as an html, and then add
+```<ActressSorted>Actress1|Actress2|Actress3</ActressSorted>``` to the last line of the html, and then rename it to the .txt extension. You can then run Set-JAVNfo.ps1 to write the .nfo metadata file.
+
 Videos with the id code r18 or t28 cannot be detected with the new special method, so the
 program defaults to the old method. For videos with those names, please rename them before
 running the program.
@@ -162,9 +159,6 @@ If a video is renamed to something that is too long, the program will ignore mov
 result in a folder being created but files not being placed in there. For reference, maximum file
 lengths are around 255, so for videos with several actresses in them, it’s best not to include the
 actress name in both the file and folder.
-
-When fixing movies that have been scraped improperly, you can manually download the proper JAVLibrary page as an html, and then add
-```<ActressSorted>Actress1|Actress2|Actress3</ActressSorted>``` to the last line of the html, and then rename it to the .txt extension. You can then run Set-JAVNfo.ps1 to write the .nfo metadata file.
 
 ## Alternative Projects
 [JAVMovieScraper](https://github.com/DoctorD1501/JAVMovieScraper) - Scrape multiple JAV databases (or western) and rename/categorize and write metadata
