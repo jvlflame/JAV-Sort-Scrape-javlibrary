@@ -2,12 +2,13 @@
 [![GitHub release](https://img.shields.io/github/release/jvlflame/JAV-Sort-Scrape-javlibrary?style=flat-square)](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/releases)
 [![Commits since lastest release](https://img.shields.io/github/commits-since/jvlflame/JAV-Sort-Scrape-javlibrary/latest/master?style=flat-square)](#)
 [![Last commit](https://img.shields.io/github/last-commit/jvlflame/JAV-Sort-Scrape-javlibrary?style=flat-square)](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/commits/master)
+[![Discord](https://img.shields.io/discord/608449512352120834?style=flat-square)](https://discord.gg/K2Yjevk)
 
 The sort_jav Python script originally written by [/u/Ohura](https://reddit.com/user/Ohura) sorts and renames a folder of unsorted JAV videos, downloads covers, and writes the raw JavLibrary page to html. The Set-JAVNfo PowerShell script will work in conjunction with sort_jav to create a functional .nfo metadata file from the html file for easy import into Emby, Jellyfin, Kodi, and/or Plex.
 
 There are settings you can configure, such as how the file is renamed, putting them in folders, or downloading covers. Take a look in the [settings_sort_jav.ini](/settings_sort_jav.ini) file for the full set of options.
 
-My goal in updating the sort_jav repository is for it to function as an alternative to the popular [JAVMovieScraper](https://github.com/DoctorD1501/JAVMovieScraper) which to my knowledge is currently unable to scrape JavLibrary data.
+My goal in updating the sort_jav repository is for it to function as an alternative to the popular [JAVMovieScraper](https://github.com/DoctorD1501/JAVMovieScraper) which to my knowledge is currently unable to scrape JavLibrary data. If you have any questions, criticisms, or feature requests, feel free to hop into my [throwaway discord channel](https://discord.gg/K2Yjevk) and send me a message.
 
 ## Demo
 ![GitHub Logo](demo.gif)
