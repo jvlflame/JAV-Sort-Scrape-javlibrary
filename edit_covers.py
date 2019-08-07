@@ -1,3 +1,5 @@
+# Use this script if you previously scraped your JAV without having the feature to crop to poster-size
+
 import os
 import urllib.request
 from PIL import Image
