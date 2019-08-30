@@ -10,8 +10,10 @@
         [Parameter(Mandatory=$true)]
         [string]$ApiKey
     )
-
+    # Set actor thumbnail
     Invoke-RestMethod -Method Post -Uri "$ServerUri/emby/Items/$ActorId/RemoteImages/Download?Type=Thumb&ImageUrl=$ThumbURL&api_key=$ApiKey" -Verbose
+    # Set actor primary image
+    Invoke-RestMethod -Method Post -Uri "$ServerUri/emby/Items/$ActorId/RemoteImages/Download?Type=Primary&ImageUrl=$ThumbURL&api_key=$ApiKey" -Verbose
 }
 
 function Get-EmbyActors {
@@ -97,8 +99,10 @@ foreach ($FileObj in $FileObject) {
     }
 }
 
-$ActorObject | Out-File -FilePath $PSScriptRoot\TempActorObject.txt -Force| Invoke-Item
-Write-Warning 'Please check the invoked text file for thumbnails to be written'
+# Create a csv database for already imported actor thumbs
+$ActorDbPath = Join-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath "db") -ChildPath "actors.csv"
+$ActorObject | Export-Csv -Path $ActorDbPath
+
 Write-Warning 'Do you want to write emby thumbnails for these actors?'
 Write-Output 'Confirm changes?'
 $Input = Read-Host -Prompt '[Y] Yes    [N] No    (default is "N")'
