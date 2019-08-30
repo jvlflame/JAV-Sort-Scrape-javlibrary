@@ -1,4 +1,4 @@
-﻿function Get-R18ThumbLinks {
+﻿function Get-R18ThumbUrl {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory=$true)]
