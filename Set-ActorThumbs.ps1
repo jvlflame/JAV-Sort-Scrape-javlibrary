@@ -24,30 +24,44 @@ function Get-EmbyActors {
     )
 
     $Web = Invoke-RestMethod -Method Get -Uri "$ServerUri/emby/Persons/?api_key=$ApiKey"
-}
-
-Get-EmbyActors -ServerUri $ServerUri -ApiKey $ApiKey
-
-$FileObject = @()
-for ($x = 0; $x -lt $Web.Items.Length; $x++) {
-    $FileObject += New-Object -TypeName psobject -Property @{
-        Name = $Web.Items.Name[$x]
-        EmbyID = $Web.Items.Id[$x]
+    $FileObject = @()
+    for ($x = 0; $x -lt $Web.Items.Length; $x++) {
+        $FileObject += New-Object -TypeName psobject -Property @{
+            Name = $Web.Items.Name[$x]
+            EmbyID = $Web.Items.Id[$x]
+        }
     }
 }
+
+# Check settings file for config
+$EmbyServerUri = ((Get-Content $PSScriptRoot\settings_sort_jav.ini) -match '^emby-server-uri').Split('=')[1]
+$EmbyApiKey = ((Get-Content $PSScriptRoot\settings_sort_jav.ini) -match '^emby-api-key').Split('=')[1]
+$NameOrder = ((Get-Content $PSScriptRoot\settings_sort_jav.ini) -match '^name-order').Split('=')[1]
+$R18File = ((Get-Content $PSScriptRoot\settings_sort_jav.ini) -match '^r18-scraped-thumbs').Split('=')[1]
+
+Get-EmbyActors -ServerUri $EmbyServerUri -ApiKey $EmbyApiKey
 
 # Import scraped r18 actress thumbs
-$Img = Import-Csv -Path $R18Scraped
+$Img = Import-Csv -Path $R18File
 
+# Clean up names scraped from R18 to match settings
 $Names = ($img.alt).replace('...','')
 $NewName = @()
-foreach ($Name in $Names) {
-    $Temp = $Name.split(' ')
-    if ($Temp[1].length -ne 0) {
-        $First,$Last = $Name.split(' ')
-        $NewName += "$Last $First"
+if ($NameOrder -like 'last') {
+    foreach ($Name in $Names) {
+        $Temp = $Name.split(' ')
+        if ($Temp[1].length -ne 0) {
+            $First,$Last = $Name.split(' ')
+            $NewName += "$Last $First"
+        }
+        else {
+            $NewName += $Name
+        }
     }
-    else {
+}
+
+else {
+    foreach ($Name in $Names) {
         $NewName += $Name
     }
 }
@@ -60,8 +74,10 @@ for ($x = 0; $x -lt $Img.Items.Length; $x++) {
     }
 }
 
+# Remove possible duplicates
 $CleanThumbObject = $ThumbObject | Select-Object Name, ThumbURL -Unique
 
+# Write final Actress object for POST into Emby
 $ActressObject = @()
 foreach ($FileObj in $FileObject) {
     foreach ($ThumbObj in $CleanThumbObject) {
@@ -75,6 +91,8 @@ foreach ($FileObj in $FileObject) {
     }
 }
 
+<#
 foreach ($Thumb in $ActressObject) {
-    Set-ActorThumbs -ServerUri 192.168.14.10:8096 -ActorId $ThumbObject.EmbyID -ThumbUrl $ThumbObject.ThumbURL -ApiKey 27d3c17ba69540828f141df8d2c743fb
+    Set-ActorThumbs -ServerUri $EmbyServerUri -ActorId $ThumbObject.EmbyID -ThumbUrl $ThumbObject.ThumbURL -ApiKey $EmbyApiKey
 }
+#>
