@@ -42,6 +42,7 @@ $R18ImportPath = ((Get-Content $SettingsPath) -match '^r18-export-csv-path').Spl
 $ActorExportPath = ((Get-Content $SettingsPath) -match '^actor-csv-export-path').Split('=')[1]
 
 # Write Emby actors and id to object
+Write-Output "Building Emby actor object..."
 $EmbyActors = Get-EmbyActors -ServerUri $EmbyServerUri -ApiKey $EmbyApiKey
 $EmbyActorObject = @()
 for ($x = 0; $x -lt $EmbyActors.Items.Length; $x++) {
@@ -52,42 +53,61 @@ for ($x = 0; $x -lt $EmbyActors.Items.Length; $x++) {
 }
 
 # Import R18 actors and thumburls to object
+Write-Output "Reading R18 object..."
 $R18ActorObject = Import-Csv -Path $R18ImportPath
 
+Write-Output "Building combined object, please wait..."
+# Compare both Emby and R18 actors for matching actors, and combine to a single object
+$ActorNames = @()
+$ActorObject = @()
+for ($x = 0; $x -lt $EmbyActorObject.Length; $x++) {
+    $ActorNames += ($EmbyActorObject[$x].Name).ToLower()
+    if ($ActorNames[$x] -notin $R18ActorObject.Name) {
+        #Write-Host "Missing"
+        $ActorObject += New-Object -TypeName psobject -Property @{
+            Name = $EmbyActorObject[$x].Name
+            EmbyId = $EmbyActorObject[$x].EmbyId
+            ThumbUrl = ''
+            PrimaryUrl = ''
+        }
+    }
+    else {
+        $Index = [array]::indexof(($R18ActorObject.Name).ToLower(), $ActorNames[$x])
+        #Write-Host ""$EmbyActorObject[$x].Name" is index $Index"
+        $ActorObject += New-Object -TypeName psobject -Property @{
+            Name = $EmbyActorObject[$x].Name
+            EmbyId = $EmbyActorObject[$x].EmbyId
+            ThumbUrl = $R18ActorObject[$Index].ThumbUrl
+            PrimaryUrl = $R18ActorObject[$Index].ThumbUrl
+        }
+    }
+}
+
 if (Test-Path $ActorExportPath) {
-    $Input = Read-Host "File specified in actor-csv-export-path already exists. Overwrite with a new copy? [y/N]"
-    Write-Host "Your file will only be updated with new actresses if your press N"
+    Write-Host "File specified in actor-csv-export-path already exists. Overwrite with a new copy? "
+    $Input = Read-Host "Your file will only be updated with new actresses if your select N   [y/N]"
 }
 else {
     $Input = 'y'
 }
 
 if ($Input -like 'y') {
-    # Compare both Emby and R18 actors for matching actors, and combine to a single object
-    $ActorNames = @()
-    $ActorObject = @()
-    for ($x = 0; $x -lt $EmbyActorObject.Length; $x++) {
-        $ActorNames += ($EmbyActorObject[$x].Name).ToLower()
-        if ($ActorNames[$x] -notin $R18ActorObject.Name) {
-            #Write-Host "Missing"
-            $ActorObject += New-Object -TypeName psobject -Property @{
-                Name = $EmbyActorObject[$x].Name
-                EmbyId = $EmbyActorObject[$x].EmbyId
-                ThumbUrl = ''
-                PrimaryUrl = ''
-            }
-        }
-        else {
-            $Index = [array]::indexof(($R18ActorObject.Name).ToLower(), $ActorNames[$x])
-            #Write-Host ""$EmbyActorObject[$x].Name" is index $Index"
-            $ActorObject += New-Object -TypeName psobject -Property @{
-                Name = $EmbyActorObject[$x].Name
-                EmbyId = $EmbyActorObject[$x].EmbyId
-                ThumbUrl = $R18ActorObject[$Index].ThumbUrl
-                PrimaryUrl = $R18ActorObject[$Index].ThumbUrl
-            }
-        }
-    }
+    $ActorObject | Select-Object Name, EmbyId, ThumbUrl, PrimaryUrl | Export-Csv -Path $ActorExportPath -Force -NoTypeInformation
+}
 
-    $ActorObject | Export-Csv -Path $ActorExportPath
+else {
+    $ExistingActors = Import-Csv -Path $ActorExportPath
+    $Count = 1
+    foreach ($Actor in $ActorObject) {
+        # If EmbyId already exists in the csv
+        if ($Actor.EmbyId -in $ExistingActors.EmbyId) {
+            # Do nothing
+        }
+        # If new actor (EmbyId) found, append to existing csv
+        else {
+            $Actor | Select-Object Name, EmbyId, ThumbUrl, PrimaryUrl | Export-Csv -Path $ActorExportPath -Append -NoClobber -NoTypeInformation
+            Write-Output "($Count) Appending $Actor"
+        }
+        $Count++
+    }
 }
