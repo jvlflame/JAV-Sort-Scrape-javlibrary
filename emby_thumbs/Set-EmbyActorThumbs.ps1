@@ -25,5 +25,17 @@ $SettingsPath = Resolve-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath (Jo
 # Check settings file for config
 $EmbyServerUri = ((Get-Content $SettingsPath) -match '^emby-server-uri').Split('=')[1]
 $EmbyApiKey = ((Get-Content $SettingsPath) -match '^emby-api-key').Split('=')[1]
+$ActorImportPath = ((Get-Content $SettingsPath) -match '^actor-csv-export-path').Split('=')[1]
+$ActorDbPath = ((Get-Content $SettingsPath) -match '^actor-csv-database-path').Split('=')[1]
 
-Set-ActorThumbs -ServerUri $EmbyServerUri -ActorId $Object.EmbyID -ThumbUrl $Object.ThumbURL -PrimaryUrl $Object.PrimaryURL -ApiKey $EmbyApiKey
+$ActorObject = Import-Csv -Path $ActorImportPath
+
+if (!(Test-Path $ActorDbPath)) {
+    Write-Host "Database file not found. Creating..."
+    New-Item -ItemType File -Path $ActorDbPath
+}
+
+foreach ($Actor in $ActorObject) {
+    # Set-ActorThumbs -ServerUri $EmbyServerUri -ActorId $ActorObject.EmbyID -ThumbUrl $ActorObject.ThumbURL -PrimaryUrl $Object.ActorPrimaryURL -ApiKey $EmbyApiKey
+    $Actor | Export-Csv -Path $ActorDbPath -Append -NoClobber
+}
