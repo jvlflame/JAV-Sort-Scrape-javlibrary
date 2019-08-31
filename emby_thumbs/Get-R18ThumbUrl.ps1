@@ -105,24 +105,3 @@ Write-Output "Writing to fixed names to csv..."
 $ActorCsv = Set-NameOrder -Path $CsvExportPath -Verbose
 # First csv rewrite - names only
 $ActorCsv | Select-Object Name, ThumbUrl | Export-Csv $CsvExportPath -Force
-<#
-# Write R18 actors and thumbs to object
-$R18Csv = Import-Csv -Path $CsvExportPath
-$R18Object = @()
-$Temp = @()
-foreach ($Object in $R18Csv) {
-    # Write names to temp array
-    $Temp += $Object.Name
-    # If name already exists in array, don't write another. Testing to sort as usually the first entry is the most popular actress
-    if ($Object.Name -notin $Temp) {
-        $R18Object += New-Object -TypeName psobject -Property @{
-            Name = $Object.Name
-            ThumbUrl = $Object.Thumburl
-        }
-    }
-}
-
-Write-Warning "Removing duplicates from csv..."
-# Second csv rewrite - remove duplicates
-$R18Object | Select-Object Name, ThumbUrl | Export-Csv $CsvExportPath -Force
-#>
