@@ -54,30 +54,40 @@ for ($x = 0; $x -lt $EmbyActors.Items.Length; $x++) {
 # Import R18 actors and thumburls to object
 $R18ActorObject = Import-Csv -Path $R18ImportPath
 
-# Compare both Emby and R18 actors for matching actors, and combine to a single object
-$ActorNames = @()
-$ActorObject = @()
-for ($x = 0; $x -lt $EmbyActorObject.Length; $x++) {
-    $ActorNames += ($EmbyActorObject[$x].Name).ToLower()
-    if ($ActorNames[$x] -notin $R18ActorObject.Name) {
-        #Write-Host "Missing"
-        $ActorObject += New-Object -TypeName psobject -Property @{
-            Name = $EmbyActorObject[$x].Name
-            EmbyId = $EmbyActorObject[$x].EmbyId
-            ThumbUrl = ''
-            PrimaryUrl = ''
-        }
-    }
-    else {
-        $Index = [array]::indexof(($R18ActorObject.Name).ToLower(), $ActorNames[$x])
-        #Write-Host ""$EmbyActorObject[$x].Name" is index $Index"
-        $ActorObject += New-Object -TypeName psobject -Property @{
-            Name = $EmbyActorObject[$x].Name
-            EmbyId = $EmbyActorObject[$x].EmbyId
-            ThumbUrl = $R18ActorObject[$Index].ThumbUrl
-            PrimaryUrl = $R18ActorObject[$Index].ThumbUrl
-        }
-    }
+if (Test-Path $ActorExportPath) {
+    $Input = Read-Host "File specified in actor-csv-export-path already exists. Overwrite with a new copy? [y/N]"
+    Write-Host "Your file will only be updated with new actresses if your press N"
+}
+else {
+    $Input = 'y'
 }
 
-$ActorObject | Export-Csv -Path $ActorExportPath
+if ($Input -like 'y') {
+    # Compare both Emby and R18 actors for matching actors, and combine to a single object
+    $ActorNames = @()
+    $ActorObject = @()
+    for ($x = 0; $x -lt $EmbyActorObject.Length; $x++) {
+        $ActorNames += ($EmbyActorObject[$x].Name).ToLower()
+        if ($ActorNames[$x] -notin $R18ActorObject.Name) {
+            #Write-Host "Missing"
+            $ActorObject += New-Object -TypeName psobject -Property @{
+                Name = $EmbyActorObject[$x].Name
+                EmbyId = $EmbyActorObject[$x].EmbyId
+                ThumbUrl = ''
+                PrimaryUrl = ''
+            }
+        }
+        else {
+            $Index = [array]::indexof(($R18ActorObject.Name).ToLower(), $ActorNames[$x])
+            #Write-Host ""$EmbyActorObject[$x].Name" is index $Index"
+            $ActorObject += New-Object -TypeName psobject -Property @{
+                Name = $EmbyActorObject[$x].Name
+                EmbyId = $EmbyActorObject[$x].EmbyId
+                ThumbUrl = $R18ActorObject[$Index].ThumbUrl
+                PrimaryUrl = $R18ActorObject[$Index].ThumbUrl
+            }
+        }
+    }
+
+    $ActorObject | Export-Csv -Path $ActorExportPath
+}
