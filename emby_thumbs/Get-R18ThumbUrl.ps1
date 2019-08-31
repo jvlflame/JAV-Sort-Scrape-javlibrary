@@ -18,7 +18,7 @@
                         }
 
         $Results | Export-Csv -Path $ExportPath -Force -Append -NoTypeInformation
-        Write-Verbose "Page $Counter added to $ExportPath"
+        Write-Host "Page $Counter added to $ExportPath"
     }
 }
 
@@ -36,6 +36,7 @@ function Set-NameOrder {
     }
 
     # Copy original scraped thumbs to backup directory
+    Write-Host "Backing up original scraped csv file to $BackupPath"
     Copy-Item -Path $Path -Destination (Join-Path $BackupPath -ChildPath "r18thumb_original.csv")
     $R18Thumbs = Import-Csv -Path $Path
     $NameOrder = 'true'
@@ -79,8 +80,8 @@ function Set-NameOrder {
 # Removes PowerShell progress bar which speeds up Invoke-WebRequest calls
 $ProgressPreference = 'SilentlyContinue'
 
-$SettingsPath = Resolve-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath (Join-Path -Path '..' -ChildPath 'settings_sort_jav.ini'))
 # Check settings file for config options
+$SettingsPath = Resolve-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath (Join-Path -Path '..' -ChildPath 'settings_sort_jav.ini'))
 $NameOrder = ((Get-Content $SettingsPath) -match '^swap-name-order').Split('=')[1]
 $StartPage = ((Get-Content $SettingsPath) -match '^r18-start-page').Split('=')[1]
 $EndPage = ((Get-Content $SettingsPath) -match '^r18-end-page').Split('=')[1]
@@ -90,9 +91,17 @@ $CsvExportPath = ((Get-Content $SettingsPath) -match '^r18-export-csv-path').Spl
 if (!(Test-Path -Path $CsvExportPath)) {
     Get-R18ThumbUrl -StartPage $StartPage -EndPage $EndPage -ExportPath $CsvExportPath
 }
+
 else {
     $Input = Read-Host "File specified in r18-export-csv-path already exists. Replace? [y/N]"
-    if ($Input -eq 'y') {
+    if ($Input -like 'y') {
+        # Create backup directory in scriptroot
+        $BackupPath = Join-Path -Path $PSScriptRoot -ChildPath "db"
+        if (!(Test-Path $BackupPath)) {
+            New-Item -ItemType Directory -Path $BackupPath -ErrorAction SilentlyContinue
+        }
+        # Copy original scraped thumbs to backup directory
+        Copy-Item -Path $CsvExportPath -Destination (Join-Path $BackupPath -ChildPath "r18thumb_original.csv")
         Get-R18ThumbUrl -StartPage $StartPage -EndPage $EndPage -ExportPath $CsvExportPath
     }
     else {
@@ -100,8 +109,8 @@ else {
     }
 }
 
-# Write fixed names to original csv file while backing up original to 'bu' directory
+# Write fixed names to original csv file while backing up original to 'db' directory
 Write-Output "Writing to fixed names to csv..."
 $ActorCsv = Set-NameOrder -Path $CsvExportPath -Verbose
 # First csv rewrite - names only
-$ActorCsv | Select-Object Name, ThumbUrl | Export-Csv $CsvExportPath -Force
+$ActorCsv | Select-Object Name, ThumbUrl | Export-Csv $CsvExportPath -Force -NoTypeInformation
