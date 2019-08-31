@@ -7,7 +7,7 @@
         [string]$ApiKey
     )
 
-    Invoke-RestMethod -Method Get -Uri "$ServerUri/emby/Persons/?api_key=$ApiKey" -Verbose
+    Invoke-RestMethod -Method Get -Uri "$ServerUri/emby/Persons/?api_key=$ApiKey"
 }
 
 function New-ActorObject {
@@ -42,7 +42,7 @@ $R18ImportPath = ((Get-Content $SettingsPath) -match '^r18-export-csv-path').Spl
 $ActorExportPath = ((Get-Content $SettingsPath) -match '^actor-csv-export-path').Split('=')[1]
 
 # Write Emby actors and id to object
-Write-Output "Building Emby actor object..."
+Write-Output "Getting actors from Emby..."
 $EmbyActors = Get-EmbyActors -ServerUri $EmbyServerUri -ApiKey $EmbyApiKey
 $EmbyActorObject = @()
 for ($x = 0; $x -lt $EmbyActors.Items.Length; $x++) {
@@ -53,7 +53,7 @@ for ($x = 0; $x -lt $EmbyActors.Items.Length; $x++) {
 }
 
 # Import R18 actors and thumburls to object
-Write-Output "Reading R18 object..."
+Write-Output "Importing R18 actors with thumburls..."
 $R18ActorObject = Import-Csv -Path $R18ImportPath
 
 Write-Output "Building combined object, please wait..."
@@ -84,8 +84,9 @@ for ($x = 0; $x -lt $EmbyActorObject.Length; $x++) {
 }
 
 if (Test-Path $ActorExportPath) {
-    Write-Host "File specified in actor-csv-export-path already exists. Overwrite with a new copy? "
-    $Input = Read-Host "Your file will only be updated with new actresses if your select N   [y/N]"
+    Write-Warning "File specified in actor-csv-export-path already exists. Overwrite with a new copy? "
+    Write-Host "If you select N, your existing file will be updated with any new Emby entries."
+    $Input = Read-Host -Prompt '[Y] Yes    [N] No    (default is "N")'
 }
 else {
     $Input = 'y'
