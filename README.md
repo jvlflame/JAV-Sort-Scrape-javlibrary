@@ -4,14 +4,14 @@
 [![Last commit](https://img.shields.io/github/last-commit/jvlflame/JAV-Sort-Scrape-javlibrary?style=flat-square)](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/commits/master)
 [![Discord](https://img.shields.io/discord/608449512352120834?style=flat-square)](https://discord.gg/K2Yjevk)
 
-The sort_jav Python script originally written by [/u/Ohura](https://reddit.com/user/Ohura) sorts and renames a folder of unsorted JAV videos, downloads covers, and writes the raw JavLibrary page to html. The Set-JAVNfo PowerShell script will work in conjunction with sort_jav to create a functional .nfo metadata file from the html file for easy import into Emby, Jellyfin, Kodi, and/or Plex.
+The sort_jav Python script originally written by [/u/Ohura](https://reddit.com/user/Ohura) sorts and renames a folder of unsorted JAV videos, downloads covers, and writes the raw JavLibrary page to html. The Set-JAVNfo PowerShell script will work in conjunction with sort_jav to create a functional .nfo metadata file from the html file for easy import into Emby, Jellyfin, Kodi, and/or Plex. Functionality has also been added to scrape actor thumbnails from R18.com and push to Emby/Jellyfin.
 
 There are settings you can configure, such as how the file is renamed, putting them in folders, or downloading covers. Take a look in the [settings_sort_jav.ini](/settings_sort_jav.ini) file for the full set of options.
 
-My goal in updating the sort_jav repository is for it to function as an alternative to the popular [JAVMovieScraper](https://github.com/DoctorD1501/JAVMovieScraper) which to my knowledge is currently unable to scrape JavLibrary data. If you have any questions, criticisms, or feature requests, feel free to hop into my [throwaway discord channel](https://discord.gg/K2Yjevk) and send me a message.
+My goal in updating the sort_jav repository is for it to function as a simple alternative [JAVMovieScraper](https://github.com/DoctorD1501/JAVMovieScraper). If you have any questions, criticisms, or feature requests, feel free to hop into my [throwaway discord channel](https://discord.gg/K2Yjevk) and send me a message.
 
 ## Demo
-![GitHub Logo](demo.gif)
+![GitHub Logo](extras/demo.gif)
 
 [Old demo](https://gfycat.com/vibrantambitiouscoyote)
 
@@ -24,53 +24,10 @@ My goal in updating the sort_jav repository is for it to function as an alternat
 * [Additional Notes](#Additional-Notes)
 * [Disclaimer](#Disclaimer)
 
-## Change Notes
-**Clone the repository to get the latest changes**
-
-### v1.4.5
-- Add option to keep original thumbnail (800x533) aspect ratio cover as `$name-thumb.jpg`
-- Add script edit_covers.py to crop covers of already-scraped files recursively. Check documentation under [how to run](#How-To-Run) for more information.
-    - New settings to manage covers
-        - scraped-covers-path
-        - keep-original-cover
-
-### v1.4.4
-- Add option to crop cover image to poster (378x533) aspect ratio
-- Fix html txt file not moving into folder if file already exists
-
-### v1.4.3
-- Add -Prompt parameter to Set-JAVNfo.ps1 to show changes before confirming. To remove, remove the parameter in the Set-JAVNfo.ps1 script on the last line
-- Add option to add video genre as a 'tag' metadata option to allow for multi-genre/tag sorting in Jellyfin
-- Fix video title erroring out and not writing to the proper file for some files
-
-### v1.4.2
-- Fix Set-JAVNfo.ps1 not finding metadata files txt metadata files for "t28" and titles with only 1 letter
-
-### v1.4.1
-- Fix paths containing square brackets error read/write through Set-JAVNfo.ps1
-
-### v1.4
-- Added option to include video genres in metadata nfo file
-- Moved additional metadata options to bottom of settings.ini
-
-### v1.3
-- Added option in settings "include-html-txt" to create a html text file to parse and create Emby/Jellyfin/Kodi metadata
-- Added Set-JAVNfo.ps1 script to create .nfo metadata from html text file
-- Added option in settings "include-cover-all" to create a cover .jpg for each video file
-- Changed renaming of cover to match video renaming for multiple part videos
-
-### v1.2
-- Fixed an issue where the program wouldn’t stop early during a problematic file
-- Fixed an issue due to Cloudflare being added to javlibrary. This requires significantly
-more setup from you, sorry about that but it was necessary.
-- Fixed some issues where certain filenames didn’t sort properly because the name had
-other portions that looked like IDs
-### v1.1
-- Fixed an issue where the program failed to work after javlibrary changed their HTML
-structure for pages.
-- Videos no longer have to be named correctly. The sorter can now determine what the ID
-of the video is even if it has nonsense in the name. This may not work for every single
-name, so please message me if you find ones that fail.
+## Changelog
+**Older changes have been moved to the [wiki.](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/wiki)**
+### v1.5.0 (Current version)
+- To be updated
 
 ## Prerequisites
 You must have Python 3.5 or higher installed in order for this to work. If you do not have it or are
@@ -164,12 +121,6 @@ actress name in both the file and folder.
 [JAVMovieScraper](https://github.com/DoctorD1501/JAVMovieScraper) - Scrape multiple JAV databases (or western) and rename/categorize and write metadata
 
 [Rename-JAV-files-javlibrary](https://github.com/jvlflame/Rename-JAV-files-javlibrary) - Use regex checks to rename JAV files to their ID format. No web scraping involved.
-
-## Disclaimer
-This script is provided “as is” and the creator is not liable for anything that happens as a result
-of the use of it.
-
-This being said, if you experience any issues with it, feel free to ask for help.
 
 ## To do
 
