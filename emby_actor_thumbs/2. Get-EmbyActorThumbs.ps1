@@ -1,9 +1,9 @@
 ﻿function Get-EmbyActors {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$ServerUri,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$ApiKey
     )
 
@@ -13,7 +13,7 @@
 function New-ActorObject {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$CsvPath
     )
 
@@ -22,9 +22,9 @@ function New-ActorObject {
     $ActorObject = @()
     foreach ($Object in $Csv) {
         $ActorObject += New-Object -TypeName psobject -Property @{
-            Name = $Object.$alt
-            EmbyId = $Object.EmbyId
-            ThumbUrl = $Object.src
+            Name       = $Object.$alt
+            EmbyId     = $Object.EmbyId
+            ThumbUrl   = $Object.src
             PrimaryUrl = $Object.PrimaryUrl
         }
     }
@@ -47,7 +47,7 @@ $EmbyActors = Get-EmbyActors -ServerUri $EmbyServerUri -ApiKey $EmbyApiKey
 $EmbyActorObject = @()
 for ($x = 0; $x -lt $EmbyActors.Items.Length; $x++) {
     $EmbyActorObject += New-Object -TypeName psobject -Property @{
-        Name = $EmbyActors.Items.Name[$x]
+        Name   = $EmbyActors.Items.Name[$x]
         EmbyId = $EmbyActors.Items.Id[$x]
     }
     Write-Host -NoNewline '.'
@@ -66,9 +66,9 @@ for ($x = 0; $x -lt $EmbyActorObject.Length; $x++) {
     if ($ActorNames[$x] -notin $R18ActorObject.Name) {
         #Write-Host "Missing"
         $ActorObject += New-Object -TypeName psobject -Property @{
-            Name = $EmbyActorObject[$x].Name
-            EmbyId = $EmbyActorObject[$x].EmbyId
-            ThumbUrl = ''
+            Name       = $EmbyActorObject[$x].Name
+            EmbyId     = $EmbyActorObject[$x].EmbyId
+            ThumbUrl   = ''
             PrimaryUrl = ''
         }
     }
@@ -76,9 +76,9 @@ for ($x = 0; $x -lt $EmbyActorObject.Length; $x++) {
         $Index = [array]::indexof(($R18ActorObject.Name).ToLower(), $ActorNames[$x])
         #Write-Host ""$EmbyActorObject[$x].Name" is index $Index"
         $ActorObject += New-Object -TypeName psobject -Property @{
-            Name = $EmbyActorObject[$x].Name
-            EmbyId = $EmbyActorObject[$x].EmbyId
-            ThumbUrl = $R18ActorObject[$Index].ThumbUrl
+            Name       = $EmbyActorObject[$x].Name
+            EmbyId     = $EmbyActorObject[$x].EmbyId
+            ThumbUrl   = $R18ActorObject[$Index].ThumbUrl
             PrimaryUrl = $R18ActorObject[$Index].ThumbUrl
         }
     }
