@@ -42,7 +42,6 @@ function Set-JAVNfo {
             }
             $Index++
         }
-
         # Default prompt yes
         $Input = 'y'
         if ($Prompt) {
@@ -52,7 +51,6 @@ function Set-JAVNfo {
             Write-Output 'Confirm changes?'
             $Input = Read-Host -Prompt '[Y] Yes    [N] No    (default is "N")'
         }
-
         if ($Input -like 'y' -or $Input -like 'yes') {
             Write-Output "Writing metadata .nfo files in path: $FilePath ..."
             # Write each nfo file
@@ -80,7 +78,6 @@ function Set-JAVNfo {
                 if ($AddTitle -like 'true') {
                     Add-Content -LiteralPath $NfoPath -Value "    <title>$TitleFixed</title>"
                 }
-                
                 Add-Content -LiteralPath $NfoPath -Value "    <year>$ReleaseYear</year>"
                 Add-Content -LiteralPath $NfoPath -Value "    <releasedate>$ReleaseDate</releasedate>"
                 Add-Content -LiteralPath $NfoPath -Value "    <studio>$Studio</studio>"
@@ -90,14 +87,12 @@ function Set-JAVNfo {
                         Add-Content -LiteralPath $NfoPath -Value "    <genre>$GenreString</genre>"
                     }
                 }
-
                 if ($AddTags -like 'true') {
                     foreach ($Genre in $Genres[1..($Genres.Length - 1)]) {
                         $GenreString = (($Genre.Split('<'))[0]).Trim()
                         Add-Content -LiteralPath $NfoPath -Value "    <tag>$GenreString</tag>"
                     }
                 }
-
                 # Add actress metadata
                 $ActorSplitString = '<span class="star">'
                 $ActorSplitHtml = $HtmlContent -split $ActorSplitString
@@ -110,7 +105,6 @@ function Set-JAVNfo {
                         }
                     }
                 }
-
                 foreach ($Actor in $Actors) {
                     $Content = @(
                         "    <actor>"
@@ -120,7 +114,6 @@ function Set-JAVNfo {
                     )
                     Add-Content -LiteralPath $NfoPath -Value $Content
                 }
-
                 # End file
                 Add-Content -LiteralPath $NfoPath -Value '</movie>'
                 Write-Output "($Count of $Total) $FileName .nfo processed..."
@@ -132,7 +125,6 @@ function Set-JAVNfo {
             }
             pause
         }
-
         else {
             Write-Warning 'Cancelled by user input. Exiting...'
             pause
