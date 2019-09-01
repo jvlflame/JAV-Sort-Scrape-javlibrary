@@ -16,7 +16,7 @@ My goal in updating the sort_jav repository is for it to function as a simple al
 [Old demo](https://gfycat.com/vibrantambitiouscoyote)
 
 ## Table of Contents:
-* [Change Notes](#Change-Notes)
+* [Changelog](#Change-Notes)
 * [Prerequisites](#Prerequisites)
 * [How To Run](#How-To-Run)
 * [Settings](#Settings)
@@ -30,6 +30,16 @@ My goal in updating the sort_jav repository is for it to function as a simple al
 - To be updated
 
 ## Prerequisites
+### tldr;
+- Python 3.5+
+  - Modules
+    - Pillow
+    - cfscrape
+- NodeJS
+- PowerShell 5.0 or higher (6.0+ recommended)
+- I believe these scripts can be run on both Windows or Linux, but they are untested on Linux
+
+
 You must have Python 3.5 or higher installed in order for this to work. If you do not have it or are
 unsure, you can download it here: https://www.python.org/downloads/ . This will likely not work
 on Python 2.x, and has not been tested on it.
@@ -45,10 +55,12 @@ $ pip install Pillow
 $ pip install cfscrape
 ```
 
-You will need PowerShell v5.0 or higher installed to run Set-JAVNfo.ps1 (installed on Windows 10 by default). If you get a Remote-ExecutionPolicy error when running, open an **administrator** PowerShell prompt, and run the following to unrestrict the script:
+You will need PowerShell v5.0 or higher installed to run any of the .ps1 (PowerShell) files (installed on Windows 10 by default). If you get a Remote-ExecutionPolicy error when running, open an **administrator** PowerShell prompt, and run the following to unrestrict the script:
 ```
 > Set-ExecutionPolicy Unrestricted
 ```
+
+**I highly recommend using PowerShell Core (6.0 or higher) to run these scripts.** 
 
 ## How To Run
 Please first edit the settings to match your desired preferences. It will not work if you do not do this, particularly with the folder you need to specify.
