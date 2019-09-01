@@ -27,7 +27,7 @@ def edit_covers(s):
         # match JavLibrary cover size
         if (width > 790 and width < 810):
             if (height > 400 and height < 535):
-                left = height/1.895734597
+                left = width/1.895734597
                 top = 0
                 right = width
                 bottom = height
