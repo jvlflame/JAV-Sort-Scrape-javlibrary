@@ -27,7 +27,13 @@ My goal in updating the sort_jav repository is for it to function as a simple al
 ## Changelog
 **Older changes have been moved to the [wiki.](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/wiki)**
 ### v1.5.0 (Current version)
-- To be updated
+- Additions
+  - Functionality to scrape R18.com actor thumbnails to Emby/Jellyfin
+- Changes
+  - Repository file structure changed to be more user accessible
+  - sort_jav.py to use ratio based crop rather than absolute when cropping covers to poster size
+- Fixes
+  - edit_covers.py to widen .jpg file match to crop all covers properly
 
 ## Prerequisites
 ### tldr;
@@ -135,7 +141,6 @@ actress name in both the file and folder.
 [Rename-JAV-files-javlibrary](https://github.com/jvlflame/Rename-JAV-files-javlibrary) - Use regex checks to rename JAV files to their ID format. No web scraping involved.
 
 ## To do
-
 - [x] Add option to input tags/genres in metadata file - v.1.4.0
 - [x] Add functionality to crop cover to poster size - v1.4.4
 - [x] Scrape actor images and push to Emby - v1.5.0
