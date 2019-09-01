@@ -42,7 +42,7 @@ $R18ImportPath = ((Get-Content $SettingsPath) -match '^r18-export-csv-path').Spl
 $ActorExportPath = ((Get-Content $SettingsPath) -match '^actor-csv-export-path').Split('=')[1]
 
 # Write Emby actors and id to object
-Write-Output "Getting actors from Emby..."
+Write-Host "Getting actors from Emby..."
 $EmbyActors = Get-EmbyActors -ServerUri $EmbyServerUri -ApiKey $EmbyApiKey
 $EmbyActorObject = @()
 for ($x = 0; $x -lt $EmbyActors.Items.Length; $x++) {
@@ -54,10 +54,10 @@ for ($x = 0; $x -lt $EmbyActors.Items.Length; $x++) {
 }
 
 # Import R18 actors and thumburls to object
-Write-Output "Importing R18 actors with thumb urls..."
+Write-Host "Importing R18 actors with thumb urls..."
 $R18ActorObject = Import-Csv -Path $R18ImportPath
 
-Write-Output "Comparing Emby actor list with R18, please wait..."
+Write-Host "Comparing Emby actor list with R18, please wait..."
 # Compare both Emby and R18 actors for matching actors, and combine to a single object
 $ActorNames = @()
 $ActorObject = @()
@@ -109,10 +109,10 @@ else {
         # If new actor (EmbyId) found, append to existing csv
         else {
             $Actor | Select-Object Name, EmbyId, ThumbUrl, PrimaryUrl | Export-Csv -Path $ActorExportPath -Append -NoClobber -NoTypeInformation
-            Write-Output "($Count) Appending $Actor"
+            Write-Host "($Count) Appending $Actor"
         }
         $Count++
     }
 }
 
-Write-Output "Actor file written successfully to $ActorExportPath!"
+Write-Host "Combined actor thumb file written to $ActorExportPath"

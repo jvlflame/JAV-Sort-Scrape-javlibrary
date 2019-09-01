@@ -74,7 +74,7 @@ $ActorObject = Import-Csv -Path $ActorImportPath
 
 # Check if db file specified in 'actor-csv-database-path' exists, create if not exists
 if (!(Test-Path $ActorDbPath)) {
-    Write-Output "Database file not found. Creating..."
+    Write-Host "Database file not found. Creating..."
     New-Item -ItemType File -Path $ActorDbPath
 }
 
@@ -82,7 +82,7 @@ else {
     $ActorDbObject = Import-Csv -Path $ActorDbPath
 }
 
-Write-Output "Querying for changes in $ActorImportPath..."
+Write-Host "Querying for changes in $ActorImportPath..."
 $ActorNames = @()
 for ($x = 0; $x -lt $ActorObject.Length; $x++) {
     # Write names to string object to query for index
