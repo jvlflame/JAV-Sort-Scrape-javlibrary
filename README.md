@@ -136,8 +136,8 @@ actress name in both the file and folder.
 
 ## To do
 
-- [x] Add option to input tags/genres in metadata file
-- [x] Add functionality to crop cover to poster size
-- [ ] Add video title option to renamed file
+- [x] Add option to input tags/genres in metadata file - v.1.4.0
+- [x] Add functionality to crop cover to poster size - v1.4.4
+- [x] Scrape actor images and push to Emby - v1.5.0
+- [ ] Add more video title renaming options
 - [ ] Scrape video plot/description
-- [ ] Scrape actress images
