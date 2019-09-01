@@ -61,7 +61,7 @@ def read_file(path):
 
 if __name__ == '__main__':
     try:
-        settings = read_file('settings_sort_jav.ini')
+        settings = read_file('../settings_sort_jav.ini')
         edit_covers(settings)
         input("Press Enter to finish.")
     except Exception as e:
