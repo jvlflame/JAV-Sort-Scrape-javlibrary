@@ -1,11 +1,11 @@
 ﻿function Get-R18ThumbUrl {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [int]$StartPage,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [int]$EndPage,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [System.IO.FileInfo]$ExportPath
     )
 
@@ -13,9 +13,9 @@
         $PageNumber = $Counter.ToString()
         $Page = Invoke-WebRequest -Uri "https://www.r18.com/videos/vod/movies/actress/letter=a/sort=popular/page=$PageNumber/"
         $Results = $Page.Images | Select-Object src, alt | Where-Object {
-                            $_.src -like '*/actjpgs/*' -and`
-                            $_.alt -notlike $null
-                        }
+            $_.src -like '*/actjpgs/*' -and `
+                $_.alt -notlike $null
+        }
 
         $Results | Export-Csv -Path $ExportPath -Force -Append -NoTypeInformation
         Write-Host "Page $Counter added to $ExportPath"
@@ -25,7 +25,7 @@
 function Set-NameOrder {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [System.IO.FileInfo]$Path
     )
 
@@ -41,13 +41,13 @@ function Set-NameOrder {
     Write-Host "Writing to cleaned names to csv... please wait"
     $R18Thumbs = Import-Csv -Path $Path
     # Remove periods from R18 scrape
-    $Names = ($R18Thumbs.alt).replace('...','')
+    $Names = ($R18Thumbs.alt).replace('...', '')
     $NewName = @()
     if ($NameOrder -eq 'true') {
         foreach ($Name in $Names) {
             $Temp = $Name.split(' ')
             if ($Temp[1].length -ne 0) {
-                $First,$Last = $Name.split(' ')
+                $First, $Last = $Name.split(' ')
                 $NewName += "$Last $First"
             }
             else {
@@ -71,7 +71,7 @@ function Set-NameOrder {
         }
         else {
             $R18Actors += New-Object -TypeName psobject -Property @{
-                Name = $NewName[$x]
+                Name     = $NewName[$x]
                 ThumbUrl = $R18Thumbs.src[$x]
             }
         }
