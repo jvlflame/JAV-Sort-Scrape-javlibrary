@@ -38,11 +38,12 @@ function Set-NameOrder {
     # Copy original scraped thumbs to backup directory
     Write-Host "Backing up original scraped csv file to $BackupPath"
     Copy-Item -Path $Path -Destination (Join-Path $BackupPath -ChildPath "r18thumb_original.csv")
-    Write-Output "Writing to fixed names to csv..."
+    Write-Host "Writing to cleaned names to csv... please wait"
     $R18Thumbs = Import-Csv -Path $Path
+    # Remove periods from R18 scrape
+    $Names = ($R18Thumbs.alt).replace('...','')
+    $NewName = @()
     if ($NameOrder -eq 'true') {
-        $Names = ($R18Thumbs.alt).replace('...','')
-        $NewName = @()
         foreach ($Name in $Names) {
             $Temp = $Name.split(' ')
             if ($Temp[1].length -ne 0) {
@@ -53,6 +54,12 @@ function Set-NameOrder {
                 $NewName += $Name.TrimEnd()
             }
             Write-Host -NoNewline '.'
+        }
+    }
+
+    if ($NameOrder -eq 'false') {
+        foreach ($Name in $Names) {
+            $NewName += $Name.TrimEnd()
         }
     }
     
@@ -93,7 +100,7 @@ if (!(Test-Path -Path $CsvExportPath)) {
 }
 
 else {
-    Write-Output "File specified in r18-export-csv-path already exists. Replace?"
+    Write-Host "File specified in r18-export-csv-path already exists. Replace?"
     $Input = Read-Host -Prompt '[Y] Yes    [N] No    (default is "N")'
     if ($Input -like 'y') {
         # Create backup directory in scriptroot
@@ -101,17 +108,29 @@ else {
         if (!(Test-Path $BackupPath)) {
             New-Item -ItemType Directory -Path $BackupPath -ErrorAction SilentlyContinue
         }
+
         # Copy original scraped thumbs to backup directory
         Copy-Item -Path $CsvExportPath -Destination (Join-Path $BackupPath -ChildPath "r18thumb_original.csv")
         Get-R18ThumbUrl -StartPage $StartPage -EndPage $EndPage -ExportPath $CsvExportPath
     }
+
     else {
-        Write-Warning "Continuing without replacing existing R18 file..."
+        Write-Host "Are you trying to rewrite the original scraped csv?"
+        $Input = Read-Host -Prompt '[Y] Yes    [N] No    (default is "N")'
+        if ($Input -notlike 'y') {
+            Write-Warning "Cancelled by user input. Exiting..."
+            return
+        }
+        else {
+            # Do nothing
+        }
     }
 }
 
 # Write fixed names to original csv file while backing up original to 'db' directory
-$ActorCsv = Set-NameOrder -Path $CsvExportPath -Verbose
+$ActorCsv = Set-NameOrder -Path $CsvExportPath
 
 # First csv rewrite - names only
 $ActorCsv | Select-Object Name, ThumbUrl | Export-Csv $CsvExportPath -Force -NoTypeInformation
+Write-Host "R18 actor thumb urls written to $CsvExportPath"
+pause
