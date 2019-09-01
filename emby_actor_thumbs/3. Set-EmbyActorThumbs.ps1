@@ -1,15 +1,15 @@
 function Add-ActorThumbs {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$ServerUri,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [int]$ActorId,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$ImageUrl,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$ImageType,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$ApiKey
     )
 
@@ -19,13 +19,13 @@ function Add-ActorThumbs {
 function Remove-ActorThumbs {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$ServerUri,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [int]$ActorId,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$ImageType,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$ApiKey
     )
 
@@ -35,17 +35,17 @@ function Remove-ActorThumbs {
 function Set-CsvDb {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [System.IO.FileInfo]$Path,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [int]$Index,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$Name,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$EmbyId,
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory = $false)]
         [string]$ThumbUrl = '',
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory = $false)]
         [string]$PrimaryUrl = ''
     )
 
@@ -56,7 +56,7 @@ function Set-CsvDb {
     $UpdatedDbString = "`"$Name`",`"$EmbyId`",`"$ThumbUrl`",`"$PrimaryUrl`""
 
     # Update the line with updated string and set the file
-    $DbContent[$Index+1] = $UpdatedDbString
+    $DbContent[$Index + 1] = $UpdatedDbString
     $DbContent | Set-Content $Path
 }
 
