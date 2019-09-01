@@ -22,6 +22,8 @@ function Set-JAVNfo {
     $AddGenres = ((Get-Content $SettingsPath) -match '^include-genre-metadata').Split('=')[1]
     $AddTags = ((Get-Content $SettingsPath) -match '^include-tag-metadata').Split('=')[1]
     $AddTitle = ((Get-Content $SettingsPath) -match '^include-video-title').Split('=')[1]
+    $PartDelimiter = ((Get-Content $SettingsPath) -match '^delimiter-between-multiple-videos').Split('=')[1]
+    $NameSetting = ((Get-Content $SettingsPath) -match '^actress-before-video-number').Split('=')[1]
 
     # Write txt metadata file paths to $HtmlMetadata
     $HtmlMetadata = Get-ChildItem -LiteralPath $FilePath -Recurse | Where-Object { $_.Name -match '[a-zA-Z]{1,8}-[0-9]{1,8}(.*.txt)' -or $_.Name -match 't28(.*).txt' } | Select-Object Name, BaseName, FullName, Directory
@@ -63,10 +65,33 @@ function Set-JAVNfo {
                 $FileName = $MetadataFile.BaseName
                 $NfoName = $MetadataFile.BaseName + '.nfo'
                 $NfoPath = Join-Path -Path $MetadataFile.Directory -ChildPath $NfoName
-
-                # Get metadata information from txt file
+                
+                # Get video title name from html with regex
                 $Title = $HtmlContent -match '<title>(.*) - JAVLibrary<\/title>'
                 $TitleFixed = (($Title -replace '<title>', '') -replace '- JAVLibrary</title>', '').Trim()
+
+                # Check if the video has multiple parts
+                # If it does, write the part number to a variable
+                if ($NameSetting -like 'true') {
+                    $PartNumber = $FileName[-1]
+                }
+                else {
+                    if ($PartDelimiter -like '-') {
+                        $PartNumber = ($FileName -split ($PartDelimiter))[2]
+                    }
+                    else {
+                        $PartNumber = ($FileName -split ($PartDelimiter))[1]
+                    }
+                }
+
+                # Since the above does a split to find if it's a part
+                # Match if the part number found is a 1 digit number
+                if ($PartNumber -match '^\d$') {
+                    $Temp = $TitleFixed.Split(' ')[0] + ' ' + "($PartNumber) "
+                    $Temp2 = $TitleFixed.Split(' ')[1..$TitleFixed.Length] -join ' '
+                    $TitleFixed = $Temp + $Temp2
+                }
+                $FinalTitle = $TitleFixed
                 $ReleaseDate = ($HtmlContent -match '<td class="text">\d{4}-\d{2}-\d{2}<\/td>').Split(('<td class="text">', '</td>'), 'None')[1]
                 $ReleaseYear = ($ReleaseDate.Split('-'))[0]
                 $Studio = (($HtmlContent -match '<a href="vl_maker\.php\?m=[\w\d]{1,10}" rel="tag">(.*)<\/a>')).Split(('rel="tag">', '</a> &nbsp'), 'None')[1]
@@ -76,7 +101,7 @@ function Set-JAVNfo {
                 Set-Content -LiteralPath $NfoPath -Value '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' -Force
                 Add-Content -LiteralPath $NfoPath -Value '<movie>'
                 if ($AddTitle -like 'true') {
-                    Add-Content -LiteralPath $NfoPath -Value "    <title>$TitleFixed</title>"
+                    Add-Content -LiteralPath $NfoPath -Value "    <title>$FinalTitle</title>"
                 }
                 Add-Content -LiteralPath $NfoPath -Value "    <year>$ReleaseYear</year>"
                 Add-Content -LiteralPath $NfoPath -Value "    <releasedate>$ReleaseDate</releasedate>"
