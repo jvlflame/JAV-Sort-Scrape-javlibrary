@@ -50,10 +50,11 @@ for ($x = 0; $x -lt $EmbyActors.Items.Length; $x++) {
         Name = $EmbyActors.Items.Name[$x]
         EmbyId = $EmbyActors.Items.Id[$x]
     }
+    Write-Host -NoNewline '.'
 }
 
 # Import R18 actors and thumburls to object
-Write-Output "Importing R18 actors with thumburls..."
+Write-Output "Importing R18 actors with thumb urls..."
 $R18ActorObject = Import-Csv -Path $R18ImportPath
 
 Write-Output "Comparing Emby actor list with R18, please wait..."
@@ -81,6 +82,7 @@ for ($x = 0; $x -lt $EmbyActorObject.Length; $x++) {
             PrimaryUrl = $R18ActorObject[$Index].ThumbUrl
         }
     }
+    Write-Host -NoNewline '.'
 }
 
 if (Test-Path $ActorExportPath) {
@@ -112,3 +114,5 @@ else {
         $Count++
     }
 }
+
+Write-Output "Actor file written successfully to $ActorExportPath!"

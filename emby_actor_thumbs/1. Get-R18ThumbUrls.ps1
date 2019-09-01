@@ -30,7 +30,7 @@ function Set-NameOrder {
     )
 
     # Create backup directory in scriptroot
-    $BackupPath = Join-Path -Path $PSScriptRoot -ChildPath "bu"
+    $BackupPath = Join-Path -Path $PSScriptRoot -ChildPath "db"
     if (!(Test-Path $BackupPath)) {
         New-Item -ItemType Directory -Path $BackupPath -ErrorAction SilentlyContinue
     }
@@ -38,12 +38,11 @@ function Set-NameOrder {
     # Copy original scraped thumbs to backup directory
     Write-Host "Backing up original scraped csv file to $BackupPath"
     Copy-Item -Path $Path -Destination (Join-Path $BackupPath -ChildPath "r18thumb_original.csv")
+    Write-Output "Writing to fixed names to csv..."
     $R18Thumbs = Import-Csv -Path $Path
-    $NameOrder = 'true'
     if ($NameOrder -eq 'true') {
         $Names = ($R18Thumbs.alt).replace('...','')
         $NewName = @()
-        $Count = 0
         foreach ($Name in $Names) {
             $Temp = $Name.split(' ')
             if ($Temp[1].length -ne 0) {
@@ -53,7 +52,7 @@ function Set-NameOrder {
             else {
                 $NewName += $Name.TrimEnd()
             }
-            $Count++
+            Write-Host -NoNewline '.'
         }
     }
     
@@ -72,6 +71,7 @@ function Set-NameOrder {
         $Temp += New-Object -TypeName psobject -Property @{
             Name = $NewName[$x]
         }
+        Write-Host -NoNewline '.'
     }
 
     Write-Output $R18Actors
@@ -93,7 +93,8 @@ if (!(Test-Path -Path $CsvExportPath)) {
 }
 
 else {
-    $Input = Read-Host "File specified in r18-export-csv-path already exists. Replace? [y/N]"
+    Write-Output "File specified in r18-export-csv-path already exists. Replace?"
+    $Input = Read-Host -Prompt '[Y] Yes    [N] No    (default is "N")'
     if ($Input -like 'y') {
         # Create backup directory in scriptroot
         $BackupPath = Join-Path -Path $PSScriptRoot -ChildPath "db"
@@ -110,7 +111,7 @@ else {
 }
 
 # Write fixed names to original csv file while backing up original to 'db' directory
-Write-Output "Writing to fixed names to csv..."
 $ActorCsv = Set-NameOrder -Path $CsvExportPath -Verbose
+
 # First csv rewrite - names only
 $ActorCsv | Select-Object Name, ThumbUrl | Export-Csv $CsvExportPath -Force -NoTypeInformation
