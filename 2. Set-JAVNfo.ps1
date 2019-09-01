@@ -68,7 +68,7 @@ function Set-JAVNfo {
                 $NfoPath = Join-Path -Path $MetadataFile.Directory -ChildPath $NfoName
                 
                 # Get video title name from html with regex
-                $Title = ($HtmlContent -match '<title>(.*) - JAVLibrary<\/title>') -replace ' [\W]', ''
+                $Title = $HtmlContent -match '<title>(.*) - JAVLibrary<\/title>'
                 # Replace [\W] removes all special characters in the title
                 $TitleFixed = (($Title -replace '<title>', '') -replace '- JAVLibrary</title>', '').Trim()
 
