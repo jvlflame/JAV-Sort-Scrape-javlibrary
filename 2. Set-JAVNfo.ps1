@@ -138,7 +138,7 @@ function Set-JAVNfo {
                     $Content = @(
                         "    <actor>"
                         "        <name>$Actor</name>"
-                        "        <role>Actress</role>"
+                        "        <role>Actor</role>"
                         "    </actor>"
                     )
                     Add-Content -LiteralPath $NfoPath -Value $Content
