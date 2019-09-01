@@ -87,51 +87,52 @@ $ActorNames = @()
 for ($x = 0; $x -lt $ActorObject.Length; $x++) {
     # Write names to string object to query for index
     $ActorNames += ($ActorObject[$x].Name).ToLower()
-    if ('' -ne $ActorObject[$x].ThumbUrl -and '' -ne $ActorObject[$x].PrimaryUrl) {
-        if ($ActorObject[$x].Name -notin $ActorDbObject.Name -and $ActorObject[$x].EmbyId -notin $ActorDbObject.EmbyId) {
-            Write-Host "ADD images to "$ActorObject[$x].Name""
-            # POST thumb to Emby
-            Add-ActorThumbs -ServerUri $EmbyServerUri -ActorId $ActorObject[$x].EmbyId -ImageUrl $ActorObject[$x].ThumbURL -ImageType Thumb -ApiKey $EmbyApiKey
+    if ($ActorObject[$x].ThumbUrl -notlike '' -or $ActorObject[$x].PrimaryUrl -notlike '') {
+        if ($ActorObject[$x].ThumbUrl -notlike '' -and $ActorObject[$x].PrimaryUrl -notlike '') {
+            if ($ActorObject[$x].Name -notin $ActorDbObject.Name -and $ActorObject[$x].EmbyId -notin $ActorDbObject.EmbyId) {
+                Write-Host "ADD images to "$ActorObject[$x].Name""
+                # POST thumb to Emby
+                Add-ActorThumbs -ServerUri $EmbyServerUri -ActorId $ActorObject[$x].EmbyId -ImageUrl $ActorObject[$x].ThumbURL -ImageType Thumb -ApiKey $EmbyApiKey -ErrorAction Stop
 
-            # POST primary to Emby
-            Add-ActorThumbs -ServerUri $EmbyServerUri -ActorId $ActorObject[$x].EmbyId -ImageUrl $ActorObject[$x].PrimaryUrl -ImageType Thumb -ApiKey $EmbyApiKey
+                # POST primary to Emby
+                Add-ActorThumbs -ServerUri $EmbyServerUri -ActorId $ActorObject[$x].EmbyId -ImageUrl $ActorObject[$x].PrimaryUrl -ImageType Thumb -ApiKey $EmbyApiKey -ErrorAction Stop
 
-            # Write to db file if posted
-            $ActorObject[$x] | Export-Csv -Path $ActorDbPath -Append -NoClobber
-        }
-        else {
-            # Query for index of existing actor in db
-            $Index = [array]::indexof(($ActorDbObject.Name).ToLower(), $ActorNames[$x])
-            if ($ActorObject[$x].Name -eq $ActorDbObject[$Index].Name -and $ActorObject[$x].EmbyId -eq $ActorDbObject[$Index].EmbyId) {
-                if ($ActorObject[$x].ThumbUrl -notlike $ActorDbObject[$Index].ThumbUrl) {
-                    if ('' -eq $ActorObject[$x].ThumbUrl) {
-                        Write-Host "REMOVE thumb image for "$ActorObject[$x].Name""
-                        Remove-ActorThumbs -ServerUri $EmbyServerUri -ActorId $ActorObject[$x].EmbyId -ImageType Thumb -ApiKey $EmbyApiKey
-                        Set-CsvDb -Path $ActorDbPath -Index $Index -Name $ActorObject[$x].Name -EmbyId $ActorObject[$x].EmbyId -ThumbUrl $ActorObject[$x].ThumbUrl -PrimaryUrl $ActorObject[$x].PrimaryUrl
-                    }
-
-                    else {
+                # Write to db file if posted
+                $ActorObject[$x] | Export-Csv -Path $ActorDbPath -Append -NoClobber
+            }
+            else {
+                # Query for index of existing actor in db
+                $Index = [array]::indexof(($ActorDbObject.Name).ToLower(), $ActorNames[$x])
+                if ($ActorObject[$x].Name -eq $ActorDbObject[$Index].Name -and $ActorObject[$x].EmbyId -eq $ActorDbObject[$Index].EmbyId) {
+                    if ($ActorObject[$x].ThumbUrl -notlike $ActorDbObject[$Index].ThumbUrl) {
                         Write-Host "ADD thumb image for "$ActorObject[$x].Name""
-                        Add-ActorThumbs -ServerUri $EmbyServerUri -ActorId $ActorObject[$x].EmbyId -ImageUrl $ActorObject[$x].ThumbURL -ImageType Thumb -ApiKey $EmbyApiKey
-                        Set-CsvDb -Path $ActorDbPath -Index $Index -Name $ActorObject[$x].Name -EmbyId $ActorObject[$x].EmbyId -ThumbUrl $ActorObject[$x].ThumbUrl -PrimaryUrl $ActorObject[$x].PrimaryUrl
+                        Add-ActorThumbs -ServerUri $EmbyServerUri -ActorId $ActorObject[$x].EmbyId -ImageUrl $ActorObject[$x].ThumbURL -ImageType Thumb -ApiKey $EmbyApiKey -ErrorAction Stop
+                        Set-CsvDb -Path $ActorDbPath -Index $Index -Name $ActorObject[$x].Name -EmbyId $ActorObject[$x].EmbyId -ThumbUrl $ActorObject[$x].ThumbUrl -PrimaryUrl $ActorObject[$x].PrimaryUrl -ErrorAction Stop
                     }
-                }
-
-                if ($ActorObject[$x].PrimaryUrl -notlike $ActorDbObject[$Index].PrimaryUrl) {
-                    if ('' -eq $ActorObject[$x].PrimaryUrl) {
-                        Write-Host "REMOVE primary image for "$ActorObject[$x].Name""
-                        Remove-ActorThumbs -ServerUri $EmbyServerUri -ActorId $ActorObject[$x].EmbyId -ImageType Primary -ApiKey $EmbyApiKey
-                        Set-CsvDb -Path $ActorDbPath -Index $Index -Name $ActorObject[$x].Name -EmbyId $ActorObject[$x].EmbyId -ThumbUrl $ActorObject[$x].ThumbUrl -PrimaryUrl $ActorObject[$x].PrimaryUrl
-                    }
-
-                    else {
+                    if ($ActorObject[$x].PrimaryUrl -notlike $ActorDbObject[$Index].PrimaryUrl) {
                         Write-Host "ADD primary image for "$ActorObject[$x].Name""
-                        Add-ActorThumbs -ServerUri $EmbyServerUri -ActorId $ActorObject[$x].EmbyId -ImageUrl $ActorObject[$x].PrimaryUrl -ImageType Primary -ApiKey $EmbyApiKey
-                        Set-CsvDb -Path $ActorDbPath -Index $Index -Name $ActorObject[$x].Name -EmbyId $ActorObject[$x].EmbyId -ThumbUrl $ActorObject[$x].ThumbUrl -PrimaryUrl $ActorObject[$x].PrimaryUrl
+                        Add-ActorThumbs -ServerUri $EmbyServerUri -ActorId $ActorObject[$x].EmbyId -ImageUrl $ActorObject[$x].PrimaryUrl -ImageType Primary -ApiKey $EmbyApiKey -ErrorAction Stop
+                        Set-CsvDb -Path $ActorDbPath -Index $Index -Name $ActorObject[$x].Name -EmbyId $ActorObject[$x].EmbyId -ThumbUrl $ActorObject[$x].ThumbUrl -PrimaryUrl $ActorObject[$x].PrimaryUrl -ErrorAction Stop
                     }
                 }
             }
         }
+        else {
+            if ('' -eq $ActorObject[$x].ThumbUrl) {
+                Write-Host "REMOVE thumb image for "$ActorObject[$x].Name""
+                Remove-ActorThumbs -ServerUri $EmbyServerUri -ActorId $ActorObject[$x].EmbyId -ImageType Thumb -ApiKey $EmbyApiKey -ErrorAction Stop
+                Set-CsvDb -Path $ActorDbPath -Index $Index -Name $ActorObject[$x].Name -EmbyId $ActorObject[$x].EmbyId -ThumbUrl $ActorObject[$x].ThumbUrl -PrimaryUrl $ActorObject[$x].PrimaryUrl -ErrorAction Stop
+            }
+
+            if ('' -eq $ActorObject[$x].PrimaryUrl) {
+                Write-Host "REMOVE primary image for "$ActorObject[$x].Name""
+                Remove-ActorThumbs -ServerUri $EmbyServerUri -ActorId $ActorObject[$x].EmbyId -ImageType Primary -ApiKey $EmbyApiKey -ErrorAction Stop
+                Set-CsvDb -Path $ActorDbPath -Index $Index -Name $ActorObject[$x].Name -EmbyId $ActorObject[$x].EmbyId -ThumbUrl $ActorObject[$x].ThumbUrl -PrimaryUrl $ActorObject[$x].PrimaryUrl -ErrorAction Stop
+            }
+        }
     }
-    Write-Host -NoNewline '.'
+    else {
+        if (($x % 20) -eq 0) { Write-Host '.' -NoNewline }
+    }
 }
+pause

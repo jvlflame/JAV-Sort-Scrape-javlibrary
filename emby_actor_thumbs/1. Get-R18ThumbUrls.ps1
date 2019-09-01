@@ -53,7 +53,7 @@ function Set-NameOrder {
             else {
                 $NewName += $Name.TrimEnd()
             }
-            Write-Host -NoNewline '.'
+            if (($x % 20) -eq 0) { Write-Host '.' -NoNewline }
         }
     }
 
@@ -78,7 +78,7 @@ function Set-NameOrder {
         $Temp += New-Object -TypeName psobject -Property @{
             Name = $NewName[$x]
         }
-        Write-Host -NoNewline '.'
+        if (($x % 20) -eq 0) { Write-Host '.' -NoNewline }
     }
 
     Write-Output $R18Actors
