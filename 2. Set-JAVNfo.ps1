@@ -61,13 +61,15 @@ function Set-JAVNfo {
             foreach ($MetadataFile in $HtmlMetadata) {
                 # Read html txt
                 $FileLocation = $MetadataFile.FullName
-                $HtmlContent = Get-Content -LiteralPath $FileLocation
+                # Read and encode html in UTF8 for better reading of asian characters and symbols
+                $HtmlContent = Get-Content -LiteralPath $FileLocation -Encoding UTF8
                 $FileName = $MetadataFile.BaseName
                 $NfoName = $MetadataFile.BaseName + '.nfo'
                 $NfoPath = Join-Path -Path $MetadataFile.Directory -ChildPath $NfoName
                 
                 # Get video title name from html with regex
-                $Title = $HtmlContent -match '<title>(.*) - JAVLibrary<\/title>'
+                $Title = ($HtmlContent -match '<title>(.*) - JAVLibrary<\/title>') -replace ' [\W]', ''
+                # Replace [\W] removes all special characters in the title
                 $TitleFixed = (($Title -replace '<title>', '') -replace '- JAVLibrary</title>', '').Trim()
 
                 # Check if the video has multiple parts
@@ -89,7 +91,9 @@ function Set-JAVNfo {
                 if ($PartNumber -match '^\d$') {
                     $Temp = $TitleFixed.Split(' ')[0] + ' ' + "($PartNumber) "
                     $Temp2 = $TitleFixed.Split(' ')[1..$TitleFixed.Length] -join ' '
-                    $TitleFixed = $Temp + $Temp2
+                    # Replace [\W] removes all special characters in the title
+                    # If html file is detected as multi-part, create a new title as "VidID (Part#) Title"
+                    $TitleFixed = ($Temp + $Temp2)
                 }
                 $FinalTitle = $TitleFixed
                 $ReleaseDate = ($HtmlContent -match '<td class="text">\d{4}-\d{2}-\d{2}<\/td>').Split(('<td class="text">', '</td>'), 'None')[1]
