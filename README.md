@@ -145,7 +145,7 @@ windows, that would be: / \ : \* ? < > |
 
 ### My video isn't being sorted by sort_jav.py
 
--Try renaming your file exactly how it appears on javlibrary.
+Try renaming your file exactly how it appears on javlibrary. If it still doesn't work for some reason, follow the instructions below to manually sort the file.
 
 ### The video was sorted by sort_jav.py, but it's the wrong video
 
