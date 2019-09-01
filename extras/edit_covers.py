@@ -1,4 +1,6 @@
-# Use this script if you previously scraped your JAV without having the feature to crop to poster-size
+# Use this script if you previously scraped your JAV without having the feature to crop covers to poster size
+# CAUTION: This script checks for all .jpgs recursively within the directory matching resolution (790-810)x(400-535)
+# CAUTION: Make sure only scraped JAV files are within the directory you specify in the settings
 
 import os
 import urllib.request
@@ -7,6 +9,8 @@ from shutil import move
 
 def edit_covers(s):
     path = os.path.join(s['scraped-covers-path'])
+    print("CAUTION: This script will modify all .jpgs recursively in the specified path")
+    print("CAUTION: Make sure only scraped JAV files are within the path specified")
     input("Confirm before editing covers in path: " + path)
     files = []
     # r=root, d=directories, f = files
@@ -22,8 +26,8 @@ def edit_covers(s):
         width, height = original_cover.size
         # match JavLibrary cover size
         if (width > 790 and width < 810):
-            if (height > 530 and height < 600):
-                left = 422
+            if (height > 400 and height < 535):
+                left = width/1.895734597
                 top = 0
                 right = width
                 bottom = height
@@ -61,7 +65,9 @@ def read_file(path):
 
 if __name__ == '__main__':
     try:
-        settings = read_file('settings_sort_jav.ini')
+        script_dir = os.path.dirname(__file__)
+        rel_path = "../settings_sort_jav.ini"
+        settings = read_file(os.path.join(script_dir, rel_path))
         edit_covers(settings)
         input("Press Enter to finish.")
     except Exception as e:
