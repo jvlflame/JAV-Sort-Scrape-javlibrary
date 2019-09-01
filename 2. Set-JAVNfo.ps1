@@ -3,7 +3,7 @@ function Set-JAVNfo {
     [CmdletBinding()]
     param(
         [Parameter()]
-        [System.IO.FileInfo]$FilePath = ((Get-Content $PSScriptRoot\settings_sort_jav.ini) -match '^path').Split('=')[1],
+        [System.IO.FileInfo]$FilePath = ((Get-Content $SettingsPath) -match '^path').Split('=')[1],
         [Parameter()]
         [Switch]$Prompt
     )
@@ -17,10 +17,11 @@ function Set-JAVNfo {
     }
 
     # Options from settings_sort_jav.ini
-    $KeepMetadataTxt = ((Get-Content $PSScriptRoot\settings_sort_jav.ini) -match '^keep-metadata-txt').Split('=')[1]
-    $AddGenres = ((Get-Content $PSScriptRoot\settings_sort_jav.ini) -match '^include-genre-metadata').Split('=')[1]
-    $AddTags = ((Get-Content $PSScriptRoot\settings_sort_jav.ini) -match '^include-tag-metadata').Split('=')[1]
-    $AddTitle = ((Get-Content $PSScriptRoot\settings_sort_jav.ini) -match '^include-video-title').Split('=')[1]
+    $SettingsPath = Resolve-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath 'settings_sort_jav.ini')
+    $KeepMetadataTxt = ((Get-Content $SettingsPath) -match '^keep-metadata-txt').Split('=')[1]
+    $AddGenres = ((Get-Content $SettingsPath) -match '^include-genre-metadata').Split('=')[1]
+    $AddTags = ((Get-Content $SettingsPath) -match '^include-tag-metadata').Split('=')[1]
+    $AddTitle = ((Get-Content $SettingsPath) -match '^include-video-title').Split('=')[1]
 
     # Write txt metadata file paths to $HTMLMetadata
     $HTMLMetadata = Get-ChildItem -LiteralPath $FilePath -Recurse | Where-Object { $_.Name -match '[a-zA-Z]{1,8}-[0-9]{1,8}(.*.txt)' -or $_.Name -match 't28(.*).txt' } | Select-Object Name, BaseName, FullName, Directory
