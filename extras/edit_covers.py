@@ -22,8 +22,8 @@ def edit_covers(s):
         width, height = original_cover.size
         # match JavLibrary cover size
         if (width > 790 and width < 810):
-            if (height > 530 and height < 600):
-                left = 422
+            if (height > 400 and height < 535):
+                left = height*1.895734597
                 top = 0
                 right = width
                 bottom = height
@@ -61,7 +61,9 @@ def read_file(path):
 
 if __name__ == '__main__':
     try:
-        settings = read_file('../settings_sort_jav.ini')
+        script_dir = os.path.dirname(__file__)
+        rel_path = "../settings_sort_jav.ini"
+        settings = read_file(os.path.join(script_dir, rel_path))
         edit_covers(settings)
         input("Press Enter to finish.")
     except Exception as e:
