@@ -1,3 +1,4 @@
 # Ignore internal releases
 /releases
 /db
+/emby_thumbs/db
