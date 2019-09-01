@@ -380,7 +380,7 @@ def get_cover_for_video(path, vid_id, s, html):
         cover_thumb_path = fullpath + "-thumb.jpg"
         original_cover = Image.open(cover_path)
         width, height = original_cover.size
-        left = height*1.895734597
+        left = height/1.895734597
         top = 0
         right = width
         bottom = height
