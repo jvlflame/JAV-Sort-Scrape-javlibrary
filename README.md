@@ -141,24 +141,23 @@ Please note that where it gives you options to include delimiters, certain chara
 disallowed by the OS. If you include them, they will be forcibly removed from your delimiter. For
 windows, that would be: / \ : \* ? < > |
 
-## Additional Notes
-
-Any video files that can’t be found on javlibrary will be ignored. The program will notify you of
-any problems it has trying to sort them.
-
-Occasionally the results will be incorrect, this is because javlibrary incorrectly states the id of the
-video on their website. You should double check all the results appear to be correct.
-
-Videos with the id code r18 or t28 cannot be detected with the new special method, so the
-program defaults to the old method. For videos with those names, please rename them before
-running the program.
-
-If a video is renamed to something that is too long, the program will ignore moving it. This may
-result in a folder being created but files not being placed in there. For reference, maximum file
-lengths are around 255, so for videos with several actresses in them, it’s best not to include the
-actress name in both the file and folder.
-
 ## FAQ
+
+### My video isn't being sorted by sort_jav.py
+
+-Try renaming your file exactly how it appears on javlibrary.
+
+### The video was sorted by sort_jav.py, but it's the wrong video
+
+Occasionally the results will be incorrect due to there being multiple videos with the same title. To manually sort the file, go to the correct javlibrary page, and save the page as an html. Also save the cover image. Rename the .html to a .txt, and rename both the cover and .txt the same as the video. Run Set-JAVNfo.ps1 and it will create a metadata file for you.
+
+### r18 and t28 videos aren't being sorted
+
+For these special cases, rename the files to exactly how they appear on javlibrary. Anything extra in the video name will cause it not to sort.
+
+### Shell closes immediately after erroring
+
+Try calling the scripts through a shell window rather than double-clicking to run. You will be able to diagnose what the issue is.
 
 ## Feature ideas
 
