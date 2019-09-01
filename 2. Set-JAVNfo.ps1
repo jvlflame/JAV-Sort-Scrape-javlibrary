@@ -10,9 +10,9 @@ function Set-JAVNfo {
 
     function Show-FileChanges {
         # Display file changes to host
-        $Table = @{Expression={$_.Index}; Label="#"; Width=2},
-                 @{Expression={$_.Name}; Label="Name"; Width=25},
-                 @{Expression={$_.Path}; Label="Directory"}
+        $Table = @{Expression = { $_.Index }; Label = "#"; Width = 2 },
+        @{Expression = { $_.Name }; Label = "Name"; Width = 25 },
+        @{Expression = { $_.Path }; Label = "Directory" }
         $FileObject | Sort-Object Index | Format-Table -Property $Table | Out-Host
     }
 
@@ -37,8 +37,8 @@ function Set-JAVNfo {
         foreach ($File in $HTMLMetadata) {
             $FileObject += New-Object -TypeName psobject -Property @{
                 Index = $Index
-                Name = $File.BaseName
-                Path = $File.Directory
+                Name  = $File.BaseName
+                Path  = $File.Directory
             }
             $Index++
         }
@@ -68,8 +68,8 @@ function Set-JAVNfo {
 
                 # Get metadata information from txt file
                 $Title = $HTMLContent -match '<title>(.*) - JAVLibrary<\/title>'
-                $TitleFixed = (($Title -replace '<title>', '') -replace  '- JAVLibrary</title>', '').Trim()
-                $ReleaseDate = ($HTMLContent -match '<td class="text">\d{4}-\d{2}-\d{2}<\/td>').Split(('<td class="text">','</td>'), 'None')[1]
+                $TitleFixed = (($Title -replace '<title>', '') -replace '- JAVLibrary</title>', '').Trim()
+                $ReleaseDate = ($HTMLContent -match '<td class="text">\d{4}-\d{2}-\d{2}<\/td>').Split(('<td class="text">', '</td>'), 'None')[1]
                 $ReleaseYear = ($ReleaseDate.Split('-'))[0]
                 $Studio = (($HTMLContent -match '<a href="vl_maker\.php\?m=[\w\d]{1,10}" rel="tag">(.*)<\/a>')).Split(('rel="tag">', '</a> &nbsp'), 'None')[1]
                 $Genres = (($HTMLContent -match 'rel="category tag">(.*)<\/a><\/span><\/td>') -Split 'rel="category tag">')
@@ -84,13 +84,13 @@ function Set-JAVNfo {
                 Add-Content -LiteralPath $NfoPath -Value "    <releasedate>$ReleaseDate</releasedate>"
                 Add-Content -LiteralPath $NfoPath -Value "    <studio>$Studio</studio>"
                 if ($AddGenres -like 'true') {
-                    foreach ($Genre in $Genres[1..($Genres.Length-1)]) {
+                    foreach ($Genre in $Genres[1..($Genres.Length - 1)]) {
                         $GenreString = (($Genre.Split('<'))[0]).Trim()
                         Add-Content -LiteralPath $NfoPath -Value "    <genre>$GenreString</genre>"
                     }
                 }
                 if ($AddTags -like 'true') {
-                    foreach ($Genre in $Genres[1..($Genres.Length-1)]) {
+                    foreach ($Genre in $Genres[1..($Genres.Length - 1)]) {
                         $GenreString = (($Genre.Split('<'))[0]).Trim()
                         Add-Content -LiteralPath $NfoPath -Value "    <tag>$GenreString</tag>"
                     }
@@ -98,10 +98,10 @@ function Set-JAVNfo {
                 # Add actress metadata
                 $Actors = ((($HTMLContent -match '<ActressSorted>(.*)<\/ActressSorted>') -replace '<ActressSorted>', '') -replace '</ActressSorted>', '').Split('|') | Sort-Object
                 foreach ($Actor in $Actors) {
-                            $Content = @(
-                            "    <actor>"
-                            "        <name>$Actor</name>"
-                            "    </actor>"
+                    $Content = @(
+                        "    <actor>"
+                        "        <name>$Actor</name>"
+                        "    </actor>"
                     )
                     Add-Content -LiteralPath $NfoPath -Value $Content
                 }
