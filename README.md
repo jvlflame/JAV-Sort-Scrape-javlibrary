@@ -1,15 +1,13 @@
-# JAV-Sort-Scrape-javlibrary Documentation
+# JAV-Sort-Scrape-javlibrary
 
 [![GitHub release](https://img.shields.io/github/release/jvlflame/JAV-Sort-Scrape-javlibrary?style=flat-square)](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/releases)
 [![Commits since lastest release](https://img.shields.io/github/commits-since/jvlflame/JAV-Sort-Scrape-javlibrary/latest/master?style=flat-square)](#)
 [![Last commit](https://img.shields.io/github/last-commit/jvlflame/JAV-Sort-Scrape-javlibrary?style=flat-square)](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/commits/master)
 [![Discord](https://img.shields.io/discord/608449512352120834?style=flat-square)](https://discord.gg/K2Yjevk)
 
-The sort_jav Python script originally written by [/u/Ohura](https://reddit.com/user/Ohura) sorts and renames a folder of unsorted JAV videos, downloads covers, and writes the raw JavLibrary page to html. The Set-JAVNfo PowerShell script will work in conjunction with sort_jav to create a functional .nfo metadata file from the html file for easy import into Emby, Jellyfin, Kodi, and/or Plex. Functionality has also been added to scrape actor thumbnails from R18.com and push to Emby/Jellyfin.
+The JAV-Sort-Scrape-javlibrary repository is a series of scripts used to manage your local JAV (Japanese Adult Video) library. It automatically scrapes content from JavLibrary and R18 to create an easily usable content library within Emby or Jellyfin. My goal in maintining this project is for it to function as a simple and lightweight alternative to [JAVMovieScraper](https://github.com/DoctorD1501/JAVMovieScraper). If you have any questions, criticisms, or requests, feel free to hop into my [throwaway discord channel](https://discord.gg/K2Yjevk) and send me a message.
 
-There are settings you can configure, such as how the file is renamed, putting them in folders, or downloading covers. Take a look in the [settings_sort_jav.ini](/settings_sort_jav.ini) file for the full set of options.
-
-My goal in updating the sort_jav repository is for it to function as a simple alternative [JAVMovieScraper](https://github.com/DoctorD1501/JAVMovieScraper). If you have any questions, criticisms, or feature requests, feel free to hop into my [throwaway discord channel](https://discord.gg/K2Yjevk) and send me a message.
+Big thanks to the original author of the sort_jav.py script [/u/Ohura](https://reddit.com/user/Ohura)!
 
 ## Demo
 
@@ -21,9 +19,8 @@ My goal in updating the sort_jav repository is for it to function as a simple al
 
 -   [Changelog](#Change-Notes)
 -   [Prerequisites](#Prerequisites)
--   [How To Run](#How-To-Run)
+-   [How To Run](#Getting-Started)
 -   [Settings](#Settings)
--   [Alternative Projects](#Alternative-Projects)
 -   [Additional Notes](#Additional-Notes)
 -   [Disclaimer](#Disclaimer)
 
@@ -43,44 +40,48 @@ My goal in updating the sort_jav repository is for it to function as a simple al
     -   Widen .jpg file match to crop all covers properly in edit_covers.py
     -   Fix encoding option on javlibrary html to allow better reading of special characters
 
-## Prerequisites
+## Getting Started
 
-### tldr;
+### Prerequisities
 
--   Python 3.5+
-    -   Modules
-        -   Pillow
-        -   cfscrape
--   NodeJS
--   PowerShell 5.0 or higher (6.0+ recommended)
--   Built for Windows 10, currently untested on Linux
+-   [Python 3.5+](https://www.python.org/downloads/)
+    -   [Pillow](https://pypi.org/project/Pillow/)
+    -   [cfscrape](https://pypi.org/project/cfscrape/) - requires Node.js
+-   [PowerShell 5.0 or higher (6.0+ recommended)](https://github.com/PowerShell/PowerShell)
 
-You must have Python 3.5 or higher installed in order for this to work. If you do not have it or are
-unsure, you can download it here: https://www.python.org/downloads/ . This will likely not work
-on Python 2.x, and has not been tested on it.
+### Installing
 
-Due to javlibrary adding Cloudflare, you are now required to have cfscrape installed. You can
-view how to install it here: https://github.com/Anorov/cloudflare-scrape#installation . You will
-need node.js installed to run it. Please refer to their respective documentation on installation.
+Clone this repository or [download the latest release](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/releases).
+
+#### Install Pillow module on Python
 
 ```
 # Required to crop cover images
-$ pip install Pillow
+pip install Pillow
+```
+
+#### Install cfscrape module on Python
+
+```
 # Required to scrape JavLibrary
-$ pip install cfscrape
+pip install cfscrape
 ```
 
-You will need PowerShell v5.0 or higher installed to run any of the .ps1 (PowerShell) files (installed on Windows 10 by default). If you get a Remote-ExecutionPolicy error when running, open an **administrator** PowerShell prompt, and run the following to unrestrict the script:
+#### You will need PowerShell v5.0 or higher installed to run any of the .ps1 scripts (PowerShell 5.0 is installed on Windows 10 by default). If you get a Remote-ExecutionPolicy error when running, open an **administrator** PowerShell prompt, and run the following to unrestrict the script:
 
 ```
-> Set-ExecutionPolicy Unrestricted
+Set-ExecutionPolicy Unrestricted
 ```
 
-**I highly recommend using PowerShell Core (6.0 or higher) to run these scripts.**
+## Usage
 
-## How To Run
+**Before running any of the scripts, configure your settings in `settings_sort_jav.ini`**. Documentation for each option is listed in the settings file, with defaults set to my best practice guideline. Most notably, you will need to change each of the path settings to match your local directory structure.
 
-Please first edit the settings to match your desired preferences. It will not work if you do not do this, particularly with the folder you need to specify.
+The scripts are numbered in the order that they should be run. They were written with ease-of-use in mind, so they are a one-click solution once your settings are configured properly.
+
+**_To run PowerShell (.ps1) scripts, right click the file and select "Run with PowerShell". To run Python (.py) scripts, double click to run._** You can also invoke the scripts from a shell like shown in the demo.
+
+## Notes
 
 ### sort_jav.py
 
@@ -96,15 +97,10 @@ videos:
 1. A letter appears directly after the end of the video ID, for example MIRD150A and
    MIRD150B. It will detect them as two files for the same video and rename them
    accordingly.
+
 2. The old system method, where the video title has the multiple video suffix attached. For
    example, if multiple videos are denoted by a ! symbol and the video is MIRD-150!A and
    MIRD-150!B, the sorter will understand.
-
-Once the settings are good, you can double click sort_jav.py to run it. A box should pop up and
-stay open while running the script, giving you details about what’s happening. It will give you
-another message when it finishes, and hitting enter will close the program at that point.
-Alternatively you can invoke it from the command line. A note that this requires .py files to be
-associated with the Python executable file (Python.exe for most of us).
 
 ### Set-JAVNfo.ps1
 
@@ -140,9 +136,6 @@ any problems it has trying to sort them.
 Occasionally the results will be incorrect, this is because javlibrary incorrectly states the id of the
 video on their website. You should double check all the results appear to be correct.
 
-When fixing movies that have been scraped improperly, you can manually download the proper JAVLibrary page as an html, and then add
-`<ActressSorted>Actress1|Actress2|Actress3</ActressSorted>` to the last line of the html, and then rename it to the .txt extension. You can then run Set-JAVNfo.ps1 to write the .nfo metadata file.
-
 Videos with the id code r18 or t28 cannot be detected with the new special method, so the
 program defaults to the old method. For videos with those names, please rename them before
 running the program.
@@ -152,17 +145,11 @@ result in a folder being created but files not being placed in there. For refere
 lengths are around 255, so for videos with several actresses in them, it’s best not to include the
 actress name in both the file and folder.
 
-## Alternative Projects
-
-[JAVMovieScraper](https://github.com/DoctorD1501/JAVMovieScraper) - Scrape multiple JAV databases (or western) and rename/categorize and write metadata
-
-[Rename-JAV-files-javlibrary](https://github.com/jvlflame/Rename-JAV-files-javlibrary) - Use regex checks to rename JAV files to their ID format. No web scraping involved.
-
-## To do
+## Feature ideas
 
 -   [x] Add option to input tags/genres in metadata file - v.1.4.0
 -   [x] Add functionality to crop cover to poster size - v1.4.4
 -   [x] Scrape actor images and push to Emby - v1.5.0
--   [ ] Add functionality to manually scrape a javlibrary url if can't match automatically
+-   [ ] Add functionality to manually scrape a javlibrary url if it can't match automatically
 -   [ ] Add more video title renaming options
 -   [ ] Scrape video plot/description
