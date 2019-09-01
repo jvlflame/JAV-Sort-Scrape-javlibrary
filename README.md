@@ -7,7 +7,7 @@
 
 The JAV-Sort-Scrape-javlibrary repository is a series of scripts used to manage your local JAV (Japanese Adult Video) library. It automatically scrapes content from JavLibrary and R18 to create an easily usable content library within Emby or Jellyfin. My goal in maintining this project is for it to function as a simple and lightweight alternative to [JAVMovieScraper](https://github.com/DoctorD1501/JAVMovieScraper). If you have any questions, criticisms, or requests, feel free to hop into my [throwaway discord channel](https://discord.gg/K2Yjevk) and send me a message.
 
-Big thanks to the original author of the sort_jav.py script [/u/Ohura](https://reddit.com/user/Ohura)!
+Big thanks to the original author of the sort_jav.py script [/u/Ohura](https://reddit.com/user/Ohura).
 
 ## Demo
 
@@ -22,6 +22,7 @@ Big thanks to the original author of the sort_jav.py script [/u/Ohura](https://r
 -   [How To Run](#Getting-Started)
 -   [Settings](#Settings)
 -   [Additional Notes](#Additional-Notes)
+-   [FAQ](#FAQ)
 -   [Disclaimer](#Disclaimer)
 
 ## Changelog
@@ -67,7 +68,7 @@ pip install Pillow
 pip install cfscrape
 ```
 
-#### You will need PowerShell v5.0 or higher installed to run any of the .ps1 scripts (PowerShell 5.0 is installed on Windows 10 by default). If you get a Remote-ExecutionPolicy error when running, open an **administrator** PowerShell prompt, and run the following to unrestrict the script:
+#### You will need PowerShell v5.0 or higher installed to run any of the .ps1 scripts (PowerShell 5.0 is installed on Windows 10 by default). If you get a Remote-ExecutionPolicy error when running, open an **administrator** PowerShell prompt, and run the following to unrestrict the scripts:
 
 ```
 Set-ExecutionPolicy Unrestricted
@@ -79,50 +80,62 @@ Set-ExecutionPolicy Unrestricted
 
 The scripts are numbered in the order that they should be run. They were written with ease-of-use in mind, so they are a one-click solution once your settings are configured properly.
 
-**_To run PowerShell (.ps1) scripts, right click the file and select "Run with PowerShell". To run Python (.py) scripts, double click to run._** You can also invoke the scripts from a shell like shown in the demo.
+**_To run PowerShell (.ps1) scripts, right click the file and select "Run with PowerShell". To run Python (.py) scripts, double click to run._** You can also invoke the scripts from a **non-administrator** shell like shown in the demo.
 
 ## Notes
 
 ### sort_jav.py
 
-To run sort_jav.py, you need to set it up so all the videos you want to sort are all in a single folder, and that folder is
-the path you specify in the settings. Any files in folders within that folder will be ignored, so you
-can move them out of folders they may already be in.
+-   Matches your jav file and scrapes javlibrary for content
+-   Renames and sorts your jav file to your specified settings
 
-Videos no longer need to be renamed, the sorter can now handle this. Videos with multiple files
-that are not tagged correctly may fail to sort. The sorter will not remove any of these files, just
-fail to sort them correctly. There are two formats that the sorter will understand for multiple
-videos:
+sort_jav.py will run a non-recursive search of video files located in the `path` specified in your settings file. Files located in folders will not be detected.
 
-1. A letter appears directly after the end of the video ID, for example MIRD150A and
-   MIRD150B. It will detect them as two files for the same video and rename them
-   accordingly.
+If you are trying to sort a video with multiple parts, follow any of the naming schemas below:
 
-2. The old system method, where the video title has the multiple video suffix attached. For
-   example, if multiple videos are denoted by a ! symbol and the video is MIRD-150!A and
-   MIRD-150!B, the sorter will understand.
+1. MIRD-151A, MIRD-151B
+
+2. MIRD151A, MIRD-151B
+
+3. MIRD-151[delimiter-between-multiple-videos]A, MIRD-151[delimiter-between-multiple-videos]B
+
+4. MIRD-151[delimiter-between-multiple-videos]1[delimiter-between-multiple-videos], MIRD-151[delimiter-between-multiple-videos]2[delimiter-between-multiple-videos]
 
 ### Set-JAVNfo.ps1
 
-Set-JAVNfo.ps1 will search for all .txt files created by sort_jav.py and write a .nfo metadata file. To run Set-JAVNfo.ps1, the files need to be in the path specified in the settings. The script will search the folder recursively, finding all .txt files containing the html metadata. To run Set-JAVNfo.ps1, right click and select "Run with PowerShell" (double clicking will **NOT** work). By default, the script will run on the path in your settings file. If you want to run the Set-JAVNfo.ps1 script on a different directory, add the `FilePath` parameter to Set-JAVNfo.ps1 on the last line.
+-   Matches all html .txt files created by sort_jav.py
+-   Creates a .nfo metadata file that is readable by Media servers like Emby/Jellyfin
+
+`Set-JAVNfo.ps1` will run a recursive search of .txt files located in the `path` specified in your settings file. A .nfo metadata file will be generated with information such as title, release date, studio, genres, and actors.
+
+### Get-R18ThumbUrls.ps1
+
+-   Scrapes R18 for all actor thumbnails and creates a csv database for Actor-ThumbnailUrl
+
+`Get-R18ThumbUrls.ps1` will take a while to run, as it needs to parse over 300 pages of R18 actors. I have provided recent (Aug-30-2019) scrape files for you to use. Use `R18-Aug-30-2019-last-first.csv` if you have `name-order` set to _last_, and vice versa.
+
+### Get-EmbyActorThumbs.ps1
+
+-   Calls Emby/Jellyfin API to get a list of actors and their IDs
+-   Matches names of both Emby actor list and R18 csv database created by Get-R18ThumbUrls
+-   Creates a modifiable .csv spreadsheet to import into Emby
+
+`Get-EmbyActorThumbs.ps1` will parse the R18ThumbUrl .csv and match with your Emby/Jellyfin actor list generated by an API call. A new spreadsheet will be created for direct import. You can modify this spreadsheet by hand if you want to add/delete/update actor images in Emby/Jellyfin.
+
+### Set-EmbyActorThumbs.ps1
+
+-   Reads csv spreadsheet created by Get-EmbyActorThumbs.ps1 and imports matching thumbnails into Emby/Jellyfin using API
+-   Creates an up-to-date csv database of all API calls made to Emby/Jellyfin
+
+`Set-EmbyActorThumbs.ps1` will read the csv created by `Get-EmbyActorThumbs.ps1` and import to Emby while writing a separate csv database of all changes made. If running past the first time, the script will read the csv database and only import changes that have not already been made.
 
 ### edit_covers.py
 
-edit_covers.py will search for all uncropped covers created by sort_jav.py and crop them if specified in your settings. To run edit_covers.py, the files need to be in the scraped-covers-path specified in the settings. The script will search the folder recurisvely, finding all .jpg files matching both critieria:
+-   Finds all original thumbnail-size covers and creates an extra poster-size cover
 
--   between width 790 and 810
--   between heights 530 and 600.
+`edit_covers.py` is deprecated past v1.4.5. Only use this script if you are using a very old version that did not have poster covers and you want to add them to your already scraped files.
 
-Make sure no irrelevant .jpg files matching these criteria are within this directory or child directory, as it will be permanently modified by the script.To run edit_covers.py, you can double click to run it. You will be prompted to confirm the path of your already scraped covers that you want to crop.
-
-You can also invoke any of the scripts from a **non-administrator** PowerShell prompt as demonstrated in the demo.
-
-## Settings
-
-The `settings_sort_jav.ini` file provided lists the options the user has available to them as well as descriptions on those options. The default settings are my recommendations specifically if you are using Emby. Play around with the settings on a test directory to find your preference.
-
-For settings that say true/false, please use the values true or false to indicate. For other values,
-it will use whatever appears directly after the = sign on the same line.
+### settings_sort_jav.ini
 
 Please note that where it gives you options to include delimiters, certain characters are
 disallowed by the OS. If you include them, they will be forcibly removed from your delimiter. For
@@ -144,6 +157,8 @@ If a video is renamed to something that is too long, the program will ignore mov
 result in a folder being created but files not being placed in there. For reference, maximum file
 lengths are around 255, so for videos with several actresses in them, it’s best not to include the
 actress name in both the file and folder.
+
+## FAQ
 
 ## Feature ideas
 
