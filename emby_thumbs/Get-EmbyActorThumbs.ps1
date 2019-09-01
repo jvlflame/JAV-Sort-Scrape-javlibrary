@@ -56,7 +56,7 @@ for ($x = 0; $x -lt $EmbyActors.Items.Length; $x++) {
 Write-Output "Importing R18 actors with thumburls..."
 $R18ActorObject = Import-Csv -Path $R18ImportPath
 
-Write-Output "Building combined object, please wait..."
+Write-Output "Comparing Emby actor list with R18, please wait..."
 # Compare both Emby and R18 actors for matching actors, and combine to a single object
 $ActorNames = @()
 $ActorObject = @()
