@@ -66,12 +66,9 @@ function Set-JAVNfo {
                 $FileName = $MetadataFile.BaseName
                 $NfoName = $MetadataFile.BaseName + '.nfo'
                 $NfoPath = Join-Path -Path $MetadataFile.Directory -ChildPath $NfoName
-                
                 # Get video title name from html with regex
                 $Title = $HtmlContent -match '<title>(.*) - JAVLibrary<\/title>'
-                # Replace [\W] removes all special characters in the title
                 $TitleFixed = (($Title -replace '<title>', '') -replace '- JAVLibrary</title>', '').Trim()
-
                 # Check if the video has multiple parts
                 # If it does, write the part number to a variable
                 if ($NameSetting -like 'true') {
@@ -85,13 +82,11 @@ function Set-JAVNfo {
                         $PartNumber = ($FileName -split ($PartDelimiter))[1]
                     }
                 }
-
                 # Since the above does a split to find if it's a part
-                # Match if the part number found is a 1 digit number
+                # Match if the part number found is a one digit number
                 if ($PartNumber -match '^\d$') {
                     $Temp = $TitleFixed.Split(' ')[0] + ' ' + "($PartNumber) "
                     $Temp2 = $TitleFixed.Split(' ')[1..$TitleFixed.Length] -join ' '
-                    # Replace [\W] removes all special characters in the title
                     # If html file is detected as multi-part, create a new title as "VidID (Part#) Title"
                     $TitleFixed = ($Temp + $Temp2)
                 }
