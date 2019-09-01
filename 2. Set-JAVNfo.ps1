@@ -3,7 +3,7 @@ function Set-JAVNfo {
     [CmdletBinding()]
     param(
         [Parameter()]
-        [System.IO.FileInfo]$FilePath = ((Get-Content $SettingsPath) -match '^path').Split('=')[1],
+        [System.IO.FileInfo]$FilePath = ((Get-Content -Path (Join-Path -Path $PSScriptRoot -ChildPath 'settings_sort_jav.ini')) -match '^path').Split('=')[1],
         [Parameter()]
         [Switch]$Prompt
     )
