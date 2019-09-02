@@ -30,7 +30,7 @@ Big thanks to the original author of the sort_jav.py script [/u/Ohura](https://r
 ### v.1.5.2 (Current version)
 
 -   Fixes
-    -   Fix html causing inconsitencies on video titles in Emby
+    -   Fix html causing inconsistencies on video titles in Emby
 
 ### v.1.5.1
 
