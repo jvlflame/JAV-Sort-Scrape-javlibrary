@@ -27,7 +27,13 @@ Big thanks to the original author of the sort_jav.py script [/u/Ohura](https://r
 
 **Older changes have been moved to the [wiki.](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/wiki)**
 
-### v1.5.0 (Current version)
+### v.1.5.1 (Current version)
+
+-   Fixes
+    -   Fix error causing nfo metadata file not being read by Emby
+    -   Fix Set-JAVNfo.ps1 file compatibility with PowerShell Core 6.0+
+
+### v1.5.0 (broken build)
 
 -   Additions
     -   Scrape R18.com actor thumbnails and push to Emby/Jellyfin
@@ -86,7 +92,7 @@ The scripts are numbered in the order that they should be run. They were written
 
 1. Run `sort_jav.py` to sort your JAV files. - **_Stop here if you don't use any media servers that use .nfo metadata_**
 
-2. Run `Set-JAVNfo.ps1` to create .nfo metadata files for each video. Use PowerShell 5 to run this. - **_Stop here if you don't use Emby or Jellyfin, or you don't want actor images_**
+2. Run `Set-JAVNfo.ps1` to create .nfo metadata files for each video. **_Stop here if you don't use Emby or Jellyfin, or you don't want actor images_**
 
 3. Go to your Emby server and make sure all your videos are imported. This is important, as the next step will call Emby's API to get your current actor list.
 
@@ -128,7 +134,7 @@ If you are trying to sort a video with multiple parts, follow any of the naming 
 -   Matches all html .txt files created by sort_jav.py
 -   Creates a .nfo metadata file that is readable by Media servers like Emby/Jellyfin
 
-`Set-JAVNfo.ps1` will run a recursive search of .txt files located in the `path` specified in your settings file. A .nfo metadata file will be generated with information such as title, release date, studio, genres, and actors. Use PowerShell 5 to run this. PowerShell 6+ will break the script.
+`Set-JAVNfo.ps1` will run a recursive search of .txt files located in the `path` specified in your settings file. A .nfo metadata file will be generated with information such as title, release date, studio, genres, and actors.
 
 ### Get-R18ThumbUrls.ps1
 
