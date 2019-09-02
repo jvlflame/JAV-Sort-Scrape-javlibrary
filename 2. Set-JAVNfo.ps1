@@ -25,6 +25,7 @@ function Set-JAVNfo {
     $PartDelimiter = ((Get-Content $SettingsPath) -match '^delimiter-between-multiple-videos').Split('=')[1]
     $NameSetting = ((Get-Content $SettingsPath) -match '^actress-before-video-number').Split('=')[1]
 
+    Write-Host "Metadata to be written:"
     # Write txt metadata file paths to $HtmlMetadata
     $HtmlMetadata = Get-ChildItem -LiteralPath $FilePath -Recurse | Where-Object { $_.Name -match '[a-zA-Z]{1,8}-[0-9]{1,8}(.*.txt)' -or $_.Name -match 't28(.*).txt' } | Select-Object Name, BaseName, FullName, Directory
     if ($null -eq $HtmlMetadata) {
@@ -43,19 +44,17 @@ function Set-JAVNfo {
                 Path  = $File.Directory
             }
             $Index++
-            if (($Index % 20) -eq 0) { Write-Host '.' -NoNewline }
         }
         # Default prompt yes
         $Input = 'y'
         if ($Prompt) {
-            Write-Output "Metadata to be written:"
             Show-FileChanges
-            Write-Output 'Do you want to write nfo metadata for these files?'
-            Write-Output 'Confirm changes?'
+            Write-Host 'Do you want to write nfo metadata for these files?'
+            Write-Host 'Confirm changes?'
             $Input = Read-Host -Prompt '[Y] Yes    [N] No    (default is "N")'
         }
         if ($Input -like 'y' -or $Input -like 'yes') {
-            Write-Output "Writing metadata .nfo files in path: $FilePath ..."
+            Write-Host "Writing metadata .nfo files in path: $FilePath ..."
             # Write each nfo file
             $Count = 1
             $Total = $HtmlMetadata.Count
@@ -69,8 +68,8 @@ function Set-JAVNfo {
                 $NfoPath = Join-Path -Path $MetadataFile.Directory -ChildPath $NfoName
                 # Get video title name from html with regex
                 $Title = $HtmlContent -match '<title>(.*) - JAVLibrary<\/title>'
-                # Remove quote html which is causing title to not format correctly
-                $TitleFixHTML = $Title -replace '&quot;', ''
+                # Remove broken HTML causing title not to write correctly
+                $TitleFixHTML = ($Title -replace '&quot;', '') -replace '#39;s', ''
                 $TitleFixed = ((($TitleFixHTML -replace '<title>', '') -replace '- JAVLibrary</title>', '').Trim()) -replace ' [\W]', ''
                 # Check if the video has multiple parts
                 # If it does, write the part number to a variable

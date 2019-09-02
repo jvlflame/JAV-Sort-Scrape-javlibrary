@@ -27,7 +27,12 @@ Big thanks to the original author of the sort_jav.py script [/u/Ohura](https://r
 
 **Older changes have been moved to the [wiki.](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/wiki)**
 
-### v.1.5.1 (Current version)
+### v.1.5.2 (Current version)
+
+-   Fixes
+    -   Fix html causing inconsitencies on video titles in Emby
+
+### v.1.5.1
 
 -   Fixes
     -   Fix error causing nfo metadata file not being read by Emby
@@ -56,7 +61,7 @@ Big thanks to the original author of the sort_jav.py script [/u/Ohura](https://r
 
 ### Installing
 
-Clone this repository or [download the latest release](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/releases).
+Clone this repository (recommended) or [download the latest release](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/releases).
 
 #### Install Pillow module on Python
 
@@ -140,7 +145,7 @@ If you are trying to sort a video with multiple parts, follow any of the naming 
 
 -   Scrapes R18 for all actor thumbnails and creates a csv database for Actor-ThumbnailUrl
 
-`Get-R18ThumbUrls.ps1` will take a while to run, as it needs to parse over 300 pages of R18 actors. I have provided recent (Aug-30-2019) scrape files created with this script for you to use if you do not want to create your own file. Use `R18-Aug-30-2019-last-first.csv` if you have `name-order` set to _last_, and vice versa. Specify this path in
+`Get-R18ThumbUrls.ps1` will take a while to run, as it needs to parse over 300 pages of R18 actors. I have provided recent (Aug-30-2019) scrape files created with this script for you to use if you do not want to create your own file. Use `R18-Aug-30-2019-last-first.csv` if you have `name-order` set to _last_, and vice versa. Specify this path in `r18-export-csv-path`.
 
 ### Get-EmbyActorThumbs.ps1
 
@@ -196,6 +201,7 @@ Unfortunately R18 and javlibrary use different English naming conventions for th
 -   [x] Add option to input tags/genres in metadata file - v.1.4.0
 -   [x] Add functionality to crop cover to poster size - v1.4.4
 -   [x] Scrape actor images and push to Emby - v1.5.0
--   [ ] Add functionality to manually scrape a javlibrary url if it can't match automatically
+-   [ ] Add option to do recursive search on sort_jav.py
+-   [ ] Add option to manually scrape a javlibrary url if it can't match automatically
 -   [ ] Add more video title renaming options
 -   [ ] Scrape video plot/description
