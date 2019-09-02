@@ -17,7 +17,7 @@ function New-ActorObject {
         [string]$CsvPath
     )
 
-    $Csv = Import-Csv -Path $CsvPath
+    $Csv = Import-Csv -Path $CsvPath -ErrorAction Stop
 
     $ActorObject = @()
     foreach ($Object in $Csv) {
@@ -55,7 +55,7 @@ for ($x = 0; $x -lt $EmbyActors.Items.Length; $x++) {
 
 # Import R18 actors and thumburls to object
 Write-Host "Importing R18 actors with thumb urls..."
-$R18ActorObject = Import-Csv -Path $R18ImportPath
+$R18ActorObject = Import-Csv -Path $R18ImportPath -ErrorAction Stop
 
 Write-Host "Comparing Emby actor list with R18, please wait..."
 # Compare both Emby and R18 actors for matching actors, and combine to a single object
@@ -95,11 +95,11 @@ else {
 }
 
 if ($Input -like 'y') {
-    $ActorObject | Select-Object Name, EmbyId, ThumbUrl, PrimaryUrl | Export-Csv -Path $ActorExportPath -Force -NoTypeInformation
+    $ActorObject | Select-Object Name, EmbyId, ThumbUrl, PrimaryUrl | Export-Csv -Path $ActorExportPath -Force -NoTypeInformation -ErrorAction Stop
 }
 
 else {
-    $ExistingActors = Import-Csv -Path $ActorExportPath
+    $ExistingActors = Import-Csv -Path $ActorExportPath -ErrorAction Stop
     $Count = 1
     foreach ($Actor in $ActorObject) {
         # If EmbyId already exists in the csv
@@ -108,7 +108,7 @@ else {
         }
         # If new actor (EmbyId) found, append to existing csv
         else {
-            $Actor | Select-Object Name, EmbyId, ThumbUrl, PrimaryUrl | Export-Csv -Path $ActorExportPath -Append -NoClobber -NoTypeInformation
+            $Actor | Select-Object Name, EmbyId, ThumbUrl, PrimaryUrl | Export-Csv -Path $ActorExportPath -Append -NoClobber -NoTypeInformation -ErrorAction Stop
             Write-Host "($Count) Appending $Actor"
         }
         $Count++
