@@ -12,8 +12,7 @@ Big thanks to the original author of the sort_jav.py script [/u/Ohura](https://r
 ## Demo
 
 ![GitHub Logo](extras/demo.gif)
-
-[Old demo](https://gfycat.com/vibrantambitiouscoyote)
+![jf-example](extras/jf-example.png)
 
 ## Table of Contents:
 
