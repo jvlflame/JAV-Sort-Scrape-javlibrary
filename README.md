@@ -11,7 +11,9 @@ Big thanks to the original author of the sort_jav.py script [/u/Ohura](https://r
 
 ## Demo
 
-![GitHub Logo](extras/demo.gif)
+[**Emby thumbnail demo**](https://gfycat.com/kindheartedethicalgerenuk)
+
+![Demo](extras/demo.gif)
 ![jf-example](extras/jf-example.png)
 
 ## Table of Contents:
@@ -97,7 +99,7 @@ The scripts are numbered in the order that they should be run. They were written
 
 1. Run `sort_jav.py` to sort your JAV files. - **_Stop here if you don't use any media servers that use .nfo metadata_**
 
-2. Run `Set-JAVNfo.ps1` to create .nfo metadata files for each video. **_Stop here if you don't use Emby or Jellyfin, or you don't want actor images_**
+2. Run `Set-JAVNfo.ps1` to create .nfo metadata files for each video. - **_Stop here if you don't use Emby or Jellyfin, or you don't want actor images_**
 
 3. Go to your Emby server and make sure all your videos are imported. This is important, as the next step will call Emby's API to get your current actor list.
 
