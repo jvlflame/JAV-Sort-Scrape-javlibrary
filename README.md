@@ -18,12 +18,11 @@ Big thanks to the original author of the sort_jav.py script [/u/Ohura](https://r
 ## Table of Contents:
 
 -   [Changelog](#Change-Notes)
--   [Prerequisites](#Prerequisites)
--   [How To Run](#Getting-Started)
--   [Settings](#Settings)
--   [Additional Notes](#Additional-Notes)
+-   [Getting Started](#Getting-Started)
+-   [Usage](#Usage)
+-   [Notes](#notes)
 -   [FAQ](#FAQ)
--   [Disclaimer](#Disclaimer)
+-   [Feature Ideas](#Feature-Ideas)
 
 ## Changelog
 
@@ -76,7 +75,7 @@ Set-ExecutionPolicy Unrestricted
 
 ## Usage
 
-**Before running any of the scripts, configure your settings in `settings_sort_jav.ini`**. Documentation for each option is listed in the settings file, with defaults set to my best practice guideline. Most notably, you will need to change each of the path settings to match your local directory structure.
+**Before running any of the scripts, configure your settings in `settings_sort_jav.ini`**. Documentation for each option is listed in the settings file, with defaults set to my best practice guideline. Most notably, you will need to change each of the path settings to match your local directory structure. Completely read through this section, the [Notes](#Notes), and [FAQ](#FAQ) section before using.
 
 If you are running this for the first time and you have many directories of videos, you can run the `sort_jav.py` or `Set-JAVNfo.ps1` scripts concurrently with many different paths. Simply edit the `path` in your settings file, save, and run the script. Edit `path` and run again, etc.
 
