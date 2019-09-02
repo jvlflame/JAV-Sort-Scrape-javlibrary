@@ -98,8 +98,11 @@ for ($x = 0; $x -lt $ActorObject.Length; $x++) {
                 # POST primary to Emby
                 Add-ActorThumbs -ServerUri $EmbyServerUri -ActorId $ActorObject[$x].EmbyId -ImageUrl $ActorObject[$x].PrimaryUrl -ImageType Primary -ApiKey $EmbyApiKey -ErrorAction Stop
 
-                # Write to db file if posted
-                $ActorObject[$x] | Export-Csv -Path $ActorDbPath -Append -NoClobber -ErrorAction Stop
+                try {
+                    # Write to db file if posted
+                    $ActorObject[$x] | Export-Csv -Path $ActorDbPath -Append -NoClobber -ErrorAction Stop
+                }
+                catch { Write-Error "Error writing to csv Database file. Make sure your database csv file is closed and restart the script." }
             }
             else {
                 # Query for index of existing actor in db
