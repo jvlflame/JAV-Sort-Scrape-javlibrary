@@ -78,9 +78,29 @@ Set-ExecutionPolicy Unrestricted
 
 **Before running any of the scripts, configure your settings in `settings_sort_jav.ini`**. Documentation for each option is listed in the settings file, with defaults set to my best practice guideline. Most notably, you will need to change each of the path settings to match your local directory structure.
 
+**_To run PowerShell (.ps1) scripts, right click the file and select "Run with PowerShell". To run Python (.py) scripts, double click to run._** You can also invoke the scripts from a **non-administrator** shell like shown in the demo.
+
+### Run order
+
 The scripts are numbered in the order that they should be run. They were written with ease-of-use in mind, so they are a one-click solution once your settings are configured properly.
 
-**_To run PowerShell (.ps1) scripts, right click the file and select "Run with PowerShell". To run Python (.py) scripts, double click to run._** You can also invoke the scripts from a **non-administrator** shell like shown in the demo.
+1. Run `sort_jav.py` to sort your JAV files. - **Stop here if you don't use any media servers that use .nfo metadata**
+
+2. Run `Set-JAVNfo.ps1` to create .nfo metadata files for each video - **Stop here if you don't use Emby or Jellyfin**
+
+3. Go to your Emby server and make sure all your videos are imported
+
+4. Run `Get-R18ThumbUrls.ps1` to scrape R18 and get actor thumbnail urls and write to .csv spreadsheet specified in `r18-export-csv-path` (you only need to do this once every so often when new actors are added to R18)
+
+5. Run `Get-EmbyActorThumbs.ps1` to get Emby actor name/id to compare with R18 spreadsheet and create a .csv spreadsheet specified in `actor-csv-export-path`. Make sure the spreadsheet you created in `Get-R18ThumbUrls.ps1` is specified in `r18-export-csv-path` as it will be referenced in this script.
+
+    - After creating this spreadsheet, you can modify specific actor images manually
+    - You can re-run this script after importing new videos/actors into Emby to update your spreadsheet
+
+6. Run `Set-EmbyActorThumbs.ps1` to import actor images into Emby. It will import based on the spreadsheet specified in `actor-csv-export-path`. A .csv database will be created to record all changes made to your actor images.
+
+    - After your first write to Emby, your .csv database will be created
+    - Any changes made to your `actor-csv-export-path` file will be compared to the database and be written accordingly
 
 ## Notes
 
