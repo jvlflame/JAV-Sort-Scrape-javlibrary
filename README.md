@@ -78,6 +78,8 @@ Set-ExecutionPolicy Unrestricted
 
 **Before running any of the scripts, configure your settings in `settings_sort_jav.ini`**. Documentation for each option is listed in the settings file, with defaults set to my best practice guideline. Most notably, you will need to change each of the path settings to match your local directory structure.
 
+If you are running this for the first time and you have many directories of videos, you can run the `sort_jav.py` or `Set-JAVNfo.ps1` scripts concurrently with many different paths. Simply edit the `path` in your settings file, save, and run the script. Edit `path` and run again, etc.
+
 **_To run PowerShell (.ps1) scripts, right click the file and select "Run with PowerShell". To run Python (.py) scripts, double click to run._** You can also invoke the scripts from a **non-administrator** shell like shown in the demo.
 
 ### Run order
