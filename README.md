@@ -181,6 +181,10 @@ For these special cases, rename the files to exactly how they appear on javlibra
 
 Try calling the scripts through a shell window rather than double-clicking to run. You will be able to diagnose what the issue is.
 
+### Not all my actresses have thumbnail images
+
+Unfortunately R18 and javlibrary use different English naming conventions for their actresses, so until I have a solution in place to either scrape Japanese, or do some manual switcharoos, we'll have to deal with it. You can also manually put in image urls into the .csv specified in `actor-csv-export-path`.
+
 ## Feature ideas
 
 -   [x] Add option to input tags/genres in metadata file - v.1.4.0
