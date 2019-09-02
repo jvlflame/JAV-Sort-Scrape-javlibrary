@@ -43,7 +43,7 @@ $ActorExportPath = ((Get-Content $SettingsPath) -match '^actor-csv-export-path')
 
 # Write Emby actors and id to object
 Write-Host "Getting actors from Emby..."
-$EmbyActors = Get-EmbyActors -ServerUri $EmbyServerUri -ApiKey $EmbyApiKey
+$EmbyActors = Get-EmbyActors -ServerUri $EmbyServerUri -ApiKey $EmbyApiKey -ErrorAction Stop
 $EmbyActorObject = @()
 for ($x = 0; $x -lt $EmbyActors.Items.Length; $x++) {
     $EmbyActorObject += New-Object -TypeName psobject -Property @{
