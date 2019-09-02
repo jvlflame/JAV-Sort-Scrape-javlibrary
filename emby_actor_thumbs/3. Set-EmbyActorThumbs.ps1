@@ -70,7 +70,7 @@ $EmbyApiKey = ((Get-Content $SettingsPath) -match '^emby-api-key').Split('=')[1]
 $ActorImportPath = ((Get-Content $SettingsPath) -match '^actor-csv-export-path').Split('=')[1]
 $ActorDbPath = ((Get-Content $SettingsPath) -match '^actor-csv-database-path').Split('=')[1]
 
-$ActorObject = Import-Csv -Path $ActorImportPath
+$ActorObject = Import-Csv -Path $ActorImportPath -ErrorAction Stop
 
 # Check if db file specified in 'actor-csv-database-path' exists, create if not exists
 if (!(Test-Path $ActorDbPath)) {
@@ -79,7 +79,7 @@ if (!(Test-Path $ActorDbPath)) {
 }
 
 else {
-    $ActorDbObject = Import-Csv -Path $ActorDbPath
+    $ActorDbObject = Import-Csv -Path $ActorDbPath -ErrorAction Stop
 }
 
 Write-Host "Querying for changes in $ActorImportPath..."
@@ -99,7 +99,7 @@ for ($x = 0; $x -lt $ActorObject.Length; $x++) {
                 Add-ActorThumbs -ServerUri $EmbyServerUri -ActorId $ActorObject[$x].EmbyId -ImageUrl $ActorObject[$x].PrimaryUrl -ImageType Primary -ApiKey $EmbyApiKey -ErrorAction Stop
 
                 # Write to db file if posted
-                $ActorObject[$x] | Export-Csv -Path $ActorDbPath -Append -NoClobber
+                $ActorObject[$x] | Export-Csv -Path $ActorDbPath -Append -NoClobber -ErrorAction Stop
             }
             else {
                 # Query for index of existing actor in db
