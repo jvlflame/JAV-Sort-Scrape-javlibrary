@@ -43,6 +43,7 @@ function Set-JAVNfo {
                 Path  = $File.Directory
             }
             $Index++
+            if (($Index % 20) -eq 0) { Write-Host '.' -NoNewline }
         }
         # Default prompt yes
         $Input = 'y'
@@ -91,9 +92,9 @@ function Set-JAVNfo {
                     $TitleFixed = ($Temp + $Temp2)
                 }
                 $FinalTitle = $TitleFixed
-                $ReleaseDate = ($HtmlContent -match '<td class="text">\d{4}-\d{2}-\d{2}<\/td>').Split(('<td class="text">', '</td>'), 'None')[1]
+                $ReleaseDate = ((($HtmlContent -match '<td class="text">\d{4}-\d{2}-\d{2}<\/td>') -split '<td class="text">') -split '</td')[1]
                 $ReleaseYear = ($ReleaseDate.Split('-'))[0]
-                $Studio = (($HtmlContent -match '<a href="vl_maker\.php\?m=[\w\d]{1,10}" rel="tag">(.*)<\/a>')).Split(('rel="tag">', '</a> &nbsp'), 'None')[1]
+                $Studio = (((($HtmlContent -match '<a href="vl_maker\.php\?m=[\w\d]{1,10}" rel="tag">(.*)<\/a>')) -split 'rel="tag">') -split '</a> &nbsp')[1]
                 $Genres = (($HtmlContent -match 'rel="category tag">(.*)<\/a><\/span><\/td>') -Split 'rel="category tag">')
                 
                 # Write metadata to file
