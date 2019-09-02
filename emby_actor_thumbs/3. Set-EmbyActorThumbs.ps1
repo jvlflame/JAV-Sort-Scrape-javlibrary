@@ -4,7 +4,7 @@ function Add-ActorThumbs {
         [Parameter(Mandatory = $true)]
         [string]$ServerUri,
         [Parameter(Mandatory = $true)]
-        [int]$ActorId,
+        [string]$ActorId,
         [Parameter(Mandatory = $true)]
         [string]$ImageUrl,
         [Parameter(Mandatory = $true)]
@@ -22,7 +22,7 @@ function Remove-ActorThumbs {
         [Parameter(Mandatory = $true)]
         [string]$ServerUri,
         [Parameter(Mandatory = $true)]
-        [int]$ActorId,
+        [string]$ActorId,
         [Parameter(Mandatory = $true)]
         [string]$ImageType,
         [Parameter(Mandatory = $true)]
