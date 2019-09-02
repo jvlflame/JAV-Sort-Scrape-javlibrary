@@ -92,6 +92,8 @@ The scripts are numbered in the order that they should be run. They were written
 
 4. Run `Get-R18ThumbUrls.ps1` to scrape R18 and get actor thumbnail urls and write to .csv spreadsheet specified in `r18-export-csv-path` (you only need to do this once every so often when new actors are added to R18).
 
+    - I have provided two recently scraped spreadsheets in the repository as `emby_actor_thumbs/R18-Aug-30-2019.csv` Use last-first if your `name-order` in your settings is set to _last_, and vice-versa.
+
 5. Run `Get-EmbyActorThumbs.ps1` to get Emby actor name/id to compare with R18 spreadsheet and create a .csv spreadsheet specified in `actor-csv-export-path`. Make sure the spreadsheet you created in `Get-R18ThumbUrls.ps1` is specified in `r18-export-csv-path` as it will be referenced in this script.
 
     - After creating this spreadsheet, you can modify specific actor images manually
