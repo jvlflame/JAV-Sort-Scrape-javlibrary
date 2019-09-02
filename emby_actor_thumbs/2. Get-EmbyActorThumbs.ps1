@@ -50,7 +50,6 @@ for ($x = 0; $x -lt $EmbyActors.Items.Length; $x++) {
         Name   = $EmbyActors.Items.Name[$x]
         EmbyId = $EmbyActors.Items.Id[$x]
     }
-    if (($x % 20) -eq 0) { Write-Host '.' -NoNewline }
 }
 
 # Import R18 actors and thumburls to object
