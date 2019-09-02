@@ -90,12 +90,13 @@ for ($x = 0; $x -lt $ActorObject.Length; $x++) {
     if ($ActorObject[$x].ThumbUrl -notlike '' -or $ActorObject[$x].PrimaryUrl -notlike '') {
         if ($ActorObject[$x].ThumbUrl -notlike '' -and $ActorObject[$x].PrimaryUrl -notlike '') {
             if ($ActorObject[$x].Name -notin $ActorDbObject.Name -and $ActorObject[$x].EmbyId -notin $ActorDbObject.EmbyId) {
-                Write-Host "ADD images to "$ActorObject[$x].Name""
+                Write-Host "ADD thumb to "$ActorObject[$x].Name""
                 # POST thumb to Emby
                 Add-ActorThumbs -ServerUri $EmbyServerUri -ActorId $ActorObject[$x].EmbyId -ImageUrl $ActorObject[$x].ThumbURL -ImageType Thumb -ApiKey $EmbyApiKey -ErrorAction Stop
 
+                Write-Host "ADD primary to "$ActorObject[$x].Name""
                 # POST primary to Emby
-                Add-ActorThumbs -ServerUri $EmbyServerUri -ActorId $ActorObject[$x].EmbyId -ImageUrl $ActorObject[$x].PrimaryUrl -ImageType Thumb -ApiKey $EmbyApiKey -ErrorAction Stop
+                Add-ActorThumbs -ServerUri $EmbyServerUri -ActorId $ActorObject[$x].EmbyId -ImageUrl $ActorObject[$x].PrimaryUrl -ImageType Primary -ApiKey $EmbyApiKey -ErrorAction Stop
 
                 # Write to db file if posted
                 $ActorObject[$x] | Export-Csv -Path $ActorDbPath -Append -NoClobber
