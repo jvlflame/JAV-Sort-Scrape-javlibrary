@@ -10,7 +10,7 @@ function Set-JAVNfo {
 
     function Show-FileChanges {
         # Display file changes to host
-        $Table = @{Expression = { $_.Index }; Label = "#"; Width = 2 },
+        $Table = @{Expression = { $_.Index }; Label = "#"; Width = 4 },
         @{Expression = { $_.Name }; Label = "Name"; Width = 25 },
         @{Expression = { $_.Path }; Label = "Directory" }
         $FileObject | Sort-Object Index | Format-Table -Property $Table | Out-Host
