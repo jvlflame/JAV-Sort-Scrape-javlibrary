@@ -7,7 +7,7 @@
 
 The JAV-Sort-Scrape-javlibrary repository is a series of scripts used to manage your local JAV (Japanese Adult Video) library. It automatically scrapes content from JavLibrary and R18 to create an easily usable content library within Emby or Jellyfin. My goal in maintining this project is for it to function as a simple and lightweight alternative to [JAVMovieScraper](https://github.com/DoctorD1501/JAVMovieScraper). If you have any questions, criticisms, or requests, feel free to hop into my [throwaway discord channel](https://discord.gg/K2Yjevk) and send me a message.
 
-Big thanks to the original author of the sort_jav.py script [/u/Ohura](https://reddit.com/user/Ohura).
+Big thanks to the original author of the sort_jav.py script [/u/Oppaira](https://reddit.com/user/Oppaira).
 
 ## Demo
 
@@ -78,6 +78,10 @@ pip install Pillow
 # Required to scrape JavLibrary
 pip install cfscrape
 ```
+
+#### Install Node.js
+
+Download and install from [here](https://nodejs.org/en/download/).
 
 #### You will need PowerShell v5.0 or higher installed to run any of the .ps1 scripts (PowerShell 5.0 is installed on Windows 10 by default). If you get a Remote-ExecutionPolicy error when running, open an **administrator** PowerShell prompt, and run the following to unrestrict the scripts:
 
@@ -182,17 +186,21 @@ windows, that would be: / \ : \* ? < > |
 
 Try renaming your file exactly how it appears on javlibrary. If it still doesn't work for some reason, follow the instructions below to manually sort the file.
 
+### "Could not find video on javlibrary so skipping..." for all files
+
+This problem likely stems from the cfscrape module failing. First ensure that both cfscrape AND Node.js are installed properly (restart computer after installing Node.js). If that still does not work, run `pip install -U cfscrape` to upgrade your cfscrape module.
+
 ### The video was sorted by sort_jav.py, but it's the wrong video
 
-Occasionally the results will be incorrect due to there being multiple videos with the same title. To manually sort the file, go to the correct javlibrary page, and save the page as an html. Also save the cover image. Rename the .html to a .txt, and rename both the cover and .txt the same as the video. Run Set-JAVNfo.ps1 and it will create a metadata file for you.
+Occasionally the results will be incorrect due to there being multiple videos with the same title. To manually sort the file, go to the correct javlibrary page, and save the page as an html. Also save the cover image. Rename the .html to a .txt, and rename both the cover and .txt the same as the video. Run Set-JAVNfo.ps1 and it will create a metadata file for you. To create a poster cover, you can either crop it yourself, or run the `edit_covers.py` script with the FULL directory path of your manually sorted files set in the settings path.
 
 ### r18 and t28 videos aren't being sorted
 
-For these special cases, rename the files to exactly how they appear on javlibrary. Anything extra in the video name will cause it not to sort.
+For these special cases, rename the files to exactly how they appear on javlibrary. Anything extra in the video name will cause it not to sort. If you have a lot of them, check out my [JAV renamer script](https://nodejs.org/en/download/).
 
 ### Shell closes immediately after erroring
 
-Try calling the scripts through a shell window rather than double-clicking to run. You will be able to diagnose what the issue is.
+Try calling the scripts through a shell window rather than double-clicking to run. You will be able to diagnose what the issue is through the error messages.
 
 ### Not all my actresses have thumbnail images
 
