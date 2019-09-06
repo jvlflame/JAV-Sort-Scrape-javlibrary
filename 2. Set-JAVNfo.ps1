@@ -71,19 +71,6 @@ function Set-JAVNfo {
                 $NfoName = $MetadataFile.BaseName + '.nfo'
                 $VideoId = ($FileName -split "$PartDelimiter")[0]
                 $NfoPath = Join-Path -Path $MetadataFile.Directory -ChildPath $NfoName
-                if ($R18Title -like 'false') {
-                    # Get video title name from html with regex
-                    $Title = $HtmlContent -match '<title>(.*) - JAVLibrary<\/title>'
-                    # Remove broken HTML causing title not to write correctly
-                    $TitleFixHTML = ($Title -replace '&quot;', '') -replace '#39;s', ''
-                    $TitleFixed = ((($TitleFixHTML -replace '<title>', '') -replace '- JAVLibrary</title>', '').Trim()) -replace ' [\W]', ''
-                }
-                else {
-                    $R18Search = Invoke-WebRequest "https://www.r18.com/common/search/searchword=$VideoId/"
-                    $R18Url = (($R18Search.Links | Where-Object {$_.href -like "*/videos/vod/movies/detail/-/id=*"}).href)[0]
-                    $R18Title = (($R18Search.Links | Where-Object {$_.href -like "*/videos/vod/movies/detail/-/id=*"}).innertext -split "~\d{1,3}.\d{1,2}").Trim()[0]
-                }
-
                 # Check if the video has multiple parts
                 # If it does, write the part number to a variable
                 if ($NameSetting -like 'true') {
@@ -96,6 +83,26 @@ function Set-JAVNfo {
                     else {
                         $PartNumber = ($FileName -split ($PartDelimiter))[1]
                     }
+                }
+                if ($R18TitleCheck -like 'true') {
+                    # Perform a search on R18.com for the video ID
+                    $R18Search = Invoke-WebRequest "https://www.r18.com/common/search/searchword=$VideoId/"
+                    $R18Url = (($R18Search.Links | Where-Object {$_.href -like "*/videos/vod/movies/detail/-/id=*"}).href)[0]
+                    $R18Title = (($R18Search.Links | Where-Object {$_.href -like "*/videos/vod/movies/detail/-/id=*"}).innertext -split "~\d{1,3}.\d{1,2}").Trim()[0]
+
+                    if ($null -like $R18TitleCheck) {
+                        $TitleFixed = ((($TitleFixHTML -replace '<title>', '') -replace '- JAVLibrary</title>', '').Trim()) -replace ' [\W]', ''
+                    }
+                    else {
+                        $TitleFixed = "$VideoId $R18Title"
+                    }
+                }
+                else {
+                    # Get video title name from html with regex
+                    $Title = $HtmlContent -match '<title>(.*) - JAVLibrary<\/title>'
+                    # Remove broken HTML causing title not to write correctly
+                    $TitleFixHTML = ($Title -replace '&quot;', '') -replace '#39;s', ''
+                    $TitleFixed = ((($TitleFixHTML -replace '<title>', '') -replace '- JAVLibrary</title>', '').Trim()) -replace ' [\W]', ''
                 }
                 # Since the above does a split to find if it's a part
                 # Match if the part number found is a one digit number
