@@ -88,14 +88,14 @@ function Set-JAVNfo {
                 $Title = $HtmlContent -match '<title>(.*) - JAVLibrary<\/title>'
                 # Remove broken HTML causing title not to write correctly
                 $TitleFixHTML = ($Title -replace '&quot;', '') -replace '#39;s', ''
-                $TitleFixed = ((($TitleFixHTML -replace '<title>', '') -replace '- JAVLibrary</title>', '').Trim()) -replace ' [\W]', ''
+                $TitleFixed = ((($TitleFixHTML -replace '<title>', '') -replace '- JAVLibrary</title>', '').Trim())
                 if ($R18TitleCheck -like 'true') {
                     # Perform a search on R18.com for the video ID
                     $R18Search = Invoke-WebRequest "https://www.r18.com/common/search/searchword=$VideoId/"
                     $R18Url = (($R18Search.Links | Where-Object {$_.href -like "*/videos/vod/movies/detail/-/id=*"}).href)
                     $R18Title = (($R18Search.Links | Where-Object {$_.href -like "*/videos/vod/movies/detail/-/id=*"}).innertext -split "~\d{1,3}.\d{1,2}").Trim()[0]
                     if ($null -like $R18Title -or '' -like $R18Title) {
-                        $TitleFixed = ((($TitleFixHTML -replace '<title>', '') -replace '- JAVLibrary</title>', '').Trim()) -replace ' [\W]', ''
+                        $TitleFixed = ((($TitleFixHTML -replace '<title>', '') -replace '- JAVLibrary</title>', '').Trim())
                     }
                     else {
                         $TitleFixed = "$VideoId $R18Title"
