@@ -31,6 +31,9 @@ Big thanks to the original author of the sort_jav.py script [/u/Oppaira](https:/
 
 ### v.1.5.2 (Current version)
 
+-   Additions
+    -   Add setting to prefer r18 title for video metadata
+
 -   Fixes
     -   Fix html causing inconsistencies on video titles in Emby
 
