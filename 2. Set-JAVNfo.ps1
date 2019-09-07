@@ -31,7 +31,7 @@ function Set-JAVNfo {
 
     Write-Host "Metadata to be written:"
     # Write txt metadata file paths to $HtmlMetadata
-    $HtmlMetadata = Get-ChildItem -LiteralPath $FilePath -Recurse | Where-Object { $_.Name -match '[a-zA-Z]{1,8}-[0-9]{1,8}(.*.txt)' -or $_.Name -match 't28(.*).txt' } | Select-Object Name, BaseName, FullName, Directory
+    $HtmlMetadata = Get-ChildItem -LiteralPath $FilePath -Recurse | Where-Object { $_.Name -match '[a-zA-Z]{1,8}-[0-9]{1,8}(.*.txt)' -or $_.Name -match 't28(.*).txt' -or $_.Name -match 'r18(.*).txt' } | Select-Object Name, BaseName, FullName, Directory
     if ($null -eq $HtmlMetadata) {
         Write-Warning 'No metadata files found! Exiting...'
         pause
