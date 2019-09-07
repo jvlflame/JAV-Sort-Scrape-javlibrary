@@ -28,10 +28,17 @@ function Set-JAVNfo {
     $PartDelimiter = ((Get-Content $SettingsPath) -match '^delimiter-between-multiple-videos').Split('=')[1]
     $NameSetting = ((Get-Content $SettingsPath) -match '^actress-before-video-number').Split('=')[1]
     $R18TitleCheck = ((Get-Content $SettingsPath) -match '^prefer-r18-title').Split('=')[1]
+    $RenameCheck = ((Get-Content $SettingsPath) -match '^do-not-rename-file').Split('=')[1]
 
     Write-Host "Metadata to be written:"
     # Write txt metadata file paths to $HtmlMetadata
-    $HtmlMetadata = Get-ChildItem -LiteralPath $FilePath -Recurse | Where-Object { $_.Name -match '[a-zA-Z]{1,8}-[0-9]{1,8}(.*.txt)' -or $_.Name -match 't28(.*).txt' } | Select-Object Name, BaseName, FullName, Directory
+    if ($RenameCheck -like 'true') {
+        # Match all .txt files if you are not renaming files
+        $HtmlMetadata = Get-ChildItem -LiteralPath $FilePath -Recurse | Where-Object { $_.Name -match '(.*).txt' }
+    }
+    else {
+        $HtmlMetadata = Get-ChildItem -LiteralPath $FilePath -Recurse | Where-Object { $_.Name -match '[a-zA-Z]{1,8}-[0-9]{1,8}(.*.txt)' -or $_.Name -match 't28(.*).txt' } | Select-Object Name, BaseName, FullName, Directory
+    }
     if ($null -eq $HtmlMetadata) {
         Write-Warning 'No metadata files found! Exiting...'
         pause
