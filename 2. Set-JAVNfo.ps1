@@ -140,7 +140,6 @@ function Set-JAVNfo {
                         if ($null -ne $R18SeriesUrl) {
                             $R18SeriesSearch = Invoke-WebRequest -Uri $R18SeriesUrl -Method Get
                             $R18SeriesTitle = (((((($R18SeriesSearch.Content -split "<div class=`"breadcrumbs`">")[1]) -split "<dl><dt>")[1]) -split "<span class=")[0]).Trim()
-                            Write-Host $R18SeriesTitle
                         }
                         $R18DirectorString = (((($R18Search -split "<dd itemprop=`"director`">")[1]) -split "<br>")[0])
                         if ($R18DirectorString -notmatch '----') {
