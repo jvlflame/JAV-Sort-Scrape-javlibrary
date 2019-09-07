@@ -32,12 +32,12 @@ Big thanks to the original author of the sort_jav.py script [/u/Oppaira](https:/
 ### v 1.5.3
 
 -   Additions
-    - Add setting `scrape-r18-other-metadata` to scrape and set metadata for r18 series and video director
+    - Add setting `scrape-r18-other-metadata` to scrape and set R18.com metadata for series and video director
 
 ### v 1.5.2 (Current release)
 
 -   Additions
-    -   Add setting `prefer-r18-title` to prefer r18 title for video metadata
+    -   Add setting `prefer-r18-title` to prefer R18.com title for video metadata
     -   Add setting `do-not-rename-file` to run sort_jav.py without renaming video files
 
 -   Fixes
