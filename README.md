@@ -32,8 +32,8 @@ Big thanks to the original author of the sort_jav.py script [/u/Oppaira](https:/
 ### v.1.5.2 (Current version)
 
 -   Additions
-    -   Add setting to prefer r18 title for video metadata
-    -   Add setting to run sort_jav.py without renaming video files
+    -   Add setting `prefer-r18-title` to prefer r18 title for video metadata
+    -   Add setting `do-not-rename-file` to run sort_jav.py without renaming video files
 
 -   Fixes
     -   Fix html causing inconsistencies on video titles in Emby
@@ -69,7 +69,7 @@ Big thanks to the original author of the sort_jav.py script [/u/Oppaira](https:/
 
 ### Installing
 
-Clone this repository (recommended) or [download the latest release](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/releases).
+[Clone this repository (recommended)](https://github.com/gboudreau/XBMCnfoMoviesImporter.bundle/archive/master.zip) or [download the latest release](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/releases).
 
 #### Install Pillow module on Python
 
