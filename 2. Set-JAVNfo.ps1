@@ -100,7 +100,12 @@ function Set-JAVNfo {
                     # Perform a search on R18.com for the video ID
                     $R18Search = Invoke-WebRequest "https://www.r18.com/common/search/searchword=$VideoId/"
                     $R18Url = (($R18Search.Links | Where-Object {$_.href -like "*/videos/vod/movies/detail/-/id=*"}).href)
-                    $R18Title = (((($R18Search.Content -split "data-title=`"")[1] -split "data-title=`"")[0] -split "data-description")[0].Trim()) -replace ".$"
+                    if ($R18Search.Content -match "data-product-page-url=`"https://www.r18.com/videos/vod/movies/detail") {
+                        $R18Title = (((($R18Search.Content -split "data-title=`"")[1] -split "data-title=`"")[0] -split "data-description")[0].Trim()) -replace ".$"
+                    }
+                    else {
+                        $R18Title = $null
+                    }
                     if ($null -like $R18Title -or '' -like $R18Title) {
                         $TitleFixed = ((($TitleFixHTML -replace '<title>', '') -replace '- JAVLibrary</title>', '').Trim())
                     }
