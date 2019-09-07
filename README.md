@@ -33,9 +33,11 @@ Big thanks to the original author of the sort_jav.py script [/u/Oppaira](https:/
 
 -   Additions
     -   Add setting to prefer r18 title for video metadata
+    -   Add setting to run sort_jav.py without renaming video files
 
 -   Fixes
     -   Fix html causing inconsistencies on video titles in Emby
+    -   Fix Set-JAVNfo.ps1 not writing metadata for videos with naming starting with "R18"
 
 ### v.1.5.1
 
