@@ -38,6 +38,7 @@ Big thanks to the original author of the sort_jav.py script [/u/Oppaira](https:/
 -   Fixes
     -   Fix html causing inconsistencies on video titles in Emby
     -   Fix Set-JAVNfo.ps1 not writing metadata for videos with naming starting with "R18"
+    -   Fix R18 titles not scraping with PowerShell 6.0+
 
 ### v.1.5.1
 
@@ -64,7 +65,7 @@ Big thanks to the original author of the sort_jav.py script [/u/Oppaira](https:/
 -   [Python 3.5+](https://www.python.org/downloads/)
     -   [Pillow](https://pypi.org/project/Pillow/)
     -   [cfscrape](https://pypi.org/project/cfscrape/) - requires Node.js
--   [PowerShell 5.0 or higher (6.0+ **NOT** recommended)](https://github.com/PowerShell/PowerShell)
+-   [PowerShell 5.0 or higher (6.0+ recommended)](https://github.com/PowerShell/PowerShell)
 
 ### Installing
 
@@ -108,7 +109,7 @@ The scripts are numbered in the order that they should be run. They were written
 
 1. Run `sort_jav.py` to sort your JAV files. - **_Stop here if you don't use any media servers that use .nfo metadata_**
 
-2. Run `Set-JAVNfo.ps1` to create .nfo metadata files for each video. R18 titles will not work with PowerShell 6.0+, use PowerShell 5 instead. **_Stop here if you don't use Emby or Jellyfin, or you don't want actor images_**
+2. Run `Set-JAVNfo.ps1` to create .nfo metadata files for each video. **_Stop here if you don't use Emby or Jellyfin, or you don't want actor images_**
 
 3. Go to your Emby server and make sure all your videos are imported. This is important, as the next step will call Emby's API to get your current actor list.
 
