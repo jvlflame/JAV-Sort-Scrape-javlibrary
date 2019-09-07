@@ -68,6 +68,8 @@ function Set-JAVNfo {
         if ($Input -like 'y' -or $Input -like 'yes') {
             Write-Host "Writing metadata .nfo files in path: $FilePath ..."
             # Write each nfo file
+            $Count = 1
+            $Total = $HtmlMetadata.Count
             foreach ($MetadataFile in $HtmlMetadata) {
                 # Read html txt
                 $FileLocation = $MetadataFile.FullName
@@ -121,17 +123,27 @@ function Set-JAVNfo {
                     $TitleFixed = ($Temp + $Temp2)
                 }
                 # Scrape series title from R18
+                $R18SeriesTitle = $null
+                $R18DirectorName = $null
                 if ($R18MetadataCheck -like 'true') {
-                    $R18Search = Invoke-WebRequest -Uri $R18Url -Method Get
-                    # Scrape series title from R18
-                    $R18SeriesUrl = $R18Search.Links.href | Where-Object { $_ -match "Type=series\/" }
-                    if ($null -ne $R18SeriesUrl) {
-                        $R18SeriesSearch = Invoke-WebRequest -Uri $R18SeriesUrl -Method Get
-                        $R18SeriesTitle = (((($R18SeriesSearch.ParsedHtml.title -split "The `"")[1]) -split "`" series")[0]).Trim()
-                    }
-                    $R18DirectorString = (((($R18Search -split "<dd itemprop=`"director`">")[1]) -split "<br>")[0])
-                    if ($R18DirectorString -notmatch '----') {
-                        $R18DirectorName = $R18DirectorString.Trim()
+                    if ($R18Url) {
+                        if ($R18Url.Count -gt 1) {
+                            $R18Search = Invoke-WebRequest -Uri $R18Url[0] -Method Get
+                        }
+                        else {
+                            $R18Search = Invoke-WebRequest -Uri $R18Url -Method Get
+                        }
+                        # Scrape series title from R18
+                        $R18SeriesUrl = $R18Search.Links.href | Where-Object { $_ -match "Type=series\/" }
+                        if ($null -ne $R18SeriesUrl) {
+                            $R18SeriesSearch = Invoke-WebRequest -Uri $R18SeriesUrl -Method Get
+                            $R18SeriesTitle = (((((($R18SeriesSearch.Content -split "<div class=`"breadcrumbs`">")[1]) -split "<dl><dt>")[1]) -split "<span class=")[0]).Trim()
+                            Write-Host $R18SeriesTitle
+                        }
+                        $R18DirectorString = (((($R18Search -split "<dd itemprop=`"director`">")[1]) -split "<br>")[0])
+                        if ($R18DirectorString -notmatch '----') {
+                            $R18DirectorName = $R18DirectorString.Trim()
+                        }
                     }
                 }
                 $VideoTitle = $TitleFixed
@@ -159,7 +171,7 @@ function Set-JAVNfo {
                         Add-Content -LiteralPath $NfoPath -Value "    <tag>$GenreString</tag>"
                     }
                 }
-                if ($R18SeriesTitle) { Add-Content -LiteralPath $NfoPath -Value "    <tag>$R18SeriesTitle</tag>"}
+                if ($R18SeriesTitle) { Add-Content -LiteralPath $NfoPath -Value "    <tag>Series: $R18SeriesTitle</tag>"}
                 # Add actress metadata
                 $ActorSplitString = '<span class="star">'
                 $ActorSplitHtml = $HtmlContent -split $ActorSplitString
