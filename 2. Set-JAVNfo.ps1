@@ -28,6 +28,7 @@ function Set-JAVNfo {
     $PartDelimiter = ((Get-Content $SettingsPath) -match '^delimiter-between-multiple-videos').Split('=')[1]
     $NameSetting = ((Get-Content $SettingsPath) -match '^actress-before-video-number').Split('=')[1]
     $R18TitleCheck = ((Get-Content $SettingsPath) -match '^prefer-r18-title').Split('=')[1]
+    $R18MetadataCheck = ((Get-Content $SettingsPath) -match '^scrape-r18-other-metadata').Split('=')[1]
     $RenameCheck = ((Get-Content $SettingsPath) -match '^do-not-rename-file').Split('=')[1]
 
     Write-Host "Metadata to be written:"
@@ -67,8 +68,6 @@ function Set-JAVNfo {
         if ($Input -like 'y' -or $Input -like 'yes') {
             Write-Host "Writing metadata .nfo files in path: $FilePath ..."
             # Write each nfo file
-            $Count = 1
-            $Total = $HtmlMetadata.Count
             foreach ($MetadataFile in $HtmlMetadata) {
                 # Read html txt
                 $FileLocation = $MetadataFile.FullName
@@ -121,20 +120,32 @@ function Set-JAVNfo {
                     # If html file is detected as multi-part, create a new title as "VidID (Part#) Title"
                     $TitleFixed = ($Temp + $Temp2)
                 }
-                $FinalTitle = $TitleFixed
+                # Scrape series title from R18
+                if ($R18MetadataCheck -like 'true') {
+                    $R18Search = Invoke-WebRequest -Uri $R18Url -Method Get
+                    # Scrape series title from R18
+                    $R18SeriesUrl = $R18Search.Links.href | Where-Object { $_ -match "Type=series\/" }
+                    if ($null -ne $R18SeriesUrl) {
+                        $R18SeriesSearch = Invoke-WebRequest -Uri $R18SeriesUrl -Method Get
+                        $R18SeriesTitle = (((($R18SeriesSearch.ParsedHtml.title -split "The `"")[1]) -split "`" series")[0]).Trim()
+                    }
+                    $R18DirectorString = (((($R18Search -split "<dd itemprop=`"director`">")[1]) -split "<br>")[0])
+                    if ($R18DirectorString -notmatch '----') {
+                        $R18DirectorName = $R18DirectorString.Trim()
+                    }
+                }
+                $VideoTitle = $TitleFixed
                 $ReleaseDate = ((($HtmlContent -match '<td class="text">\d{4}-\d{2}-\d{2}<\/td>') -split '<td class="text">') -split '</td')[1]
                 $ReleaseYear = ($ReleaseDate.Split('-'))[0]
                 $Studio = (((($HtmlContent -match '<a href="vl_maker\.php\?m=[\w\d]{1,10}" rel="tag">(.*)<\/a>')) -split 'rel="tag">') -split '</a> &nbsp')[1]
                 $Genres = (($HtmlContent -match 'rel="category tag">(.*)<\/a><\/span><\/td>') -Split 'rel="category tag">')
-                
                 # Write metadata to file
                 Set-Content -LiteralPath $NfoPath -Value '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' -Force
                 Add-Content -LiteralPath $NfoPath -Value '<movie>'
-                if ($AddTitle -like 'true') {
-                    Add-Content -LiteralPath $NfoPath -Value "    <title>$FinalTitle</title>"
-                }
+                if ($AddTitle -like 'true') { Add-Content -LiteralPath $NfoPath -Value "    <title>$VideoTitle</title>" }
                 Add-Content -LiteralPath $NfoPath -Value "    <year>$ReleaseYear</year>"
                 Add-Content -LiteralPath $NfoPath -Value "    <releasedate>$ReleaseDate</releasedate>"
+                if ($R18DirectorName) { Add-Content -LiteralPath $NfoPath -Value "    <director>$R18DirectorName</director>" }
                 Add-Content -LiteralPath $NfoPath -Value "    <studio>$Studio</studio>"
                 if ($AddGenres -like 'true') {
                     foreach ($Genre in $Genres[1..($Genres.Length - 1)]) {
@@ -148,6 +159,7 @@ function Set-JAVNfo {
                         Add-Content -LiteralPath $NfoPath -Value "    <tag>$GenreString</tag>"
                     }
                 }
+                if ($R18SeriesTitle) { Add-Content -LiteralPath $NfoPath -Value "    <tag>$R18SeriesTitle</tag>"}
                 # Add actress metadata
                 $ActorSplitString = '<span class="star">'
                 $ActorSplitHtml = $HtmlContent -split $ActorSplitString
@@ -185,5 +197,6 @@ function Set-JAVNfo {
         }
     }
 }
+
 
 Set-JAVNfo -Prompt
