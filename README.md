@@ -29,7 +29,12 @@ Big thanks to the original author of the sort_jav.py script [/u/Oppaira](https:/
 
 **Older changes have been moved to the [wiki.](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/wiki)**
 
-### v.1.5.2 (Current version)
+### v 1.5.3
+
+-   Additions
+    - Add setting `scrape-r18-other-metadata` to scrape and set metadata for r18 series and video director
+
+### v 1.5.2 (Current release)
 
 -   Additions
     -   Add setting `prefer-r18-title` to prefer r18 title for video metadata
