@@ -111,6 +111,8 @@ The scripts are numbered in the order that they should be run. They were written
 
 2. Run `Set-JAVNfo.ps1` to create .nfo metadata files for each video. **_Stop here if you don't use Emby or Jellyfin, or you don't want actor images_**
 
+    - You can re-run this script on existing directories to replace old metadata files if you make changes to your settings
+
 3. Go to your Emby server and make sure all your videos are imported. This is important, as the next step will call Emby's API to get your current actor list.
 
 4. Run `Get-R18ThumbUrls.ps1` to scrape R18 and get actor thumbnail urls and write to .csv spreadsheet specified in `r18-export-csv-path` (you only need to do this once every so often when new actors are added to R18).
