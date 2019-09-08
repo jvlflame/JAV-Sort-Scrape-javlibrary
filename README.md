@@ -29,10 +29,15 @@ Big thanks to the original author of the sort_jav.py script [/u/Oppaira](https:/
 
 **Older changes have been moved to the [wiki.](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/wiki)**
 
-### v.1.5.2 (Current version)
+### v 1.5.3
 
 -   Additions
-    -   Add setting `prefer-r18-title` to prefer r18 title for video metadata
+    - Add setting `scrape-r18-other-metadata` to scrape and set R18.com metadata for series and video director
+
+### v 1.5.2 (Current release)
+
+-   Additions
+    -   Add setting `prefer-r18-title` to prefer R18.com title for video metadata
     -   Add setting `do-not-rename-file` to run sort_jav.py without renaming video files
 
 -   Fixes
@@ -153,7 +158,7 @@ If you are trying to sort a video with multiple parts, follow any of the naming 
 -   Matches all html .txt files created by sort_jav.py
 -   Creates a .nfo metadata file that is readable by Media servers like Emby/Jellyfin
 
-`Set-JAVNfo.ps1` will run a recursive search of .txt files located in the `path` specified in your settings file. A .nfo metadata file will be generated with information such as title, release date, studio, genres, and actors. Set `prefer-r18-titles` true to do an additional scrape of R18(.)com for better translated titles in your metadata.
+`Set-JAVNfo.ps1` will run a recursive search of .txt files located in the `path` specified in your settings file. A .nfo metadata file will be generated with information such as title, release date, studio, genres, and actors. Set `prefer-r18-titles` true to do an additional scrape of R18.com for better translated titles in your metadata.
 
 ### Get-R18ThumbUrls.ps1
 
