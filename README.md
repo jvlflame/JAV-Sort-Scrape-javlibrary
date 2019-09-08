@@ -39,7 +39,6 @@ Big thanks to the original author of the sort_jav.py script [/u/Oppaira](https:/
 -   Additions
     -   Add setting `prefer-r18-title` to prefer R18.com title for video metadata
     -   Add setting `do-not-rename-file` to run sort_jav.py without renaming video files
-
 -   Fixes
     -   Fix html causing inconsistencies on video titles in Emby
     -   Fix Set-JAVNfo.ps1 not writing metadata for videos with naming starting with "R18"
@@ -134,6 +133,8 @@ The scripts are numbered in the order that they should be run. They were written
     - After your first write to Emby, your .csv database will be created
     - Any changes made to your `actor-csv-export-path` file will be compared to the database in `actor-csv-database-path` and be written accordingly
 
+If you are havaing trouble with any of these steps, review my [script-run demos](#demo), or send me a message in my [discord channel](https://discord.gg/K2Yjevk).
+
 ## Notes
 
 ### sort_jav.py
@@ -223,7 +224,11 @@ Unfortunately R18 and javlibrary use different English naming conventions for th
 
 -   [x] Add option to input tags/genres in metadata file - v.1.4.0
 -   [x] Add functionality to crop cover to poster size - v1.4.4
--   [x] Scrape actor images and push to Emby - v1.5.0
+-   [x] Scrape actor images from R18.com and push to Emby - v1.5.0
+-   [x] Add option to run sort_jav.py without renaming local files - v1.5.2
+-   [x] Scrape scene title from R18.com - v1.5.2
+-   [x] Scrape series title and director name from R18.com - v1.5.3
+-   [ ] Scrape amateur/uncensored video metadata from 7mmtv 
 -   [ ] Add option to do recursive search on sort_jav.py
 -   [ ] Add option to manually scrape a javlibrary url if it can't match automatically
 -   [ ] Add more video title renaming options
