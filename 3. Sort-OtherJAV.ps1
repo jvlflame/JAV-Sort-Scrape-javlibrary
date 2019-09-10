@@ -6,40 +6,46 @@ $Videos = Get-ChildItem -Path $FilePath -Recurse | Where-Object {$_.Extension -l
                                                              -or $_.Extension -like '.flv'}
 foreach ($Video in $Videos) {
     $VideoId = $Video.BaseName
-    $GoogleScrape = Invoke-WebRequest -Uri "http://www.google.com/search?q=site:7mmtv.tv+$VideoId"
+    $GoogleScrape = Invoke-WebRequest -Uri "https://www.google.com/search?q=site:7mmtv.tv+$VideoId"
+    #$GoogleScrape = Invoke-WebRequest -Uri https://duckduckgo.com/?q=site%3A7mmtv.tv+$VideoID/
     $7mmLink = (((((($GoogleScrape.Links.href -match '7mmtv.tv/../amateurjav_content')) -replace '7mmtv.tv/..', '7mmtv.tv/ja') -replace '\/url\?q=', '') -split "&amp;")[0])
-
+    Write-Host $7mmLink
     if ($7mmLink -notmatch $VideoId) {
         $7mmLink = (((((($GoogleScrape.Links.href -match '7mmtv.tv/../uncensored_content')) -replace '7mmtv.tv/..', '7mmtv.tv/ja') -replace '\/url\?q=', '') -split "&amp;")[0])
         if (($7mmLink -replace "%2520", " ") -notmatch $VideoId -or $null -like $7mmLink -or $7mmLink -like '') {
             "$VideoId not found on 7mmtv. Skipping..."
         }
-        else {
-            $7mmScrape = Invoke-WebRequest -Uri $7mmLink
-
-            $ScrapedTitle = ((($7mmScrape.Content -split "<title>")[1]) -split " -")[0]
-            $Studio = ((((($7mmScrape.Content -split "<li class='posts-message'><a target=`"_top`"")[1]) -split ".html'>")[1]) -split "<\/a>")[0]
-            if ($Studio -like "----") {
-                $Studio = ((((($7mmScrape.Content -split "<li class='posts-message'><a target=`"_top`" href='https:\/\/7mmtv.tv\/ja\/amateurjav_makersr")[1]) -split ".html'>")[1]) -split "<\/a>")[0]
-            }
-            $ReleaseDate = ((((($7mmScrape.Content -split "配信開始日:<\/li>")[1]) -split ">")[1]) -split "<")[0]
-            $ReleaseYear = ($ReleaseDate.Split('-'))[0]
-            $Genres = ($7mmScrape.Links | Where-Object { $_.outerHTML -match '_category\/' }).InnerHTML | Select-Object -Unique
-            $Actors = $7mmScrape.Links.href | Where-Object {$_ -like "*avperformer*"}
-            $ActorObject = @()
-            foreach ($Actor in $Actors) {
-                $ActorObject += ((($Actor -split "\d{1,6}\/")[1]) -split "\/")[0]
-            }
-        
-            Write-Host $7mmLink
-            Write-Host $ScrapedTitle
-            Write-Host $Studio
-            Write-Host $Genres
-            Write-Host $ActorObject
-            Write-Host $ReleaseDate
-            Write-Host $ReleaseYear
-        }
     }
+    else {
+        $7mmScrape = Invoke-WebRequest -Uri $7mmLink
+
+        $ScrapedTitle = ((($7mmScrape.Content -split "<title>")[1]) -split " -")[0]
+        $Studio = ((((($7mmScrape.Content -split "<li class='posts-message'><a target=`"_top`"")[1]) -split ".html'>")[1]) -split "<\/a>")[0]
+        if ($Studio -like "----") {
+            $Studio = ((((($7mmScrape.Content -split "<li class='posts-message'><a target=`"_top`" href='https:\/\/7mmtv.tv\/ja\/amateurjav_makersr")[1]) -split ".html'>")[1]) -split "<\/a>")[0]
+        }
+        $ReleaseDate = ((((($7mmScrape.Content -split "配信開始日:<\/li>")[1]) -split ">")[1]) -split "<")[0]
+        $ReleaseYear = ($ReleaseDate.Split('-'))[0]
+        $Genres = $7mmScrape.Links | Where-Object { $_.outerHTML -match '_category\/' }
+        $GenreObject = @()
+        foreach ($Genre in $Genres) {
+            $GenreObject += (((($Genre -split "_category\/\d{1,6}\/")[1]) -split "\/")[0])
+        }
+        $Actors = $7mmScrape.Links.href | Where-Object {$_ -like "*avperformer*"}
+        $ActorObject = @()
+        foreach ($Actor in $Actors) {
+            $ActorObject += ((($Actor -split "\d{1,6}\/")[1]) -split "\/")[0]
+        }
+    
+        Write-Host $7mmLink
+        Write-Host $ScrapedTitle
+        Write-Host $Studio
+        Write-Host $GenreObject
+        Write-Host $ActorObject
+        Write-Host $ReleaseDate
+        Write-Host $ReleaseYear
+    }
+    Start-Sleep -Seconds 10
 }
 
 <# 
