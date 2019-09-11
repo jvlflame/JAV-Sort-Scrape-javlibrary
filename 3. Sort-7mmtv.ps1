@@ -1,3 +1,7 @@
+# This script is very basic in functionality and not well-tested
+# If you encounter a bug, please open an issue or send me a message directly
+# Use at your own risk
+
 $FilePath = ((Get-Content -Path (Join-Path -Path $PSScriptRoot -ChildPath 'settings_sort_jav.ini')) -match '^7mm-files-path').Split('=')[1]
 $Videos = Get-ChildItem -Path $FilePath | Where-Object {$_.Extension -like ".mp4" `
                                                              -or $_.Extension -like ".mkv"`

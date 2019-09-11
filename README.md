@@ -33,7 +33,7 @@ Big thanks to the original author of the sort_jav.py script [/u/Oppaira](https:/
 
 -   Additions
     - Add setting `scrape-r18-other-metadata` to scrape and set R18.com metadata for series and video director
-    - Add script `Sort-7mmtv.ps1` to scrape and set 7mmtv.tv metadata for uncensored and amateur JAV
+    - **Experimental** - Add script `Sort-7mmtv.ps1` to scrape and set 7mmtv.tv metadata for uncensored and amateur JAV
 -   Fixes
     - Fix setting `do-not-rename-file` causing script to break when setting is true
 
