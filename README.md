@@ -33,6 +33,8 @@ Big thanks to the original author of the sort_jav.py script [/u/Oppaira](https:/
 
 -   Additions
     - Add setting `scrape-r18-other-metadata` to scrape and set R18.com metadata for series and video director
+-   Fixes
+    - Fix setting `do-not-rename-file` causing script to break when setting is true
 
 ### v 1.5.2 (Current release)
 
@@ -133,7 +135,7 @@ The scripts are numbered in the order that they should be run. They were written
     - After your first write to Emby, your .csv database will be created
     - Any changes made to your `actor-csv-export-path` file will be compared to the database in `actor-csv-database-path` and be written accordingly
 
-If you are havaing trouble with any of these steps, review my [script-run demos](#demo), or send me a message in my [discord channel](https://discord.gg/K2Yjevk).
+If you are having trouble with any of these steps, review my [script-run demos](#demo), or send me a message in my [discord channel](https://discord.gg/K2Yjevk).
 
 ## Notes
 
