@@ -533,12 +533,12 @@ def sort_jav(s):
             text_file = open(split_fname + '.txt', "w", encoding="utf-8")
             text_file.write(html)
 
-            """# write actresses to html metadata file
+            # write actresses to html metadata file
             actress_string = get_actress_string_txt(html, s)
             text_file.write("\n<ActressSorted>")
             text_file.write(actress_string)
             text_file.write("</ActressSorted>")
-            text_file.close() """
+            text_file.close()
 
         # move the file into a folder (if we say to)
         if s['move-video-to-new-folder']:

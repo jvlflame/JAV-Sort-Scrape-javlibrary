@@ -29,12 +29,19 @@ Big thanks to the original author of the sort_jav.py script [/u/Oppaira](https:/
 
 **Older changes have been moved to the [wiki.](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/wiki)**
 
-### v.1.5.2 (Current version)
+### v 1.5.3
 
 -   Additions
-    -   Add setting `prefer-r18-title` to prefer r18 title for video metadata
-    -   Add setting `do-not-rename-file` to run sort_jav.py without renaming video files
+    - Add setting `scrape-r18-other-metadata` to scrape and set R18.com metadata for series and video director
+    - Add script `Sort-7mmtv.ps1` to scrape and set 7mmtv.tv metadata for uncensored and amateur JAV
+-   Fixes
+    - Fix setting `do-not-rename-file` causing script to break when setting is true
 
+### v 1.5.2 (Current release)
+
+-   Additions
+    -   Add setting `prefer-r18-title` to prefer R18.com title for video metadata
+    -   ~~Add setting `do-not-rename-file` to run sort_jav.py without renaming video files~~ **Removed Sep 10, 2019 due to breaking bug**
 -   Fixes
     -   Fix html causing inconsistencies on video titles in Emby
     -   Fix Set-JAVNfo.ps1 not writing metadata for videos with naming starting with "R18"
@@ -111,6 +118,8 @@ The scripts are numbered in the order that they should be run. They were written
 
 2. Run `Set-JAVNfo.ps1` to create .nfo metadata files for each video. **_Stop here if you don't use Emby or Jellyfin, or you don't want actor images_**
 
+    - You can re-run this script on existing directories to replace old metadata files if you make changes to your settings
+
 3. Go to your Emby server and make sure all your videos are imported. This is important, as the next step will call Emby's API to get your current actor list.
 
 4. Run `Get-R18ThumbUrls.ps1` to scrape R18 and get actor thumbnail urls and write to .csv spreadsheet specified in `r18-export-csv-path` (you only need to do this once every so often when new actors are added to R18).
@@ -126,6 +135,8 @@ The scripts are numbered in the order that they should be run. They were written
 
     - After your first write to Emby, your .csv database will be created
     - Any changes made to your `actor-csv-export-path` file will be compared to the database in `actor-csv-database-path` and be written accordingly
+
+If you are having trouble with any of these steps, review my [script-run demos](#demo), or send me a message in my [discord channel](https://discord.gg/K2Yjevk).
 
 ## Notes
 
@@ -151,7 +162,7 @@ If you are trying to sort a video with multiple parts, follow any of the naming 
 -   Matches all html .txt files created by sort_jav.py
 -   Creates a .nfo metadata file that is readable by Media servers like Emby/Jellyfin
 
-`Set-JAVNfo.ps1` will run a recursive search of .txt files located in the `path` specified in your settings file. A .nfo metadata file will be generated with information such as title, release date, studio, genres, and actors. Set `prefer-r18-titles` true to do an additional scrape of R18(.)com for better translated titles in your metadata.
+`Set-JAVNfo.ps1` will run a recursive search of .txt files located in the `path` specified in your settings file. A .nfo metadata file will be generated with information such as title, release date, studio, genres, and actors. Set `prefer-r18-titles` true to do an additional scrape of R18.com for better translated titles in your metadata.
 
 ### Get-R18ThumbUrls.ps1
 
@@ -173,6 +184,12 @@ If you are trying to sort a video with multiple parts, follow any of the naming 
 -   Creates an up-to-date csv database of all API calls made to Emby/Jellyfin
 
 `Set-EmbyActorThumbs.ps1` will read the csv created by `Get-EmbyActorThumbs.ps1` and import new actor images to Emby while writing a separate csv database of all changes made. If the csv database already exists, it will be compared to your actor csv and only import new changes.
+
+### Sort-7mmtv.ps1
+
+-   Scrapes and sorts all videos in path set in `7mm-files-path` in the settings file
+
+`Sort-7mmtv.ps1` will scrape metadata, download the video cover, write a .nfo metadata file, and move videos to a new directory. It will scrape metadata information from the Japanese version of the site. Unfortuantely the English version has too many errors and discrepencies. I recommend you separate your uncensored/amateur JAV from your censored ones in Emby as to better filter through them. This is a very basic script, with no settings options besides the path. The script will sort one video file every 10 seconds, as the script scrapes from Google, and you will be blocked if you scrape too much.
 
 ### edit_covers.py
 
@@ -216,7 +233,11 @@ Unfortunately R18 and javlibrary use different English naming conventions for th
 
 -   [x] Add option to input tags/genres in metadata file - v.1.4.0
 -   [x] Add functionality to crop cover to poster size - v1.4.4
--   [x] Scrape actor images and push to Emby - v1.5.0
+-   [x] Scrape actor images from R18.com and push to Emby - v1.5.0
+-   [x] Add option to run sort_jav.py without renaming local files - v1.5.2
+-   [x] Scrape scene title from R18.com - v1.5.2
+-   [x] Scrape series title and director name from R18.com - v1.5.3
+-   [x] Scrape amateur/uncensored video metadata from 7mmtv - v1.5.3
 -   [ ] Add option to do recursive search on sort_jav.py
 -   [ ] Add option to manually scrape a javlibrary url if it can't match automatically
 -   [ ] Add more video title renaming options
