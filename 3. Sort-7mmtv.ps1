@@ -42,7 +42,7 @@ foreach ($Video in $Videos) {
         foreach ($Actor in $Actors) {
             $ActorObject += ((($Actor -split "\d{1,6}\/")[1]) -split "\/")[0]
         }
-    
+        <# 
         Write-Host "Link is: $7mmLink"
         Write-Host "Title is: $ScrapedTitle"
         Write-Host "Studio is: $Studio"
@@ -50,7 +50,7 @@ foreach ($Video in $Videos) {
         Write-Host "Actor is: $ActorObject"
         Write-Host "Release date: $ReleaseDate"
         Write-Host "Release year: $ReleaseYear"
-
+        #>
         # Write metadata to file
         Set-Content -LiteralPath $NfoPath -Value '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
         Add-Content -LiteralPath $NfoPath -Value '<movie>'
