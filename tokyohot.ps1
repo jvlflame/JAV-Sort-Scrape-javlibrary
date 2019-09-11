@@ -1,1 +1,0 @@
-https://www.tokyo-hot.com/product/sg032/
