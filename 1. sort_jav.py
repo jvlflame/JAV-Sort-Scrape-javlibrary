@@ -135,50 +135,53 @@ def get_correct_url(html, vid_id):
 def rename_file(path, html, s, vid_id):
     """Rename the file per our settings
     Returns the name of the file regardless of whether it has been renamed"""
-    if s['include-actress-in-video-name']:
-        actress_string = get_actress_string(html, s)
-        base = strip_partial_path_from_file(path)
-        if s['video-number']:
-            if s['actress-before-video-number']:
+    if s['do-not-rename-file']:
+        return path
+    else:
+        if s['include-actress-in-video-name']:
+            actress_string = get_actress_string(html, s)
+            base = strip_partial_path_from_file(path)
+            if s['video-number']:
+                if s['actress-before-video-number']:
+                    new_fname = vid_id + s['delimiter-between-video-name-actress'] \
+                                + actress_string + s['delimiter-between-multiple-videos'] \
+                                + s['video-number'] + '.' + path.rsplit('.')[-1]
+                    new_path = os.path.join(base, new_fname)
+                else:  # actress after
+                    new_fname = vid_id + s['delimiter-between-multiple-videos'] \
+                                + s['video-number'] + s['delimiter-between-video-name-actress'] \
+                                + actress_string + '.' + path.rsplit('.')[-1]
+                    new_path = os.path.join(base, new_fname)
+            else:
                 new_fname = vid_id + s['delimiter-between-video-name-actress'] \
-                            + actress_string + s['delimiter-between-multiple-videos'] \
-                            + s['video-number'] + '.' + path.rsplit('.')[-1]
-                new_path = os.path.join(base, new_fname)
-            else:  # actress after
-                new_fname = vid_id + s['delimiter-between-multiple-videos'] \
-                            + s['video-number'] + s['delimiter-between-video-name-actress'] \
                             + actress_string + '.' + path.rsplit('.')[-1]
                 new_path = os.path.join(base, new_fname)
-        else:
-            new_fname = vid_id + s['delimiter-between-video-name-actress'] \
-                        + actress_string + '.' + path.rsplit('.')[-1]
-            new_path = os.path.join(base, new_fname)
-        try:
-            os.rename(path, new_path)
-            return new_path
-        # this happens on dupe or some other failure
-        # suce as invalid filname (shouldn't happen), drive full, or filename too long
-        except:
-            return path
-    elif strip_file_name(path) != vid_id:
-        base = strip_partial_path_from_file(path)
-        if s['video-number']:
-            new_fname = vid_id + s['delimiter-between-multiple-videos'] \
-                        + s['video-number'] + '.' + path.rsplit('.')[-1]
-            new_path = os.path.join(base, new_fname)
-        else:
-            new_fname = vid_id + '.' + path.rsplit('.')[-1]
-            new_path = os.path.join(base, new_fname)
-        try:
-            os.rename(path, new_path)
-            return new_path
-        except:
-            return path
+            try:
+                os.rename(path, new_path)
+                return new_path
+            # this happens on dupe or some other failure
+            # suce as invalid filname (shouldn't happen), drive full, or filename too long
+            except:
+                return path
+        elif strip_file_name(path) != vid_id:
+            base = strip_partial_path_from_file(path)
+            if s['video-number']:
+                new_fname = vid_id + s['delimiter-between-multiple-videos'] \
+                            + s['video-number'] + '.' + path.rsplit('.')[-1]
+                new_path = os.path.join(base, new_fname)
+            else:
+                new_fname = vid_id + '.' + path.rsplit('.')[-1]
+                new_path = os.path.join(base, new_fname)
+            try:
+                os.rename(path, new_path)
+                return new_path
+            except:
+                return path
 
-    else:
-        # easier to always return the file name so we can treat both cases the same
-        # because when we move it (potentially) we don't care if it has been renamed
-        return path
+        else:
+            # easier to always return the file name so we can treat both cases the same
+            # because when we move it (potentially) we don't care if it has been renamed
+            return path
 
 def get_actress_string(html, s):
     """Return the string of the actress names as per the naming convention specified
@@ -355,24 +358,28 @@ def get_cover_for_video(path, vid_id, s, html):
     # create the path name based on the settings file
     base = strip_partial_path_from_file(path)
     fname = strip_definition_from_video(vid_id)
-    if (s['include-actress-name-in-cover']):
-        if (s['include-cover-all']):
-            if(s['include-actress-in-video-name']):
-                if s['video-number']:
-                    fname += s['delimiter-between-multiple-videos'] + s['video-number'] + s['delimiter-between-video-name-actress'] 
-                    actress_string = get_actress_string(html, s)
-                    fname += actress_string
-                else:
-                    fname += s['delimiter-between-video-name-actress'] 
-                    actress_string = get_actress_string(html, s)
-                    fname += actress_string
+    if s['do-not-rename-file']:
+        fullpath = (os.path.splitext(path)[0])
+        save_image_from_url_to_path(fullpath, img_link)
     else:
-        if(s['include-cover-all']):
-            if s['video-number']:
-                fname += s['delimiter-between-multiple-videos'] + s['video-number']
+        if (s['include-actress-name-in-cover']):
+            if (s['include-cover-all']):
+                if(s['include-actress-in-video-name']):
+                    if s['video-number']:
+                        fname += s['delimiter-between-multiple-videos'] + s['video-number'] + s['delimiter-between-video-name-actress'] 
+                        actress_string = get_actress_string(html, s)
+                        fname += actress_string
+                    else:
+                        fname += s['delimiter-between-video-name-actress'] 
+                        actress_string = get_actress_string(html, s)
+                        fname += actress_string
+        else:
+            if(s['include-cover-all']):
+                if s['video-number']:
+                    fname += s['delimiter-between-multiple-videos'] + s['video-number']
 
-    fullpath = os.path.join(base, fname)
-    save_image_from_url_to_path(fullpath, img_link)
+        fullpath = os.path.join(base, fname)
+        save_image_from_url_to_path(fullpath, img_link)
 
     # Crop full cover to 378x539 to show only front cover
     if s['crop-cover-to-poster']:
