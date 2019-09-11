@@ -76,7 +76,7 @@ Big thanks to the original author of the sort_jav.py script [/u/Oppaira](https:/
 
 ### Installing
 
-[Clone this repository (recommended)](https://github.com/gboudreau/XBMCnfoMoviesImporter.bundle/archive/master.zip) or [download the latest release](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/releases).
+[Clone this repository (recommended)](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/archive/master.zip) or [download the latest release](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/releases).
 
 #### Install Pillow module on Python
 
