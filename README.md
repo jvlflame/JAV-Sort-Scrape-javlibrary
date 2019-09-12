@@ -136,6 +136,8 @@ The scripts are numbered in the order that they should be run. They were written
     - After your first write to Emby, your .csv database will be created
     - Any changes made to your `actor-csv-export-path` file will be compared to the database in `actor-csv-database-path` and be written accordingly
 
+7. **Optional** Run `Sort-7mmtv.ps1` download cover and create a metadata file for uncensored and amateur JAV videos as listed on 7mmtv.tv. There are currently no configurable settings for this script besides the path `7mm-files-path`. By default, the video will be moved to a new folder, have a cover image downloaded, and .nfo metadata file created. Review additional notes and how to run in the [notes](#sort-7mmtvps1), and in the settings file comments above `7mm-files-path`
+
 If you are having trouble with any of these steps, review my [script-run demos](#demo), or send me a message in my [discord channel](https://discord.gg/K2Yjevk).
 
 ## Notes
@@ -189,7 +191,7 @@ If you are trying to sort a video with multiple parts, follow any of the naming 
 
 -   Scrapes and sorts all videos in path set in `7mm-files-path` in the settings file
 
-`Sort-7mmtv.ps1` will scrape metadata, download the video cover, write a .nfo metadata file, and move videos to a new directory. It will scrape metadata information from the Japanese version of the site. Unfortuantely the English version has too many errors and discrepencies. I recommend you separate your uncensored/amateur JAV from your censored ones in Emby as to better filter through them. This is a very basic script, with no settings options besides the path. The script will sort one video file every 10 seconds, as the script scrapes from Google, and you will be blocked if you scrape too much.
+`Sort-7mmtv.ps1` will scrape metadata, download the video cover, write a .nfo metadata file, and move videos to a new directory. It will scrape metadata information from the Japanese version of the site. Unfortunately the English version of the site has too many errors and discrepencies. I recommend you separate your uncensored/amateur JAV from your censored ones in Emby/Jellyfin as to better filter through them. This is a very basic script, with no settings options besides the path. The script will sort one video file every 10 seconds, as the script scrapes from Google, and you will be blocked if you scrape too much.
 
 ### edit_covers.py
 
