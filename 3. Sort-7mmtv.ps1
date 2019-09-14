@@ -10,7 +10,11 @@ $Videos = Get-ChildItem -Path $FilePath | Where-Object {$_.Extension -like ".mp4
                                                              -or $_.Extension -like '.flv'}
 $Count = 1
 $Total = $Videos.Count
+Write-Host "Starting scrape for directory $FilePath..."
 foreach ($Video in $Videos) {
+    $Result = $true
+    # Wait 10 seconds between files
+    Start-Sleep -Seconds 10
     $VideoId = ($Video.BaseName).ToUpper()
     $GoogleScrape = Invoke-WebRequest -Uri "https://www.google.com/search?q=site:7mmtv.tv+$VideoId"
     #$GoogleScrape = Invoke-WebRequest -Uri https://duckduckgo.com/?q=site%3A7mmtv.tv+$VideoID/
@@ -19,9 +23,10 @@ foreach ($Video in $Videos) {
         $7mmLink = (((((($GoogleScrape.Links.href -match '7mmtv.tv/../uncensored_content')) -replace '7mmtv.tv/..', '7mmtv.tv/ja') -replace '\/url\?q=', '') -split "&amp;")[0])
         if (($7mmLink -replace "%2520", " ") -notmatch $VideoId -or $null -like $7mmLink -or $7mmLink -like '') {
             "$VideoId not found on 7mmtv. Skipping..."
+            $Result = $false
         }
     }
-    else {
+    if ($Result -eq $true) {
         New-Item -ItemType Directory -Path (Join-Path -Path $Video.DirectoryName -ChildPath $VideoId)
         Move-Item -Path $Video.FullName -Destination (Join-Path -Path (Join-Path -Path $Video.DirectoryName -ChildPath $VideoId) -Childpath $Video.Name)
         $NfoPath = (Join-Path -Path (Join-Path -Path $Video.DirectoryName -ChildPath $VideoId) -Childpath "$VideoId.txt")
@@ -80,8 +85,6 @@ foreach ($Video in $Videos) {
         $Content | Out-File -FilePath $NfoFile -Encoding utf8
         Remove-Item -Path $NfoPath
         Write-Output "($Count of $Total) $VideoId .nfo processed..."
-        # Wait 10 seconds between files
-        Start-Sleep -Seconds 10
         $Count++
     }
 }
