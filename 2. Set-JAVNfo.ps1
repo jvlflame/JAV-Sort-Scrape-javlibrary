@@ -30,6 +30,7 @@ function Set-JAVNfo {
     $R18TitleCheck = ((Get-Content $SettingsPath) -match '^prefer-r18-title').Split('=')[1]
     $R18MetadataCheck = ((Get-Content $SettingsPath) -match '^scrape-r18-other-metadata').Split('=')[1]
     $RenameCheck = ((Get-Content $SettingsPath) -match '^do-not-rename-file').Split('=')[1]
+    $R18ThumbPath = ((Get-Content $SettingsPath) -match '^r18-export-csv-path').Split('=')[1]
 
     Write-Host "Metadata to be written:"
     # Write txt metadata file paths to $HtmlMetadata
@@ -44,7 +45,6 @@ function Set-JAVNfo {
         Write-Warning 'No metadata files found! Exiting...'
         pause
     }
-
     else {
         # Create table to show files being written
         $Index = 1
@@ -70,6 +70,9 @@ function Set-JAVNfo {
             # Write each nfo file
             $Count = 1
             $Total = $HtmlMetadata.Count
+            if ($R18ThumbPath) {
+                $ActorThumbs = Import-Csv -Path $R18ThumbPath
+            }
             foreach ($MetadataFile in $HtmlMetadata) {
                 # Read html txt
                 $FileLocation = $MetadataFile.FullName
@@ -186,11 +189,32 @@ function Set-JAVNfo {
                     }
                 }
                 foreach ($Actor in $Actors) {
-                    $Content = @(
-                        "    <actor>"
-                        "        <name>$Actor</name>"
-                        "    </actor>"
-                    )
+                    if ($R18ThumbPath) {
+                        $Index = [array]::indexof(($ActorThumbs.Name).ToLower(), $Actor.ToLower())
+                        if ($Index -eq '-1' -or $null -eq $Index) {
+                            $Content = @(
+                                "    <actor>"
+                                "        <name>$Actor</name>"
+                                "    </actor>"
+                            )
+                        }
+                        else {
+                            $ActorThumb = $ActorThumbs.ThumbUrl[$Index]
+                            $Content = @(
+                                "    <actor>"
+                                "        <name>$Actor</name>"
+                                "        <thumb>$ActorThumb</thumb>"
+                                "    </actor>"
+                            )
+                        }
+                    }
+                    else {
+                        $Content = @(
+                            "    <actor>"
+                            "        <name>$Actor</name>"
+                            "    </actor>"
+                        )
+                    }
                     Add-Content -LiteralPath $NfoPath -Value $Content
                 }
                 # End file
