@@ -117,11 +117,11 @@ The scripts are numbered in the order that they should be run. They were written
 
     - I have provided two recently scraped spreadsheets in the repository as `emby_actor_thumbs/R18-Aug-30-2019.csv` Use last-first if your `name-order` in your settings is set to _last_, and vice-versa.
 
-3. Run `Set-JAVNfo.ps1` to create .nfo metadata files for each video. - **_Stop here if you are using Plex_**
+3. Run `Set-JAVNfo.ps1` to create .nfo metadata files for each video. - **_Stop here if you are using Plex or you don't want actor images in Emby/Jellyfin_**
 
     - You can re-run this script on existing directories to replace old metadata files if you make changes to your settings
 
-4. Go to your Emby server and make sure all your videos are imported. This is important, as the next step will call Emby's API to get your current actor list.
+4. Go to your Emby server and make sure all your videos are imported. This is important, as the next step will call Emby's API to get your current actor list. Take a look at [Emby's documentation](https://github.com/MediaBrowser/Emby/wiki/Api-Key-Authentication) on how to generate an API key to insert into your settings file.
 
 5. Run `Get-EmbyActorThumbs.ps1` to get Emby actor name/id to compare with R18 spreadsheet and create a .csv spreadsheet specified in `actor-csv-export-path`. Make sure the spreadsheet you created in `Get-R18ThumbUrls.ps1` is specified in `r18-export-csv-path` as it will be referenced in this script.
 
@@ -136,6 +136,16 @@ The scripts are numbered in the order that they should be run. They were written
 7. **Optional** Run `Sort-7mmtv.ps1` download cover and create a metadata file for uncensored and amateur JAV videos as listed on 7mmtv.tv. There are currently no configurable settings for this script besides the path `7mm-files-path`. By default, the video will be moved to a new folder, have a cover image downloaded, and .nfo metadata file created. Review additional notes and how to run in the [notes](#sort-7mmtvps1), and in the settings file comments above `7mm-files-path`
 
 If you are having trouble with any of these steps, review my [script-run demos](#demo), or send me a message in my [discord channel](https://discord.gg/K2Yjevk).
+
+### Media library setup
+
+#### Emby/Jellyin
+
+Set up a `Movies` media library, and select `show advanced settings`. Uncheck all settings that try to get movie metadata from the internet.
+
+#### Running on Plex
+
+Install the [XBMCnfoMoviesImporter](https://github.com/gboudreau/XBMCnfoMoviesImporter.bundle) plugin on your Plex Media Server. Set up a `Movies` media library, and under the `Advanced` settings, set XBMCnfoMoviesImporter as the scanner agent. Leave all other settings default.
 
 ## Notes
 
