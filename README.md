@@ -29,6 +29,14 @@ Big thanks to the original author of the sort_jav.py script [/u/Oppaira](https:/
 
 **Older changes have been moved to the [wiki.](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/wiki)**
 
+### v 1.5.4 (Current release)
+
+-   Changes
+    - Add actor thumbnail URL directly in the .nfo metadata within `Set-JAVNfo.ps1` to work with Plex
+    - Change some default video naming settings in `settings_sort_jav.ini`
+-   Fixes
+    - Fix `Sort-7mmtv.ps1` not sorting some videos
+
 ### v 1.5.3 (Current release)
 
 -   Additions
@@ -105,15 +113,15 @@ The scripts are numbered in the order that they should be run. They were written
 
 1. Run `sort_jav.py` to sort your JAV files. - **_Stop here if you don't use any media servers that use .nfo metadata_**
 
-2. Run `Set-JAVNfo.ps1` to create .nfo metadata files for each video. **_Stop here if you don't use Emby or Jellyfin, or you don't want actor images_**
+2. Run `Get-R18ThumbUrls.ps1` to scrape R18 and get actor thumbnail urls and write to .csv spreadsheet specified in `r18-export-csv-path` (you only need to do this once every so often when new actors are added to R18).
+
+    - I have provided two recently scraped spreadsheets in the repository as `emby_actor_thumbs/R18-Aug-30-2019.csv` Use last-first if your `name-order` in your settings is set to _last_, and vice-versa.
+
+3. Run `Set-JAVNfo.ps1` to create .nfo metadata files for each video. - **_Stop here if you are using Plex_**
 
     - You can re-run this script on existing directories to replace old metadata files if you make changes to your settings
 
-3. Go to your Emby server and make sure all your videos are imported. This is important, as the next step will call Emby's API to get your current actor list.
-
-4. Run `Get-R18ThumbUrls.ps1` to scrape R18 and get actor thumbnail urls and write to .csv spreadsheet specified in `r18-export-csv-path` (you only need to do this once every so often when new actors are added to R18).
-
-    - I have provided two recently scraped spreadsheets in the repository as `emby_actor_thumbs/R18-Aug-30-2019.csv` Use last-first if your `name-order` in your settings is set to _last_, and vice-versa.
+4. Go to your Emby server and make sure all your videos are imported. This is important, as the next step will call Emby's API to get your current actor list.
 
 5. Run `Get-EmbyActorThumbs.ps1` to get Emby actor name/id to compare with R18 spreadsheet and create a .csv spreadsheet specified in `actor-csv-export-path`. Make sure the spreadsheet you created in `Get-R18ThumbUrls.ps1` is specified in `r18-export-csv-path` as it will be referenced in this script.
 
@@ -153,11 +161,11 @@ If you are trying to sort a video with multiple parts, follow any of the naming 
 -   Matches all html .txt files created by sort_jav.py
 -   Creates a .nfo metadata file that is readable by Media servers like Emby/Jellyfin
 
-`Set-JAVNfo.ps1` will run a recursive search of .txt files located in the `path` specified in your settings file. A .nfo metadata file will be generated with information such as title, release date, studio, genres, and actors. Set `prefer-r18-titles` true to do an additional scrape of R18.com for better translated titles in your metadata.
+`Set-JAVNfo.ps1` will run a recursive search of .txt files located in the `path` specified in your settings file. A .nfo metadata file will be generated with information such as title, release date, studio, genres, actors, actor thumb URL. Set `prefer-r18-titles` true to do an additional scrape of R18.com for better translated titles in your metadata.
 
 ### Get-R18ThumbUrls.ps1
 
--   Scrapes R18 for all actor thumbnails and creates a csv database for Actor-ThumbnailUrl
+-   Scrapes R18 for all actor thumbnails and creates a csv database for actor name and their thumbnail URL.
 
 `Get-R18ThumbUrls.ps1` will take a while to run, as it needs to parse over 300 pages of R18 actors. I have provided recent (Aug-30-2019) scrape files created with this script for you to use if you do not want to create your own file. Use `R18-Aug-30-2019-last-first.csv` if you have `name-order` set to _last_, and vice versa. Specify this path in `r18-export-csv-path`.
 
@@ -220,6 +228,10 @@ Try calling the scripts through a shell window rather than double-clicking to ru
 
 Unfortunately R18 and javlibrary use different English naming conventions for their actresses, so until I have a solution in place to either scrape Japanese, or do some manual switcharoos, we'll have to deal with it. You can also manually put in image urls into the .csv specified in `actor-csv-export-path`.
 
+### Sort_jav.py is erroring out when the filename is too long with actors set
+
+As of now, I dont have a solution in place to handle hard caps on filename. If you have files that won't sort due to this error, turn off actor names for that file.
+
 ## Feature ideas
 
 -   [x] Add option to input tags/genres in metadata file - v.1.4.0
@@ -229,6 +241,8 @@ Unfortunately R18 and javlibrary use different English naming conventions for th
 -   [x] Scrape scene title from R18.com - v1.5.2
 -   [x] Scrape series title and director name from R18.com - v1.5.3
 -   [x] Scrape amateur/uncensored video metadata from 7mmtv - v1.5.3
+-   [x] Add functionality to add actor thumb link in .nfo metadata - v1.5.4
+-   [ ] Add option to rename *-thumb.jpg files to fanart.jpg for better Plex compatibility
 -   [ ] Add option to do recursive search on sort_jav.py
 -   [ ] Add option to manually scrape a javlibrary url if it can't match automatically
 -   [ ] Add more video title renaming options
