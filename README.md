@@ -34,8 +34,11 @@ Big thanks to the original author of the sort_jav.py script [/u/Oppaira](https:/
 -   Changes
     - Add actor thumbnail URL directly in the .nfo metadata within `Set-JAVNfo.ps1` to work with Plex
     - Change some default video naming settings in `settings_sort_jav.ini`
+    - Change directory structure for `Get-R18ThumbUrls.ps1`
 -   Fixes
     - Fix `Sort-7mmtv.ps1` not sorting some videos
+    - Fix `$SettingsPath` on `Get-R18ThumbUrls.ps1`
+
 
 ### v 1.5.3 (Current release)
 
@@ -73,7 +76,7 @@ Big thanks to the original author of the sort_jav.py script [/u/Oppaira](https:/
 
 ### Installing
 
-[Clone this repository (recommended)](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/archive/master.zip) or [download the latest release](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/releases).
+[Clone the repository](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/archive/master.zip) or [download the latest release](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/releases).
 
 #### Install Pillow module on Python
 

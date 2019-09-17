@@ -88,7 +88,7 @@ function Set-NameOrder {
 $ProgressPreference = 'SilentlyContinue'
 
 # Check settings file for config options
-$SettingsPath = Resolve-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath (Join-Path -Path '..' -ChildPath 'settings_sort_jav.ini'))
+$SettingsPath = Resolve-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath 'settings_sort_jav.ini')
 $NameOrder = ((Get-Content $SettingsPath) -match '^swap-name-order').Split('=')[1]
 $StartPage = ((Get-Content $SettingsPath) -match '^r18-start-page').Split('=')[1]
 $EndPage = ((Get-Content $SettingsPath) -match '^r18-end-page').Split('=')[1]
