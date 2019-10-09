@@ -40,18 +40,19 @@ Big thanks to the original author of the sort_jav.py script
 **Older changes have been moved to the
 [wiki.](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/wiki)**
 
-### v 1.5.4
+### v 1.5.4 (Current release)
 
 - Changes
      - Add actor thumbnail URL directly in the .nfo metadata within `Set-JAVNfo.ps1` to work with
        Plex
      - Change some default video naming settings in `settings_sort_jav.ini`
      - Change directory structure for `Get-R18ThumbUrls.ps1`
+     - Add updated actor .csv files
 - Fixes
      - Fix `Sort-7mmtv.ps1` not sorting some videos
      - Fix `$SettingsPath` on `Get-R18ThumbUrls.ps1`
 
-### v 1.5.3 (Current release)
+### v 1.5.3
 
 - Additions
      - Add setting `scrape-r18-other-metadata` to scrape and set R18.com metadata for series and
