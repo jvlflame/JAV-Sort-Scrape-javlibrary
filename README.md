@@ -5,7 +5,9 @@
 [![Last commit](https://img.shields.io/github/last-commit/jvlflame/JAV-Sort-Scrape-javlibrary?style=flat-square)](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/commits/master)
 [![Discord](https://img.shields.io/discord/608449512352120834?style=flat-square)](https://discord.gg/K2Yjevk)
 
-[**DISCLAIMER: Check out my new project to scrape metadata to create a local Fakku library**](https://github.com/jvlflame/Fakku-Library)
+**DISCLAIMER: This project will be put on maintenance mode as I do a full rewrite of this project as
+a console application. The last full release will be v1.5.4.**
+[**In the meantime, check out my new project to scrape metadata to create a local Fakku library.**](https://github.com/jvlflame/Fakku-Library)
 
 The JAV-Sort-Scrape-javlibrary repository is a series of scripts used to manage your local JAV
 (Japanese Adult Video) library. It automatically scrapes content from JavLibrary, R18, and 7mmtv to
