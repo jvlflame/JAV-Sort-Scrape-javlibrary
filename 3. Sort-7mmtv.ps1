@@ -13,14 +13,18 @@ $Total = $Videos.Count
 Write-Host "Starting scrape for directory $FilePath..."
 foreach ($Video in $Videos) {
     $Result = $true
-    # Wait 10 seconds between files
-    Start-Sleep -Seconds 10
     $VideoId = ($Video.BaseName).ToUpper()
-    $GoogleScrape = Invoke-WebRequest -Uri "https://www.google.com/search?q=site:7mmtv.tv+$VideoId"
-    #$GoogleScrape = Invoke-WebRequest -Uri https://duckduckgo.com/?q=site%3A7mmtv.tv+$VideoID/
+    $r = Invoke-WebRequest ' https://7mmtv.tv/en/amateurjav_random/all/index.html' -SessionVariable my_session
+	  $form = $r.Forms[0]
+  	$form.fields['search_keyword'] = $VideoId
+  	$GoogleScrape = Invoke-WebRequest -Uri ('https://7mmtv.tv/en/searchform_search/all/index.html' + $form.Action) -WebSession $my_session -Method POST -Body $form.Fields
     $7mmLink = (((((($GoogleScrape.Links.href -match '7mmtv.tv/../amateurjav_content')) -replace '7mmtv.tv/..', '7mmtv.tv/ja') -replace '\/url\?q=', '') -split "&amp;")[0])
     if ($7mmLink -notmatch $VideoId) {
-        $7mmLink = (((((($GoogleScrape.Links.href -match '7mmtv.tv/../uncensored_content')) -replace '7mmtv.tv/..', '7mmtv.tv/ja') -replace '\/url\?q=', '') -split "&amp;")[0])
+        $r = Invoke-WebRequest 'https://7mmtv.tv/en/uncensored_random/all/index.html' -SessionVariable my_session
+		    $form = $r.Forms[0]
+    		$form.fields['search_keyword'] = $VideoId
+		    $GoogleScrape = Invoke-WebRequest -Uri ('https://7mmtv.tv/en/searchform_search/all/index.html' + $form.Action) -WebSession $my_session -Method POST -Body $form.Fields
+		    $7mmLink = (((((($GoogleScrape.Links.href -match '7mmtv.tv/../uncensored_content')) -replace '7mmtv.tv/..', '7mmtv.tv/ja') -replace '\/url\?q=', '') -split "&amp;")[0])
         if (($7mmLink -replace "%2520", " ") -notmatch $VideoId -or $null -like $7mmLink -or $7mmLink -like '') {
             "$VideoId not found on 7mmtv. Skipping..."
             $Result = $false
