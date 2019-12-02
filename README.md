@@ -5,6 +5,8 @@
 [![Last commit](https://img.shields.io/github/last-commit/jvlflame/JAV-Sort-Scrape-javlibrary?style=flat-square)](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/commits/master)
 [![Discord](https://img.shields.io/discord/608449512352120834?style=flat-square)](https://discord.gg/K2Yjevk)
 
+**12/1/19 Update - [Beta iterations of the new project - `Javinizer` are now available for testing/use. This project page will be put into archive mode TBD.](https://github.com/jvlflame/Javinizer)
+
 **11/27/19 Update - Development for the new iteration of this project is fully underway! For details/updates/beta-testing, join my discord channel!**
 
 **DISCLAIMER: This project will be put on maintenance mode as I do a full rewrite of this project as
