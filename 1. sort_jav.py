@@ -1,14 +1,15 @@
 import os
 import urllib.request
 import re
-import cfscrape
+#import cfscrape
+import cloudscraper
 from PIL import Image
 from shutil import move
 
 # if we make this global or at least pass it in to the function
 # it will yield significantly faster results because it can cache the cookie
 # which will make cloudflare think it's the same connection
-scraper = cfscrape.create_scraper()
+scraper = cloudscraper.create_scraper()
 
 class AppUrlopener(urllib.request.FancyURLopener):
     version = "Mozilla/5.0"
