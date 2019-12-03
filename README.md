@@ -5,7 +5,7 @@
 [![Last commit](https://img.shields.io/github/last-commit/jvlflame/JAV-Sort-Scrape-javlibrary?style=flat-square)](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/commits/master)
 [![Discord](https://img.shields.io/discord/608449512352120834?style=flat-square)](https://discord.gg/K2Yjevk)
 
-**12/1/19 Update - [Beta iterations of the new project - `Javinizer` are now available for testing/use. This project page will be put into archive mode TBD.](https://github.com/jvlflame/Javinizer)
+**12/1/19 Update - [Beta iterations of the new project - `Javinizer` are now available for testing/use. This project page will be put into archive mode TBD.](https://github.com/jvlflame/Javinizer)**
 
 **11/27/19 Update - Development for the new iteration of this project is fully underway! For details/updates/beta-testing, join my discord channel!**
 
@@ -88,7 +88,8 @@ Big thanks to the original author of the sort_jav.py script
 
 - [Python 3.5+](https://www.python.org/downloads/)
      - [Pillow](https://pypi.org/project/Pillow/)
-     - [cfscrape](https://pypi.org/project/cfscrape/) - requires Node.js
+     - ~~[cfscrape](https://pypi.org/project/cfscrape/) - requires Node.js
+     - [cloudscraper](https://github.com/VeNoMouS/cloudscraper/tree/master/cloudscraper)
 - [PowerShell 5.0 or higher (6.0+ recommended)](https://github.com/PowerShell/PowerShell)
 
 ### Installing
@@ -299,7 +300,7 @@ reason, follow the instructions below to manually sort the file.
 
 ### "Could not find video on javlibrary so skipping..." for all files
 
-This problem likely stems from the cfscrape module failing. First ensure that both cfscrape AND
+This problem likely stems from the cfscrape/cloudscraper module failing. First ensure that both cfscrape AND
 Node.js are installed properly (restart computer after installing Node.js). If that still does not
 work, run `pip install -U cfscrape` to upgrade your cfscrape module.
 
