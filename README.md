@@ -5,20 +5,12 @@
 [![Last commit](https://img.shields.io/github/last-commit/jvlflame/JAV-Sort-Scrape-javlibrary?style=flat-square)](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/commits/master)
 [![Discord](https://img.shields.io/discord/608449512352120834?style=flat-square)](https://discord.gg/K2Yjevk)
 
-**12/1/19 Update - [Beta iterations of the new project - `Javinizer` are now available for testing/use. This project page will be put into archive mode TBD.](https://github.com/jvlflame/Javinizer)**
+## [Dec 16, 2019] Final Update
+**The `JAV-Sort-Scrape-javlibrary` repository is officially put on maintenance mode and will not receive any future updates. Please check out the successor to this project, [Javinizer](https://github.com/jvlflame/Javinizer).**
 
-**11/27/19 Update - Development for the new iteration of this project is fully underway! For details/updates/beta-testing, join my discord channel!**
+---
 
-**DISCLAIMER: This project will be put on maintenance mode as I do a full rewrite of this project as
-a console application. The last full release will be v1.5.4.**
-
-The JAV-Sort-Scrape-javlibrary repository is a series of scripts used to manage your local JAV
-(Japanese Adult Video) library. It automatically scrapes content from JavLibrary, R18, and 7mmtv to
-create an easily usable content library within Emby or Jellyfin. My goal in maintining this project
-is for it to function as a simple and lightweight alternative to
-[JAVMovieScraper](https://github.com/DoctorD1501/JAVMovieScraper). If you have any questions,
-criticisms, or requests, or want to be kept up-to-date of any new features and releases, feel free
-to hop into my [discord channel](https://discord.gg/K2Yjevk).
+The JAV-Sort-Scrape-javlibrary repository is a series of scripts used to manage your local JAV (Japanese Adult Video) library. It automatically scrapes content from JavLibrary, R18, and 7mmtv to create an easily usable content library within Emby or Jellyfin. My goal in maintining this project is for it to function as a simple and lightweight alternative to [JAVMovieScraper](https://github.com/DoctorD1501 JAVMovieScraper). If you have any questions, criticisms, or requests, or want to be kept up-to-date of any new features and releases, feel free to hop into my [discord channel](https://discord.gg/K2Yjevk).
 
 Big thanks to the original author of the sort_jav.py script
 [/u/Oppaira](https://reddit.com/user/Oppaira).
@@ -40,8 +32,7 @@ Big thanks to the original author of the sort_jav.py script
 
 ## Changelog
 
-**Older changes have been moved to the
-[wiki.](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/wiki)**
+**Older changes have been moved to the [wiki.](https://github.com/jvlflame/JAV-Sort-Scrape-javlibrary/wiki)**
 
 ### v 1.5.4 (Current release)
 
@@ -88,8 +79,8 @@ Big thanks to the original author of the sort_jav.py script
 
 - [Python 3.5+](https://www.python.org/downloads/)
      - [Pillow](https://pypi.org/project/Pillow/)
-     - ~~[cfscrape](https://pypi.org/project/cfscrape/) - requires Node.js
-     - [cloudscraper](https://github.com/VeNoMouS/cloudscraper/tree/master/cloudscraper)
+     - [cfscrape](https://pypi.org/project/cfscrape/) - requires Node.js
+     - [cloudscraper](https://github.com/VeNoMouS/cloudscraper/tree/master/cloudscraper) 
 - [PowerShell 5.0 or higher (6.0+ recommended)](https://github.com/PowerShell/PowerShell)
 
 ### Installing
@@ -99,16 +90,23 @@ Big thanks to the original author of the sort_jav.py script
 
 #### Install Pillow module on Python
 
-```
+```python
 # Required to crop cover images
-pip install Pillow
+> pip install Pillow
 ```
 
 #### Install cfscrape module on Python
 
-```
+```python
 # Required to scrape JavLibrary
-pip install cfscrape
+# If you are using the latest release, install cfscrape
+# If you cloned the repository, install cloudscraper
+
+# Used in latest commit in master
+> pip install cloudscraper
+
+# Used in latest release
+> pip install cfscrape
 ```
 
 #### Install Node.js
@@ -117,8 +115,8 @@ Download and install from [here](https://nodejs.org/en/download/).
 
 #### You will need PowerShell v5.0 or higher installed to run any of the .ps1 scripts (PowerShell 5.0 is installed on Windows 10 by default). If you get a Remote-ExecutionPolicy error when running, open an **administrator** PowerShell prompt, and run the following to unrestrict the scripts:
 
-```
-Set-ExecutionPolicy Unrestricted
+```powershell
+PS> Set-ExecutionPolicy Unrestricted
 ```
 
 ## Usage
