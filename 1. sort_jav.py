@@ -11,6 +11,9 @@ from shutil import move
 # which will make cloudflare think it's the same connection
 scraper = cloudscraper.create_scraper()
 
+# Run cloudscraper on base URL to resolve loop error
+scraper.get('http://javlibrary.com/en/')
+
 class AppUrlopener(urllib.request.FancyURLopener):
     version = "Mozilla/5.0"
 
